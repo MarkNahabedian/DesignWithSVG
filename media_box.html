@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <title>MediaBox -- Stackable Boxes for Storing CDs and DVDs</title>
+    <script type="text/javascript" src="svg_lib.js"></script>
+    <script type="text/css" src="shaper_origin.css"></script>
+    <script type="text/javascript">
+<!--
+
+class Geometry {
+  constructor() {
+    // All dimensions are in inches unless otherwise stated.
+
+    this.svg_margin = 0.25;
+
+    // Dimension constraints imposed by the media and its packaging
+    this.inside_width = 5;      // Based on height of a CD jewel case.
+    this.inside_length = 7.75;  // Based on height of a DVD boxed set.
+    this.inside_depth = 5.75;   // Based on distance from CD jewel case spine to open end.
+
+    this.wood_thickness = 0.25;      // TODO: measure the wood we are using.
+
+    // Dimensions I've chosen
+    // We add tabs that descend from the bottom of the box edges into
+    // cutouts in the edges of the box it's stacked on.
+    // The top cutout and the bottom extension will be the shape of a
+    // 45 degree isosolese trapezoid of this height:
+    this.stack_tab_depth = 0.75;
+    // The top edge of each corner of the box will be at the full
+    // depth of the box.
+    // We make sure that at each corner there will be 1/4 inch (inside
+    // dimension) that at full height:
+    this.full_height_corner = 0.25;
+
+    // Positioning bottom mortises and tenons and end and side box joints:
+  }
+
+  svgWidth() {
+    return this.inside_length + 2 * (this.wood_thickness + this.svg_margin);
+  }
+
+  svgHeight() {
+    return this.inside_depth + this.stack_tab_depth + 2 * this.svg_margin;
+  }
+
+  update_side_svg(image_element) {
+    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    var g = document.createElementNS(svgURI, "g");
+    image_element.appendChild(g);
+    // TODO: add finger joints
+    var edge_path = [];
+    edge_path.push(['M', this.svg_margin, this.svg_margin]);
+    var end = this.wood_thickness + this.full_height_corner;
+    var minor_base = this.inside_length -
+                     2 * (this.wood_thickness +
+                          this.full_height_corner +
+                          this.stack_tab_depth * Math.sqrt(2));
+    // first end
+    edge_path.push(['v', this.inside_depth + this.wood_thickness]);
+    // bottom edge
+    edge_path.push(['h', end]);
+    edge_path.push(['l', this.stack_tab_depth, this.stack_tab_depth]);
+    edge_path.push(['h', minor_base]);
+    edge_path.push(['l', this.stack_tab_depth, - this.stack_tab_depth]);
+    edge_path.push(['h', end]);
+    // other end
+    edge_path.push(['v', - (this.inside_depth + this.wood_thickness)]);
+    // top edge
+    edge_path.push(['h', - end]);
+    edge_path.push(['l', - this.stack_tab_depth, this.stack_tab_depth]);
+    edge_path.push(['h', - minor_base]);
+    edge_path.push(['l', - this.stack_tab_depth, - this.stack_tab_depth]);
+    edge_path.push(['h', - end]);
+    // Draw it
+    path(g, edge_path).setAttribute('class', 'outside-cut');
+    // TODO:  add mortises for base.
+  }
+
+  update_end_svg(image_element) {
+    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    var g = document.createElementNS(svgURI, "g");
+    image_element.appendChild(g);
+    // TODO: add finger joints
+    var edge_path = [];
+    edge_path.push(['M', this.svg_margin, this.svg_margin]);
+    var end = this.wood_thickness + this.full_height_corner;
+    var minor_base = this.inside_width -
+                     2 * (this.wood_thickness +
+                          this.full_height_corner +
+                          this.stack_tab_depth * Math.sqrt(2));
+    // first end
+    edge_path.push(['v', this.inside_depth + this.wood_thickness]);
+    // bottom edge
+    edge_path.push(['h', end]);
+    edge_path.push(['l', this.stack_tab_depth, this.stack_tab_depth]);
+    edge_path.push(['h', minor_base]);
+    edge_path.push(['l', this.stack_tab_depth, - this.stack_tab_depth]);
+    edge_path.push(['h', end]);
+    // other end
+    edge_path.push(['v', - (this.inside_depth + this.wood_thickness)]);
+    // top edge
+    edge_path.push(['h', - end]);
+    edge_path.push(['l', - this.stack_tab_depth, this.stack_tab_depth]);
+    edge_path.push(['h', - minor_base]);
+    edge_path.push(['l', - this.stack_tab_depth, - this.stack_tab_depth]);
+    edge_path.push(['h', - end]);
+    // Draw it
+    path(g, edge_path).setAttribute('class', 'outside-cut');
+    // TODO:  add mortises for base.
+  }
+
+  update_bottom_svg(image_element) {
+    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    var g = document.createElementNS(svgURI, "g");
+    image_element.appendChild(g);
+    // TODO: add tenons.
+    var edge_path = [];
+    edge_path.push(['M', this.svg_margin, this.svg_margin]);
+    edge_path.push(['v', this.inside_width]);
+    edge_path.push(['h', this.inside_length]);
+    edge_path.push(['v', - this.inside_width]);
+    edge_path.push(['h', - this.inside_length]);
+    path(g, edge_path).setAttribute('class', 'outside-cut');  }
+}
+
+
+geometry = new Geometry();
+
+function contentLoaded() {
+  setSVGNamespaces();
+  geometry.update_side_svg(document.getElementById('side-image'));
+  showSVG(document.getElementById('side-image'),
+          document.getElementById('side-code'));
+
+  geometry.update_end_svg(document.getElementById('end-image'));
+  showSVG(document.getElementById('end-image'),
+          document.getElementById('end-code'));
+
+  geometry.update_bottom_svg(document.getElementById('bottom-image'));
+  showSVG(document.getElementById('bottom-image'),
+          document.getElementById('bottom-code'));  
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+-->
+    </script>
+  </head>
+  <body>
+
+    <h2>Side</h2>
+
+    <pre id="side-code"> </pre>
+    <svg id="side-image"> </svg>
+
+
+    <h2>End</h2>
+
+    <pre id="end-code"> </pre>
+    <svg id="end-image"> </svg>
+
+
+    <h2>Bottom</h2>
+
+    <pre id="bottom-code"> </pre>
+    <svg id="bottom-image"> </svg>
+
+  </body>
+</html>
+
+
+    
