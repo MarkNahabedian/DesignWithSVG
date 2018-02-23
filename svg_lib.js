@@ -33,9 +33,11 @@ function setupSVGViewport(svgElt, x, y, width, height, units) {
 // This allows one to specify paths like
 //  [ [ 'M', 10, 20], ['h' 5], ['v', 5]]
 function path(parent, dSpec) {
-  console.log(dSpec);
+  // console.log(dSpec);
   var p = document.createElementNS(svgURI, "path");
-  parent.appendChild(p);
+  if (parent != null) {
+    parent.appendChild(p);
+  }
   p.setAttribute('d',
       dSpec.map(function(piece) { return piece.join(' '); })
           .join('  '));
