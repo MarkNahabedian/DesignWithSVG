@@ -9,22 +9,22 @@
 /* inside-cut, also called interior cut, is used for closed paths when
    the cutter is to follow the inside of the path.  This leaves an
    opening in the stock which meets the measurements specified by the path. */
-inside-cut     { fill: white; stroke: black; }
+.inside-cut     { fill: white; stroke: black; }
 
 /* outside-cut, also called exterior cut, is used to cut outside of the
    path so that the interior of the path is at the specified dimension.
    The path must be closed so that ithas an identifiable outside. */
-outside-cut    { fill: black; stroke: black; }
+.outside-cut    { fill: black; stroke: black; }
 
 /* For on-line cuts, the cutter is centered on the path.
    For paths which are to be engraved use on-line-cut. */
-on-line-cut    { stroke: gray; }
+.on-line-cut    { stroke: gray; }
 
 /* pocketing-cut is used to remove material from within the path to some depth.
    A border offset is automatically added to ensure a clean cut.
    A pocketing-cut should be followed by an inside-cut to ensure clean edges
    at the proper dimensions. */
-pocketing-cut  { fill: gray; }
+.pocketing-cut  { fill: gray; }
 
 /* guide-line is used for reference lines and shapes which are not to be cut. */
-guide-line      { stroke: blue; }
+.guide-line      { stroke: blue; }
