@@ -5,8 +5,9 @@
     <style type="text/css">
 
 div.svg-border  { border-width: 5px; border-color: green; }
-.guide-line  { stroke-width: .03; }
-.outside-cut { stroke-width: .02; }
+.guide-line  { stroke-width: .03; opacity: 1.0; fill: none; }
+.outside-cut { stroke-width: .01; opacity: 1.0; }
+.inside-cut  { stroke-width: .01; opacity: 1.0; }
 
     </style>
     <script type="text/javascript" src="svg_lib.js"></script>
@@ -41,8 +42,6 @@ class Geometry {
     this.outside_length = this.inside_length + 2 * this.wood_thickness;
     this.outside_width = this.inside_width + 2 * this.wood_thickness;
     this.outside_depth = this.inside_depth + this.wood_thickness;
-
-    // Positioning bottom mortises and tenons and end and side box joints:
   }
 
   svgWidth() {
@@ -51,6 +50,66 @@ class Geometry {
 
   svgHeight() {
     return this.inside_depth + this.stack_tab_depth + 2 * this.svg_margin;
+  }
+
+  // bottom_joinery computes the horizontal positions of the mortises and
+  // tenons that support the bottom in the sides and ends.  These
+  // positions are measured from the outside edge.
+  // The vertical positions of the top and bottom of each mortise in
+  // the sides and ends are this.inside_depth and this.outside_depth
+  // respectively.
+  bottom_joinery(outside_length) {
+    // Tenons will be this distance from the outside edge.
+    var margin = this.wood_thickness + this.full_height_corner + this.stack_tab_depth;
+    var available = outside_length - 2 * margin;
+    var min_tenon_length = 0.5;
+    // The space between tenons will be half again longer than the tenon.
+    var tenon_spacing_ratio = 1.5;
+    /* Available length will have a tenon at each end with additional
+       tenons evenly spaced in between.  Fencepost math.
+         n  number_of_tenons
+         r  tenon_spacing_ratio
+         l  tenon_length
+         a  available
+
+       a = n*l + (n - 1) * l*r
+
+       Solve for n:
+       n = (a + l*r) / (l*(r+1))
+
+       Solve for l:
+       l = a / (n + nr - r)
+     */
+    var number_of_tenons = Math.floor(
+          (available + min_tenon_length * tenon_spacing_ratio) /
+          (min_tenon_length * (1 + tenon_spacing_ratio)));
+    var tenon_length = available /
+          (number_of_tenons * (1 + tenon_spacing_ratio)
+          - tenon_spacing_ratio);
+    var positions = [];
+    var tenon_start = margin;
+    for (var i = 0; i < number_of_tenons; i++) {
+      positions.push([tenon_start, tenon_start + tenon_length]);
+      tenon_start += tenon_length * (1 + tenon_spacing_ratio);
+    }
+    return positions;
+  }
+
+  add_bottom_mortises(parent, outside_length) {
+    var g = document.createElementNS(svgURI, "g");
+    parent.appendChild(g);
+    g.setAttribute('class', 'inside-cut');
+    var mortises = this.bottom_joinery(outside_length);
+    for (var i = 0; i < mortises.length; i++) {
+      var m = mortises[i];
+      var rect = document.createElementNS(svgURI, "rect");
+      rect.setAttribute('x', this.svg_margin + m[0]);
+      rect.setAttribute('y', this.svg_margin + this.inside_depth);
+      rect.setAttribute('width', m[1] - m[0]);
+      rect.setAttribute('height', this.wood_thickness);
+      g.appendChild(rect);
+    }
+    parent.appendChild(g);    
   }
 
   // Returns an SVG path element of a guideline box.
@@ -101,9 +160,11 @@ class Geometry {
 
     // TODO:  add mortises for base.
 
+    this.add_bottom_mortises(image_element, this.outside_length);
+
     // Some guide lines
-    this.guide_box(g, this.wood_thickness, 0, this.inside_length, this.inside_depth);
-    this.guide_box(g, 0, 0, this.outside_length, this.outside_depth);
+    this.guide_box(image_element, this.wood_thickness, 0, this.inside_length, this.inside_depth);
+    this.guide_box(image_element, 0, 0, this.outside_length, this.outside_depth);
   }
 
   update_end_svg(image_element) {
@@ -140,9 +201,11 @@ class Geometry {
     p.setAttribute('class', 'outside-cut');
     // TODO:  add mortises for base.
 
+    this.add_bottom_mortises(image_element, this.outside_width);
+
     // Some guide lines
-    this.guide_box(g, this.wood_thickness, 0, this.inside_width, this.inside_depth);
-    this.guide_box(g, 0, 0, this.outside_width, this.outside_depth);
+    this.guide_box(image_element, this.wood_thickness, 0, this.inside_width, this.inside_depth);
+    this.guide_box(image_element, 0, 0, this.outside_width, this.outside_depth);
   }
 
   update_bottom_svg(image_element) {
@@ -150,18 +213,40 @@ class Geometry {
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
     // TODO: add tenons.
+    var side_tenons = this.bottom_joinery(this.outside_length);
+    var end_tenons = this.bottom_joinery(this.outside_width);
+
     var edge_path = [];
-    edge_path.push(['M', this.svg_margin, this.svg_margin]);
-    edge_path.push(['v', this.outside_width]);
-    edge_path.push(['h', this.outside_length]);
-    edge_path.push(['v', - this.outside_width]);
-    edge_path.push(['h', - this.outside_length]);
+    var geo = this;
+
+    function tenoned_edge(start_x, start_y, outside_dimension,
+                          along, across, tenon_direction) {
+      var tenons = geo.bottom_joinery(outside_dimension);
+      edge_path.push(['M', geo.svg_margin + start_x,
+                           geo.svg_margin + start_y]);
+      for (var i = 0; i < tenons.length; i++) {
+        var tenon = tenons[i];
+        edge_path.push([along, geo.svg_margin + tenon[0]]);
+        edge_path.push([across, tenon_direction * geo.wood_thickness]);
+        edge_path.push([along, geo.svg_margin + tenon[1]]);
+        edge_path.push([across, - tenon_direction * geo.wood_thickness]);
+      }
+      edge_path.push([along, geo.svg_margin + outside_dimension - geo.wood_thickness]);
+    }
+    tenoned_edge(this.wood_thickness, this.wood_thickness,
+                 this.outside_length, 'H', 'v', -1);
+    tenoned_edge(this.wood_thickness, this.wood_thickness,
+                 this.outside_width, 'V', 'h', -1);
+    tenoned_edge(this.wood_thickness, this.wood_thickness + this.inside_width,
+                 this.outside_length, 'H', 'v', 1);
+    tenoned_edge(this.wood_thickness + this.inside_length, this.wood_thickness,
+                 this.outside_width, 'V', 'h', 1);
     var p = path(g, edge_path);
-    // p.setAttribute('class', 'outside-cut');
+    p.setAttribute('class', 'outside-cut');
 
     // Some guide lines
-    this.guide_box(g, this.wood_thickness, this.wood_thickness, this.inside_length, this.inside_width);
-    this.guide_box(g, 0, 0, this.outside_length, this.outside_width);
+    this.guide_box(image_element, this.wood_thickness, this.wood_thickness, this.inside_length, this.inside_width);
+    this.guide_box(image_element, 0, 0, this.outside_length, this.outside_width);
   }
 }
 
