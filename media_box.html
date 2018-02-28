@@ -1,15 +1,6 @@
 <html>
   <head>
     <title>MediaBox -- Stackable Boxes for Storing CDs and DVDs</title>
-    <link rel="stylesheet"  type="text/css" href="shaper_origin.css">
-    <style type="text/css">
-
-div.svg-border  { border-width: 5px; border-color: green; }
-.guide-line  { stroke-width: .03; opacity: 1.0; fill: none; }
-.outside-cut { stroke-width: .01; opacity: 1.0; }
-.inside-cut  { stroke-width: .01; opacity: 1.0; }
-
-    </style>
     <script type="text/javascript" src="svg_lib.js"></script>
     <script type="text/javascript">
 //<![CDATA[
@@ -53,6 +44,30 @@ class Geometry {
 
   svgHeight() {
     return this.inside_depth + this.stack_tab_depth + 2 * this.svg_margin;
+  }
+
+  inside_cut(path) {
+    path.setAttribute('fill', '#fff');    // white
+    path.setAttribute('stroke', '#000');  // black
+    path.setAttribute('stroke-width', '.01');
+    path.setAttribute('opacity', '1.0');
+    return path;
+  }
+
+  outside_cut(path) {
+    path.setAttribute('fill', '#000');    // black
+    path.setAttribute('stroke', '#000');  // black
+    path.setAttribute('stroke-width', '.01');
+    path.setAttribute('opacity', '1.0');
+    return path;
+  }
+
+  guide_line(path) {
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#00f');  // blue
+    path.setAttribute('stroke-width', '.01');
+    path.setAttribute('opacity', '1.0');
+    return path;
   }
 
   // bottom_joinery computes the horizontal positions of the mortises and
@@ -101,7 +116,6 @@ class Geometry {
   add_bottom_mortises(parent, outside_length) {
     var g = document.createElementNS(svgURI, "g");
     parent.appendChild(g);
-    g.setAttribute('class', 'inside-cut');
     var mortises = this.bottom_joinery(outside_length);
     for (var i = 0; i < mortises.length; i++) {
       var m = mortises[i];
@@ -110,6 +124,7 @@ class Geometry {
       rect.setAttribute('y', this.svg_margin + this.inside_depth);
       rect.setAttribute('width', m[1] - m[0]);
       rect.setAttribute('height', this.wood_thickness);
+      this.inside_cut(rect);
       g.appendChild(rect);
     }
     parent.appendChild(g);    
@@ -124,7 +139,7 @@ class Geometry {
         ['h', - dx],
         ['v', - dy]
         ]);
-    p.setAttribute('class', 'guide-line');
+    this.guide_line(p);
     return p;
   }
 
@@ -177,7 +192,7 @@ class Geometry {
     this.side_end_down(edge_path, finger_joint_phase, 1);
     this.side_end_across(edge_path, this.inside_length, finger_joint_phase);
     var p = path(g, edge_path);
-    p.setAttribute('class', 'outside-cut');
+    this.outside_cut(p);
 
     // TODO:  add mortises for base.
 
@@ -205,8 +220,7 @@ class Geometry {
     this.side_end_down(edge_path, finger_joint_phase, 1);
     this.side_end_across(edge_path, this.inside_width, finger_joint_phase);
     var p = path(g, edge_path);
-    p.setAttribute('class', 'outside-cut');
-    // TODO:  add mortises for base.
+    this.outside_cut(p);
 
     this.add_bottom_mortises(image_element, this.outside_width);
 
@@ -249,7 +263,7 @@ class Geometry {
     tenoned_edge(this.wood_thickness + this.inside_length, this.wood_thickness,
                  this.outside_width, 'V', 'h', 1);
     var p = path(g, edge_path);
-    p.setAttribute('class', 'outside-cut');
+    this.outside_cut(p);
 
     // Some guide lines
     this.guide_box(image_element, this.wood_thickness, this.wood_thickness, this.inside_length, this.inside_width);
