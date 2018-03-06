@@ -1,9 +1,17 @@
 <html>
   <head>
     <title>MediaBox -- Stackable Boxes for Storing CDs and DVDs</title>
+    <style type="text/css">
+
+.debug-paths  { fill: none; stroke: black; stroke-width: 0.02; }
+
+    </style>
     <script type="text/javascript" src="svg_lib.js"></script>
     <script type="text/javascript">
 //<![CDATA[
+
+// If true then render all paths without fill for debugging.
+var DEBUG_PATHS = false;
 
 class Geometry {
   constructor() {
@@ -47,18 +55,26 @@ class Geometry {
   }
 
   inside_cut(path) {
-    path.setAttribute('fill', '#fff');    // white
-    path.setAttribute('stroke', '#000');  // black
-    path.setAttribute('stroke-width', '.01');
-    path.setAttribute('opacity', '1.0');
+    if (DEBUG_PATHS) {
+      path.setAttribute('class', 'debug-paths');
+    } else {
+      path.setAttribute('fill', '#fff');    // white
+      path.setAttribute('stroke', '#000');  // black
+      path.setAttribute('stroke-width', '.01');
+      path.setAttribute('opacity', '1.0');
+    }
     return path;
   }
 
   outside_cut(path) {
-    path.setAttribute('fill', '#000');    // black
-    path.setAttribute('stroke', '#000');  // black
-    path.setAttribute('stroke-width', '.01');
-    path.setAttribute('opacity', '1.0');
+    if (DEBUG_PATHS) {
+      path.setAttribute('class', 'debug-paths');
+    } else {
+      path.setAttribute('fill', '#000');    // black
+      path.setAttribute('stroke', '#000');  // black
+      path.setAttribute('stroke-width', '.01');
+      path.setAttribute('opacity', '1.0');
+    }
     return path;
   }
 
@@ -109,6 +125,8 @@ class Geometry {
     for (var i = 0; i < number_of_tenons; i++) {
       positions.push([tenon_start, tenon_start + tenon_length]);
       tenon_start += tenon_length * (1 + tenon_spacing_ratio);
+      // Make up for inexact floating point arithmetic.
+      tenon_start = Math.round(1000 * tenon_start) / 1000;
     }
     return positions;
   }
