@@ -258,35 +258,41 @@ class Geometry {
     image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
-    // TODO: add tenons.
     var side_tenons = this.bottom_joinery(this.outside_length);
     var end_tenons = this.bottom_joinery(this.outside_width);
 
     var edge_path = [];
     var geo = this;
 
-    function tenoned_edge(start_x, start_y, outside_dimension,
+    function tenoned_edge(direction, outside_dimension,
                           along, across, tenon_direction) {
       var tenons = geo.bottom_joinery(outside_dimension);
-      edge_path.push(['M', geo.svg_margin + start_x,
-                           geo.svg_margin + start_y]);
       for (var i = 0; i < tenons.length; i++) {
-        var tenon = tenons[i];
-        edge_path.push([along, geo.svg_margin + tenon[0]]);
+        var tenon;
+        if (direction > 0) {
+          tenon = tenons[i];
+        } else {
+          tenon = tenons[tenons.length - 1 - i];
+        }
+        edge_path.push([along, geo.svg_margin + tenon[direction > 0 ? 0 : 1]]);
         edge_path.push([across, tenon_direction * geo.wood_thickness]);
-        edge_path.push([along, geo.svg_margin + tenon[1]]);
+        edge_path.push([along, geo.svg_margin + tenon[direction > 0 ? 1 : 0]]);
         edge_path.push([across, - tenon_direction * geo.wood_thickness]);
       }
-      edge_path.push([along, geo.svg_margin + outside_dimension - geo.wood_thickness]);
+      if (direction > 0) {
+        edge_path.push([along, geo.svg_margin + outside_dimension -
+                        geo.wood_thickness]);
+      } else {
+        edge_path.push([along, geo.svg_margin - -
+                        geo.wood_thickness]);
+      }
     }
-    tenoned_edge(this.wood_thickness, this.wood_thickness,
-                 this.outside_length, 'H', 'v', -1);
-    tenoned_edge(this.wood_thickness, this.wood_thickness,
-                 this.outside_width, 'V', 'h', -1);
-    tenoned_edge(this.wood_thickness, this.wood_thickness + this.inside_width,
-                 this.outside_length, 'H', 'v', 1);
-    tenoned_edge(this.wood_thickness + this.inside_length, this.wood_thickness,
-                 this.outside_width, 'V', 'h', 1);
+    edge_path.push(['M', this.svg_margin + this.wood_thickness,
+                         this.svg_margin + this.wood_thickness]);
+    tenoned_edge(1, this.outside_length, 'H', 'v', -1);
+    tenoned_edge(1, this.outside_width, 'V', 'h', 1);
+    tenoned_edge(-1, this.outside_length, 'H', 'v', 1);
+    tenoned_edge(-1, this.outside_width, 'V', 'h', -1);
     var p = path(g, edge_path);
     this.outside_cut(p);
 
