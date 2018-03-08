@@ -13,6 +13,8 @@
 // If true then render all paths without fill for debugging.
 var DEBUG_PATHS = false;
 
+var ADD_GUIDELINES = true;
+
 class Geometry {
   constructor() {
     // All dimensions are in inches unless otherwise stated.
@@ -195,6 +197,7 @@ class Geometry {
 
   update_side_svg(image_element) {
     setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
     // TODO: add finger joints
@@ -217,19 +220,20 @@ class Geometry {
     this.add_bottom_mortises(image_element, this.outside_length);
 
     // Some guide lines
-    this.guide_box(image_element, this.wood_thickness, 0, this.inside_length, this.inside_depth);
-    this.guide_box(image_element, 0, 0, this.outside_length, this.outside_depth);
+    if (ADD_GUIDELINES) {
+      this.guide_box(image_element, this.wood_thickness, 0, this.inside_length, this.inside_depth);
+      this.guide_box(image_element, 0, 0, this.outside_length, this.outside_depth);
+    }
   }
 
   update_end_svg(image_element) {
     setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
     // TODO: add finger joints
     var edge_path = [];
-    edge_path.push(['M', this.svg_margin, this.svg_margin]);
     var finger_joint_phase = 1;
-
 
     this.side_end_start(edge_path, finger_joint_phase);
     this.side_end_across(edge_path, this.inside_width, finger_joint_phase);
@@ -243,12 +247,15 @@ class Geometry {
     this.add_bottom_mortises(image_element, this.outside_width);
 
     // Some guide lines
-    this.guide_box(image_element, this.wood_thickness, 0, this.inside_width, this.inside_depth);
-    this.guide_box(image_element, 0, 0, this.outside_width, this.outside_depth);
+    if (ADD_GUIDELINES) {
+      this.guide_box(image_element, this.wood_thickness, 0, this.inside_width, this.inside_depth);
+      this.guide_box(image_element, 0, 0, this.outside_width, this.outside_depth);
+    }
   }
 
   update_bottom_svg(image_element) {
     setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
     // TODO: add tenons.
@@ -284,8 +291,10 @@ class Geometry {
     this.outside_cut(p);
 
     // Some guide lines
-    this.guide_box(image_element, this.wood_thickness, this.wood_thickness, this.inside_length, this.inside_width);
-    this.guide_box(image_element, 0, 0, this.outside_length, this.outside_width);
+    if (ADD_GUIDELINES) {
+      this.guide_box(image_element, this.wood_thickness, this.wood_thickness, this.inside_length, this.inside_width);
+      this.guide_box(image_element, 0, 0, this.outside_length, this.outside_width);
+    }
   }
 }
 
@@ -316,29 +325,29 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h2>Side</h2>
 
-    <pre id="side-code"> </pre>
+    <pre id="side-code"> 
+    </pre>
     <div style="margin:0.5in; border-width: 5px; border-color: green;">
-      <svg id="side-image"> </svg>
+      <svg id="side-image"></svg>
     </div>
 
 
     <h2>End</h2>
 
-    <pre id="end-code"> </pre>
+    <pre id="end-code">
+    </pre>
     <div style="margin:0.5in; border-width: 5px; border-color: green;">
-      <svg id="end-image"> </svg>
+      <svg id="end-image"></svg>
     </div>
 
 
     <h2>Bottom</h2>
 
-    <pre id="bottom-code"> </pre>
+    <pre id="bottom-code">
+    </pre>
     <div style="margin:0.5in;" class="svg-border">
-      <svg id="bottom-image"> </svg>
+      <svg id="bottom-image"></svg>
     </div>
 
   </body>
 </html>
-
-
-    
