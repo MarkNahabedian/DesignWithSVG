@@ -167,26 +167,25 @@ class Geometry {
   // finger_joint_phase 1 -> start at inside edge
 
   side_end_start(path, finger_joint_phase) {
-      path.push(['M', this.svg_margin + finger_joint_phase * this.wood_thickness,
-                      this.svg_margin]);
-    }
-
-  side_end_across(path, inside_dimension, finger_joint_phase) {
-    var minor_base = inside_dimension -
-                     2 * (this.full_height_corner + this.stack_tab_depth);
-    path.push(['h', (!finger_joint_phase) * this.wood_thickness + this.full_height_corner]);
-    path.push(['l', this.stack_tab_depth, this.stack_tab_depth]);
-    path.push(['h', minor_base]);
-    path.push(['l', this.stack_tab_depth, - this.stack_tab_depth]);
-    path.push(['h', ((finger_joint_phase +
-                     this.finger_joint_count) & 1) *
-                    this.wood_thickness + this.full_height_corner]);
+    path.push(['M', this.svg_margin + finger_joint_phase * this.wood_thickness,
+                    this.svg_margin]);
   }
 
-  side_end_down(path, finger_joint_phase, finger_in_direction) {
-    // edge_path.push(['v', (this.outside_depth)]);
+  side_end_across(path, direction, inside_dimension, finger_joint_phase) {
+    var minor_base = inside_dimension -
+                     2 * (this.full_height_corner + this.stack_tab_depth);
+    path.push(['h', direction * ((!finger_joint_phase) * this.wood_thickness + this.full_height_corner)]);
+    path.push(['l', direction * this.stack_tab_depth, this.stack_tab_depth]);
+    path.push(['h', direction * minor_base]);
+    path.push(['l', direction * this.stack_tab_depth, - this.stack_tab_depth]);
+    path.push(['h', direction * (((finger_joint_phase +
+                     this.finger_joint_count) & 1) *
+                    this.wood_thickness + this.full_height_corner)]);
+  }
+
+  side_end_down(path, direction, finger_joint_phase, finger_in_direction) {
     for (var i = 0; i < this.finger_joint_count; i++) {
-      path.push(['v', this.finger_joint_spacing]);
+      path.push(['v', direction * this.finger_joint_spacing]);
       if (i < this.finger_joint_count- 1) {
         path.push(['h', (((i + finger_joint_phase) & 1) ? -1 : 1) *
                         finger_in_direction * this.wood_thickness]);
@@ -207,16 +206,12 @@ class Geometry {
     var finger_joint_phase = 0;
 
     this.side_end_start(edge_path, finger_joint_phase);
-    this.side_end_across(edge_path, this.inside_length, finger_joint_phase);
-    this.side_end_down(edge_path, finger_joint_phase, -1);
-    this.side_end_start(edge_path, finger_joint_phase);
-    this.side_end_down(edge_path, finger_joint_phase, 1);
-    this.side_end_across(edge_path, this.inside_length, finger_joint_phase);
+    this.side_end_across(edge_path, 1, this.inside_length, finger_joint_phase);
+    this.side_end_down(edge_path, 1, finger_joint_phase, -1);
+    this.side_end_across(edge_path, -1, this.inside_length, finger_joint_phase);
+    this.side_end_down(edge_path, -1, finger_joint_phase, 1);
     var p = path(g, edge_path);
     this.outside_cut(p);
-
-    // TODO:  add mortises for base.
-
     this.add_bottom_mortises(image_element, this.outside_length);
 
     // Some guide lines
@@ -231,16 +226,14 @@ class Geometry {
     image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
-    // TODO: add finger joints
     var edge_path = [];
     var finger_joint_phase = 1;
 
     this.side_end_start(edge_path, finger_joint_phase);
-    this.side_end_across(edge_path, this.inside_width, finger_joint_phase);
-    this.side_end_down(edge_path, finger_joint_phase, -1);
-    this.side_end_start(edge_path, finger_joint_phase);
-    this.side_end_down(edge_path, finger_joint_phase, 1);
-    this.side_end_across(edge_path, this.inside_width, finger_joint_phase);
+    this.side_end_across(edge_path, 1, this.inside_width, finger_joint_phase);
+    this.side_end_down(edge_path, 1, finger_joint_phase, -1);
+    this.side_end_across(edge_path, -1, this.inside_width, finger_joint_phase);
+    this.side_end_down(edge_path, -1, finger_joint_phase, 1);
     var p = path(g, edge_path);
     this.outside_cut(p);
 
