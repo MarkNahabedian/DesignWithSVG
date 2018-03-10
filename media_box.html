@@ -298,6 +298,13 @@ class Geometry {
 }
 
 
+function addText(id, text) {
+  var e = document.getElementById(id);
+  var t = document.createTextNode(text);
+  e.appendChild(t);
+}
+
+
 geometry = new Geometry();
 
 function contentLoaded() {
@@ -305,14 +312,25 @@ function contentLoaded() {
   geometry.update_side_svg(document.getElementById('side-image'));
   showSVG(document.getElementById('side-image'),
           document.getElementById('side-code'));
+  addText('side-description', 'Dimensions: ' +
+          geometry.outside_length + ' * ' +
+          (geometry.outside_depth + geometry.stack_tab_depth) +
+          ' inches.');
 
   geometry.update_end_svg(document.getElementById('end-image'));
   showSVG(document.getElementById('end-image'),
           document.getElementById('end-code'));
+  addText('end-description', 'Dimensions: ' +
+          geometry.outside_width + ' * ' +
+          (geometry.outside_depth + geometry.stack_tab_depth) +
+          ' inches.');
 
   geometry.update_bottom_svg(document.getElementById('bottom-image'));
-  showSVG(document.getElementById('bottom-image'),
+    showSVG(document.getElementById('bottom-image'),
           document.getElementById('bottom-code'));  
+  addText('bottom-description', 'Dimensions: ' +
+          geometry.outside_length + ' * ' +
+          geometry.outside_width + ' inches.');
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
@@ -324,6 +342,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h2>Side</h2>
 
+    <p id="side-description"></p>
     <pre id="side-code"> 
     </pre>
     <div style="margin:0.5in; border-width: 5px; border-color: green;">
@@ -333,6 +352,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h2>End</h2>
 
+    <p id="end-description"></p>
     <pre id="end-code">
     </pre>
     <div style="margin:0.5in; border-width: 5px; border-color: green;">
@@ -342,6 +362,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h2>Bottom</h2>
 
+    <p id="bottom-description"></p>
     <pre id="bottom-code">
     </pre>
     <div style="margin:0.5in;" class="svg-border">
