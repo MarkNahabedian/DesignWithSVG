@@ -51,7 +51,8 @@ class Geometry {
   updateSVG(svg_elt) {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
     var edge_path = [];
-    var guide_lines = [];
+    var polygon = [];
+    var radii = [];
     edge_path.push(['M', this.center_x + this.circumscribedRadius, this.center_y]);
     for (var i = 0; i < this.number_of_corners; i++) {
       var a = this.interior_angle * i;
@@ -61,25 +62,29 @@ class Geometry {
                        1,      // sweep flag
                        this.vertexX(i+1), this.vertexY(i+1)]);
       // Polygon edge:
-      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
-      guide_lines.push(['L', this.vertexX(i+1), this.vertexY(i+1)]);
+      polygon.push(['M', this.vertexX(i), this.vertexY(i)]);
+      polygon.push(['L', this.vertexX(i+1), this.vertexY(i+1)]);
       // Center to vertex:
-      guide_lines.push(['M', this.center_x, this.center_y]);
-      guide_lines.push(['L', this.vertexX(i), this.vertexY(i)]);
-      // Circumscribed circle
-      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
-      guide_lines.push(['A', this.circumscribedRadius, this.circumscribedRadius,
-                        0, 0, 1, this.vertexX(i+1), this.vertexY(i+1)]);
-      // inscribed circle
-    /* Why is this wrong?
-      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
-      guide_lines.push(['A', this.inscribedRadius, this.inscribedRadius,
-                        0, 0, 1, this.vertexX(i+1), this.vertexY(i+1)]);
-      */
+      radii.push(['M', this.center_x, this.center_y]);
+      radii.push(['L', this.vertexX(i), this.vertexY(i)]);
     }
-    var p = 
-    svg_elt.appendChild(this.outside_cut(path(svg_elt, edge_path)));
-    svg_elt.appendChild(this.guide_line(path(svg_elt, guide_lines)));
+    this.outside_cut(path(svg_elt, edge_path));
+    this.guide_line(path(svg_elt, polygon));
+    this.guide_line(path(svg_elt, radii));
+
+    var circumscribed = document.createElementNS(svgURI, "circle");
+    circumscribed.setAttribute('cx', this.center_x);
+    circumscribed.setAttribute('cy', this.center_y);
+    circumscribed.setAttribute('r', this.circumscribedRadius);
+    this.guide_line(circumscribed);
+    svg_elt.appendChild(circumscribed);
+
+    var inscribed = document.createElementNS(svgURI, "circle");
+    inscribed.setAttribute('cx', this.center_x);
+    inscribed.setAttribute('cy', this.center_y);
+    inscribed.setAttribute('r', this.inscribedRadius);
+    this.guide_line(inscribed);
+    svg_elt.appendChild(inscribed);
   }
 
   outside_cut(path) {
