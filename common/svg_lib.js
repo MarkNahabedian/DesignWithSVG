@@ -49,5 +49,5 @@ function path(parent, dSpec) {
 function showSVG(svgElt, preElt) {
   var serializer = new XMLSerializer();
   preElt.appendChild(document.createTextNode(
-      serializer.serializeToString(svgElt)));
+      serializer.serializeToString(svgElt).replace(/></g, '>\n<')));
 }
