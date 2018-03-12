@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <title>Poker Chips of Constand Width</title>
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript">
+//<![CDATA[
+
+class Geometry {
+  constructor(number_of_corners) {
+    this.svg_margin = 0.25;
+    this.diameter = 1.5;   // 39mm ~ 1.5 inches.
+    this.number_of_corners = number_of_corners
+    this.center_angle = 2 * Math.PI / this.number_of_corners;
+    this.interior_angle = 2 * (Math.PI/4 - this.center_angle / 2);
+    this.exterior_angle = Math.PI - this.nterior_angle;
+    this.center_x = this.svg_margin + this.circumscribedRadius;
+    this.center_y = this.svg_margin + this.circumscribedRadius;
+  }
+
+  get inscribedRadius() {
+    return this.circumscribedRadius * Math.cos(this.center_angle / 2);
+  }
+
+  get circumscribedRadius() {
+    var theta = Math.floor(this.number_of_corners / 2) * this.center_angle;
+    var a = 2;
+    var b = -2 * Math.cos(a);
+    var c = - this.diameter * this.diameter;
+    var pm = Math.sqrt(b * b - 4 * a * c);
+    return (-b + pm) / (2 * a);
+  }
+
+  get svgWidth() {
+    return this.diameter + 2 * this.svg_margin;
+  }
+
+  get svgHeight() {
+    return this.diameter + 2 * this.svg_margin;
+  }
+
+  vertexX(corner_number) {
+    var a = corner_number * this.center_angle;
+    return this.center_x + this.circumscribedRadius * Math.cos(a);
+  }
+
+  vertexY(corner_number) {
+    var a = corner_number * this.center_angle;
+    return this.center_y + this.circumscribedRadius * Math.sin(a);
+  }
+
+  updateSVG(svg_elt) {
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    var edge_path = [];
+    var guide_lines = [];
+    edge_path.push(['M', this.center_x + this.circumscribedRadius, this.center_y]);
+    for (var i = 0; i < this.number_of_corners; i++) {
+      var a = this.interior_angle * i;
+      edge_path.push(['A', this.diameter, this.diameter,
+                       0,      // X axis rotation
+                       0,      // arc is less than 180 degrees
+                       1,      // sweep flag
+                       this.vertexX(i+1), this.vertexY(i+1)]);
+      // Polygon edge:
+      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
+      guide_lines.push(['L', this.vertexX(i+1), this.vertexY(i+1)]);
+      // Center to vertex:
+      guide_lines.push(['M', this.center_x, this.center_y]);
+      guide_lines.push(['L', this.vertexX(i), this.vertexY(i)]);
+      // Circumscribed circle
+      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
+      guide_lines.push(['A', this.circumscribedRadius, this.circumscribedRadius,
+                        0, 0, 1, this.vertexX(i+1), this.vertexY(i+1)]);
+      // inscribed circle
+    /* Why is this wrong?
+      guide_lines.push(['M', this.vertexX(i), this.vertexY(i)]);
+      guide_lines.push(['A', this.inscribedRadius, this.inscribedRadius,
+                        0, 0, 1, this.vertexX(i+1), this.vertexY(i+1)]);
+      */
+    }
+    var p = 
+    svg_elt.appendChild(this.outside_cut(path(svg_elt, edge_path)));
+    svg_elt.appendChild(this.guide_line(path(svg_elt, guide_lines)));
+  }
+
+  outside_cut(path) {
+    path.setAttribute('fill', '#000');    // black
+    path.setAttribute('stroke', '#000');  // black
+    path.setAttribute('stroke-width', '.01');
+    path.setAttribute('opacity', '1.0');
+    return path;
+  }
+
+  guide_line(path) {
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', '#00f');  // blue
+    path.setAttribute('stroke-width', '.01');
+    path.setAttribute('opacity', '1.0');
+    return path;
+  }
+}
+
+
+function contentLoaded() {
+  setSVGNamespaces();
+  var notes = document.getElementById('notes');
+  notes.appendChild(document.createTextNode('Diameter:' + '???' ));
+  for (corners = 3; corners <= 11; corners += 2) {
+    var g = new Geometry(corners);
+    var code_id = '' + corners + 'sides-code';
+    var image_id = '' + corners + 'sides-image';
+    code_elt = document.getElementById(code_id);
+    if (!code_elt) { continue; }
+    image_elt = document.getElementById(image_id);
+    if (!image_elt) { continue; }
+    g.updateSVG(image_elt);
+    showSVG(image_elt, code_elt);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+//]]>
+
+    </script>
+  </head>
+  <body>
+
+    <h1>Poker Chips of Constand Width</h1>
+
+    <p id="notes"></p>
+
+    <h2>3 Sides</h2>
+    <pre id="3sides-code"> 
+    </pre>
+    <svg id="3sides-image"></svg>
+
+    <h2>5 Sides</h2>
+    <pre id="5sides-code"> 
+    </pre>
+    <svg id="5sides-image"></svg>
+
+    <h2>7 Sides</h2>
+    <pre id="7sides-code"> 
+    </pre>
+    <svg id="7sides-image"></svg>
+
+    <h2>9 Sides</h2>
+    <pre id="9sides-code"> 
+    </pre>
+    <svg id="9sides-image"></svg>
+
+    <h2>11 Sides</h2>
+    <pre id="11sides-code"> 
+    </pre>
+    <svg id="11sides-image"></svg>
+
+  </body>
+</html>
