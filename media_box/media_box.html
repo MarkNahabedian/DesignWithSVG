@@ -195,7 +195,7 @@ class Geometry {
 
 
   update_side_svg(image_element) {
-    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    setupSVGViewport(image_element, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
@@ -222,7 +222,7 @@ class Geometry {
   }
 
   update_end_svg(image_element) {
-    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    setupSVGViewport(image_element, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
@@ -247,7 +247,7 @@ class Geometry {
   }
 
   update_bottom_svg(image_element) {
-    setupSVGViewport(image_element, 0, 0, geometry.svgWidth(), geometry.svgHeight(), 'in');
+    setupSVGViewport(image_element, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     image_element.setAttribute('version', '1.1');
     var g = document.createElementNS(svgURI, "g");
     image_element.appendChild(g);
