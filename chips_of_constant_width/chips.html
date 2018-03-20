@@ -31,11 +31,11 @@ class Geometry {
   }
 
   get svgWidth() {
-    return this.diameter + 2 * this.svg_margin;
+    return 2 * this.circumscribedRadius + 2 * this.svg_margin;
   }
 
   get svgHeight() {
-    return this.diameter + 2 * this.svg_margin;
+    return 2 * this.circumscribedRadius + 2 * this.svg_margin;
   }
 
   vertexX(corner_number) {
