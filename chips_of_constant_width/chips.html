@@ -6,15 +6,17 @@
 //<![CDATA[
 
 class Geometry {
-  constructor(number_of_corners) {
+  constructor(number_of_corners, diameter = 1.5, rotation = 0) {
+    this.round_to = 0.25;
     this.svg_margin = 0.25;
-    this.diameter = 1.5;   // 39mm ~ 1.5 inches.
+    this.diameter = diameter;
     this.number_of_corners = number_of_corners
     this.center_angle = 2 * Math.PI / this.number_of_corners;
     this.interior_angle = 2 * (Math.PI/4 - this.center_angle / 2);
     this.exterior_angle = Math.PI - this.nterior_angle;
-    this.center_x = this.svg_margin + this.circumscribedRadius;
-    this.center_y = this.svg_margin + this.circumscribedRadius;
+    this.rotation = rotation;
+    this.center_x = this.svgWidth / 2;
+    this.center_y = this.svgHeight / 2;
   }
 
   get inscribedRadius() {
@@ -31,20 +33,22 @@ class Geometry {
   }
 
   get svgWidth() {
-    return 2 * this.circumscribedRadius + 2 * this.svg_margin;
+    return this.round_to * Math.round((2 * this.circumscribedRadius +
+                                       2 * this.svg_margin)
+                                       / this.round_to);
   }
 
   get svgHeight() {
-    return 2 * this.circumscribedRadius + 2 * this.svg_margin;
+    return this.svgWidth;
   }
 
   vertexX(corner_number) {
-    var a = corner_number * this.center_angle;
+    var a = this.rotation + corner_number * this.center_angle;
     return this.center_x + this.circumscribedRadius * Math.cos(a);
   }
 
   vertexY(corner_number) {
-    var a = corner_number * this.center_angle;
+    var a = this.rotation + corner_number * this.center_angle;
     return this.center_y + this.circumscribedRadius * Math.sin(a);
   }
 
@@ -53,9 +57,8 @@ class Geometry {
     var edge_path = [];
     var polygon = [];
     var radii = [];
-    edge_path.push(['M', this.center_x + this.circumscribedRadius, this.center_y]);
+    edge_path.push(['M', this.vertexX(0), this.vertexY(0)]);
     for (var i = 0; i < this.number_of_corners; i++) {
-      var a = this.interior_angle * i;
       edge_path.push(['A', this.diameter, this.diameter,
                        0,      // X axis rotation
                        0,      // arc is less than 180 degrees
@@ -108,7 +111,8 @@ class Geometry {
 function contentLoaded() {
   setSVGNamespaces();
   for (corners = 3; corners <= 11; corners += 2) {
-    var g = new Geometry(corners);
+    // poker chip = 39mm ~ 1.5 inches.
+    var g = new Geometry(corners, diameter = 1.5, rotation = -Math.PI/2);
     var code_id = '' + corners + 'sides-code';
     var image_id = '' + corners + 'sides-image';
     var desc_id = '' + corners + 'sides-description';
