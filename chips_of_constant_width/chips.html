@@ -6,7 +6,8 @@
 //<![CDATA[
 
 class Geometry {
-  constructor(number_of_corners, diameter = 1.5, rotation = 0) {
+  constructor(number_of_corners, diameter = 1.5, rotation = 0,
+              center_x = null, center_y = null) {
     this.round_to = 0.25;
     this.svg_margin = 0.25;
     this.diameter = diameter;
@@ -15,8 +16,16 @@ class Geometry {
     this.interior_angle = 2 * (Math.PI/4 - this.center_angle / 2);
     this.exterior_angle = Math.PI - this.nterior_angle;
     this.rotation = rotation;
-    this.center_x = this.svgWidth / 2;
-    this.center_y = this.svgHeight / 2;
+    if (center_x) {
+      this.center_x = center_x;
+    } else {
+      this.center_x = this.svgWidth / 2;
+    }
+    if (center_y) {
+      this.center_y = center_y;
+    } else {
+      this.center_y = this.svgHeight / 2;
+    }
   }
 
   get inscribedRadius() {
@@ -112,7 +121,9 @@ function contentLoaded() {
   setSVGNamespaces();
   for (corners = 3; corners <= 11; corners += 2) {
     // poker chip = 39mm ~ 1.5 inches.
-    var g = new Geometry(corners, diameter = 1.5, rotation = -Math.PI/2);
+    var g = new Geometry(corners, diameter = 1.5,
+                         rotation = -Math.PI/2,
+                         center_x = 1.875, center_y = 1.875);
     var code_id = '' + corners + 'sides-code';
     var image_id = '' + corners + 'sides-image';
     var desc_id = '' + corners + 'sides-description';
