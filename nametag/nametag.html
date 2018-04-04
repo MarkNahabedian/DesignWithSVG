@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Design a Nametag to be Made on Shaper Origin</title>
+    <style type="text/css">
+
+.debug-paths  { fill: none; stroke: black; stroke-width: 0.02; }
+
+    </style>
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../hershey/render_text.js"></script>
+    <script type="text/javascript">
+//<![CDATA[
+
+function makeEmpty(element) {
+  var children = element.childNodes;
+  for (var i = children.length - 1; i >= 0; i--) {
+    element.removeChild(children[i]);
+  }
+  return element;
+}
+
+
+function doUpdate() {
+  var fontinput = document.getElementById('font');
+  var nameinput = document.getElementById('text');
+  var code = document.getElementById('code');
+  var svg = document.getElementById('image');
+  var name = nameinput.value;
+
+  makeEmpty(code);
+  makeEmpty(svg);
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var font = JSON.parse(reader.result);
+    var wholegroup = document.createElementNS(svgURI, 'g');
+    svg.appendChild(wholegroup);
+    var textgroup = document.createElementNS(svgURI, 'g');
+    wholegroup.appendChild(textgroup);
+    textgroup.setAttribute('stroke', 'black');
+    textgroup.setAttribute('fill', 'none');
+    textgroup.setAttribute('stroke-width', '1');
+    renderText(textgroup, font, name);
+    // *** TODO:  Add borders and outside cut path
+
+    var bbox = wholegroup.getBBox();
+    svg.setAttribute('width', '' + bbox.width + 'in');
+    svg.setAttribute('height', '' + bbox.height + 'in');
+    svg.setAttribute('viewBox', '' + bbox.x + ' ' + bbox.y + ' ' +
+                     bbox.width + ' ' + bbox.height);
+
+    showSVG(svg, code);
+  }
+  reader.readAsText(fontinput.files[0]);
+}
+
+//]]>
+    </script>
+  </head>
+  <body>
+    <form>
+      <p>Font file: <input id="font" type="file"/></p>
+      <p>Text: <input id="text" type="text" size="30"/></p>
+      <p><input type="button" value="Update" onClick='doUpdate();'/></p>
+    </form>
+
+    <pre id="code">
+    </pre>
+    <svg id="image" xmlns="http://www.w3.org/2000/svg"></svg>
+  </body>
+</html>
