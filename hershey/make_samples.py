@@ -49,6 +49,13 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
 /* '''
 
+def pretty_path(pathtext):
+  result = ''
+  for c in pathtext:
+    if len(result) > 0 and c.isalpha():
+      result += '\n'
+    result += c
+  return result
 
 def write_sample(font, output_file):
   doc = xml.dom.getDOMImplementation().createDocument('http://www.w3.org/1999/xhtml', "html", None)
@@ -81,18 +88,23 @@ def write_sample(font, output_file):
   for char in font['chars']:
     row = elt(chars_table, 'tr')
     col1 = elt(row, 'td')
+    # Column 1: indexes, character codes
+    col1.setAttribute('valign', 'top');
+    col1.setAttribute('align', 'right');
     text(col1, '%d.' % index)
     elt(col1, 'br')
     text(col1, '0x%x' % index)
     elt(col1, 'br')
     text(col1, 'ASCII 0x%02x' % (index + 33))
+    # Column 2: metrics.  Most are added by javascript code above.n
     col2 = elt(row, 'td')
-    col3 = elt(row, 'td')
     col2.setAttribute('class', 'metrics')
-    col1.setAttribute('valign', 'top');
     col2.setAttribute('valign', 'top');
-    col1.setAttribute('align', 'right');
-    col1.setAttribute('align', 'left');
+    col2.setAttribute('align', 'left');
+    text(col2, 'o = %d' % char['o'])
+    elt(col2, 'br')
+    # Column 3: SVG rendering of the glyph
+    col3 = elt(row, 'td')
     svg = elt(col3, 'svg', 'http://www.w3.org/2000/svg')
     g = elt(svg, 'g')
     path = elt(g, 'path')
@@ -100,6 +112,12 @@ def write_sample(font, output_file):
     path.setAttribute('fill', 'none')
     path.setAttribute('stroke', 'black')
     path.setAttribute('stroke-width', '1px')
+    # Column 4: The SVG path
+    col4 = elt(row, 'td')
+    col4.setAttribute('valign', 'top');
+    col4.setAttribute('align', 'left');
+    text(elt(col4, 'pre'), pretty_path(char['d']))
+
     index += 1
   out = open(output_file, 'w')
   doc.writexml(out, indent='', addindent='  ', newl='\n')
