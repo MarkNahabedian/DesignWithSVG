@@ -1,6 +1,11 @@
 // A javascript library for building up svg graphics programatically,
 // primarily for design graphics for laser and CNC cutters.
 
+var EXPORTED_SYMBOLS = [
+    'svgURI', 'xlinkURI',
+    'setSVGNamespaces', 'setupSVGViewport', 'path', 'showSVG'
+];
+
 svgURI = 'http://www.w3.org/2000/svg';
 xlinkURI = 'http://www.w3.org/1999/xlink';
 
