@@ -20,9 +20,31 @@ function makeEmpty(element) {
 }
 
 
+// parseKerning parses a string representing the additional X advance
+// between two characters.  The input string consists of one line per
+// pair of characters.  Each line starts with the two characters to
+// adjust the spacing for.  Those are followed by whitespace and a number.
+// This is parsed into a javascript map (associative array) associating
+// two character strings (the character pairs) with a numeric spacing.
+function parseKerning(kerning) {
+  var k = {};
+  var re = /([a-zA-Z0-9]{2}) +([0-9]+(.[0-9]*)?)/;
+  var lines = kerning.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var m = line.match(re);
+    if (m) {
+      k[m[1]] = Number(m[2]);
+    }
+  }
+  return k;
+}
+
+
 function doUpdate() {
   var fontinput = document.getElementById('font');
   var nameinput = document.getElementById('text');
+  var kerninginput = document.getElementById('kerning');
   var code = document.getElementById('code');
   var svg = document.getElementById('image');
   var name = nameinput.value;
@@ -33,6 +55,7 @@ function doUpdate() {
   var reader = new FileReader();
   reader.onload = function(e) {
     var font = JSON.parse(reader.result);
+    var kerning = parseKerning(kerninginput.value);
     var wholegroup = document.createElementNS(svgURI, 'g');
     svg.appendChild(wholegroup);
     var textgroup = document.createElementNS(svgURI, 'g');
@@ -40,8 +63,17 @@ function doUpdate() {
     textgroup.setAttribute('stroke', 'black');
     textgroup.setAttribute('fill', 'none');
     textgroup.setAttribute('stroke-width', '1');
-    renderText(textgroup, font, name);
+    renderText(textgroup, font, name, kerning);
     // *** TODO:  Add borders and outside cut path
+    var rect = document.createElementNS(svgURI, 'rect');
+    wholegroup.appendChild(rect);
+    rect.setAttribute('x', '0');
+    rect.setAttribute('y', '0');
+    rect.setAttribute('width', '1');
+    rect.setAttribute('height', '1');
+    rect.setAttribute('fill', 'none');
+    rect.setAttribute('stroke', 'blue');
+    rect.setAttribute('stroke-width', '.01');
 
     var bbox = wholegroup.getBBox();
     svg.setAttribute('width', '' + bbox.width + 'in');
@@ -54,13 +86,28 @@ function doUpdate() {
   reader.readAsText(fontinput.files[0]);
 }
 
+
+function formDefaults() {
+  var fontinput = document.getElementById('font');
+  var nameinput = document.getElementById('text');
+  var kerninginput = document.getElementById('kerning');
+  var params = (new URL(document.location)).searchParams;
+  nameinput.value = params.get('text');
+  kerninginput.value = params.get('kerning');
+}
+
+
+document.addEventListener("DOMContentLoaded", formDefaults, false);
+
+
 //]]>
     </script>
   </head>
   <body>
     <form>
-      <p>Font file: <input id="font" type="file"/></p>
-      <p>Text: <input id="text" type="text" size="30"/></p>
+      <p>Font file: <input id="font" name="font" type="file"/></p>
+      <p>Text: <input id="text" name="text" type="text" size="30"/></p>
+      <p><textarea id="kerning" name="kerning" rows="10" cols="30"></textarea></p>
       <p><input type="button" value="Update" onClick='doUpdate();'/></p>
     </form>
 
