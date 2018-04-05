@@ -96,6 +96,8 @@ def write_sample(font, output_file):
     text(col1, '0x%x' % index)
     elt(col1, 'br')
     text(col1, 'ASCII 0x%02x' % (index + 33))
+    elt(col1, 'br')
+    text(col1, '"%c"' % chr(index + 33))
     # Column 2: metrics.  Most are added by javascript code above.n
     col2 = elt(row, 'td')
     col2.setAttribute('class', 'metrics')
