@@ -41,10 +41,50 @@ function parseKerning(kerning) {
 }
 
 
+function renderPage(font, kerning, name) {
+  var dimensions = document.getElementById('dimensions');
+  var code = document.getElementById('code');
+  var svg = document.getElementById('image');
+  makeEmpty(dimensions);
+  makeEmpty(code);
+  makeEmpty(svg);
+
+  var wholegroup = document.createElementNS(svgURI, 'g');
+  svg.appendChild(wholegroup);
+  var textgroup = document.createElementNS(svgURI, 'g');
+  wholegroup.appendChild(textgroup);
+  textgroup.setAttribute('stroke', 'black');
+  textgroup.setAttribute('fill', 'none');
+  textgroup.setAttribute('stroke-width', '1');
+  renderText(textgroup, font, name, kerning);
+  // *** TODO:  Add borders and outside cut path
+  var rect = document.createElementNS(svgURI, 'rect');
+  wholegroup.appendChild(rect);
+  rect.setAttribute('x', '0');
+  rect.setAttribute('y', '0');
+  rect.setAttribute('width', '1');
+  rect.setAttribute('height', '1');
+  rect.setAttribute('fill', 'none');
+  rect.setAttribute('stroke', 'blue');
+  rect.setAttribute('stroke-width', '.01');
+
+  var bbox = wholegroup.getBBox();
+  svg.setAttribute('width', '' + bbox.width + 'in');
+  svg.setAttribute('height', '' + bbox.height + 'in');
+  svg.setAttribute('viewBox', '' + bbox.x + ' ' + bbox.y + ' ' +
+                   bbox.width + ' ' + bbox.height);
+  dimensions.appendChild(document.createTextNode(
+      'Width: ' + bbox.width +
+      '\nHeight: ' + bbox.height));
+  showSVG(svg, code);
+}
+
+
 function doUpdate() {
   var fontinput = document.getElementById('font');
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
+  var dimensions = document.getElementById('dimensions');
   var code = document.getElementById('code');
   var svg = document.getElementById('image');
   var name = nameinput.value;
@@ -56,32 +96,7 @@ function doUpdate() {
   reader.onload = function(e) {
     var font = JSON.parse(reader.result);
     var kerning = parseKerning(kerninginput.value);
-    var wholegroup = document.createElementNS(svgURI, 'g');
-    svg.appendChild(wholegroup);
-    var textgroup = document.createElementNS(svgURI, 'g');
-    wholegroup.appendChild(textgroup);
-    textgroup.setAttribute('stroke', 'black');
-    textgroup.setAttribute('fill', 'none');
-    textgroup.setAttribute('stroke-width', '1');
-    renderText(textgroup, font, name, kerning);
-    // *** TODO:  Add borders and outside cut path
-    var rect = document.createElementNS(svgURI, 'rect');
-    wholegroup.appendChild(rect);
-    rect.setAttribute('x', '0');
-    rect.setAttribute('y', '0');
-    rect.setAttribute('width', '1');
-    rect.setAttribute('height', '1');
-    rect.setAttribute('fill', 'none');
-    rect.setAttribute('stroke', 'blue');
-    rect.setAttribute('stroke-width', '.01');
-
-    var bbox = wholegroup.getBBox();
-    svg.setAttribute('width', '' + bbox.width + 'in');
-    svg.setAttribute('height', '' + bbox.height + 'in');
-    svg.setAttribute('viewBox', '' + bbox.x + ' ' + bbox.y + ' ' +
-                     bbox.width + ' ' + bbox.height);
-
-    showSVG(svg, code);
+    renderPage(font, kerning, name);
   }
   reader.readAsText(fontinput.files[0]);
 }
@@ -107,12 +122,11 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
     <form>
       <p>Font file: <input id="font" name="font" type="file"/></p>
       <p>Text: <input id="text" name="text" type="text" size="30"/></p>
-      <p><textarea id="kerning" name="kerning" rows="10" cols="30"></textarea></p>
+      <p>Kerning:<br/><textarea id="kerning" name="kerning" rows="10" cols="30"></textarea></p>
       <p><input type="button" value="Update" onClick='doUpdate();'/></p>
     </form>
-
-    <pre id="code">
-    </pre>
+    <pre id="dimensions"></pre> 
+    <pre id="code"></pre>
     <svg id="image" xmlns="http://www.w3.org/2000/svg"></svg>
   </body>
 </html>
