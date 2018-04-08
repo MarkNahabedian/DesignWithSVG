@@ -80,17 +80,14 @@ function renderPage(font, kerning, name) {
 }
 
 
+// doUpdate is called when the update button is clicked.
 function doUpdate() {
+  saveFormValues();
   var fontinput = document.getElementById('font');
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
   var dimensions = document.getElementById('dimensions');
-  var code = document.getElementById('code');
-  var svg = document.getElementById('image');
   var name = nameinput.value;
-
-  makeEmpty(code);
-  makeEmpty(svg);
 
   var reader = new FileReader();
   reader.onload = function(e) {
@@ -102,13 +99,41 @@ function doUpdate() {
 }
 
 
+function saveFormValues() {
+  var inputs = document.querySelectorAll('input,textarea');
+  for (var i = 0; i < inputs.length; i++) {
+    var input = inputs[i];
+    var id = input.getAttribute('id');
+    if (id) {
+      sessionStorage.setItem(id, JSON.stringify(input.value));
+    }
+  }
+/*
+  sessionStorage.setItem('text', JSON.stringify(document.getElementById('text').value));
+  sessionStorage.setItem('kerning', JSON.stringify(document.getElementById('kerning').value));
+  sessionStorage.setItem('font', JSON.stringify(document.getElementById('font').files));
+*/
+}
+
+
+document.addEventListener("beforeunloaded", saveFormValues, false);
+
+
 function formDefaults() {
   var fontinput = document.getElementById('font');
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
   var params = (new URL(document.location)).searchParams;
-  nameinput.value = params.get('text');
-  kerninginput.value = params.get('kerning');
+  
+  nameinput.value = JSON.parse(sessionStorage.getItem('text'));
+  kerninginput.value = JSON.parse(sessionStorage.getItem('kerning'));
+
+  // fontinput.value = JSON.parse(sessionStorage.getItem('font'));
+  /*
+  var dt = ataTransfer();
+  
+  fontinput.files = dt.files;
+  */
 }
 
 
