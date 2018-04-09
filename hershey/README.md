@@ -1,6 +1,6 @@
 # Vector Graphics Text with Hershey Fonts
 
-To engrave text using The Shaper Origin you need to express the glyphs
+To engrave text using the Shaper Origin you need to express the glyphs
 as SVG paths.  Fortunately in the late 1960s Dr. Allen V. Hershey
 defined a variety of vector based fonts in multiple languages.
 
