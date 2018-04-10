@@ -20,6 +20,23 @@ function makeEmpty(element) {
 }
 
 
+function on_line_cut(shape) {
+  shape.setAttribute('fill', 'none');
+  shape.setAttribute('stroke', '#7F7F7F');  // gray
+  shape.setAttribute('opacity', '1.0');
+  return shape;
+}
+
+
+function guide_line(shape) {
+  shape.setAttribute('fill', 'none');
+  shape.setAttribute('stroke', '#0068FF');  // blue
+  shape.setAttribute('stroke-width', '.01');
+  shape.setAttribute('opacity', '1.0');
+  return shape;
+}
+
+
 function inchRect() {
   // Show how big an inch is:
   var rect = document.createElementNS(svgURI, 'rect');
@@ -27,8 +44,7 @@ function inchRect() {
   rect.setAttribute('y', '0');
   rect.setAttribute('width', '1');
   rect.setAttribute('height', '1');
-  rect.setAttribute('fill', 'none');
-  rect.setAttribute('stroke', 'blue');
+  guide_line(rect);
   rect.setAttribute('stroke-width', '.01');
   return rect;
 }
@@ -88,8 +104,7 @@ var decorators = {
         rect.setAttribute('rx', '' + roundX);
         rect.setAttribute('ry', '' + roundY);
       }
-      rect.setAttribute('fill', 'none');
-      rect.setAttribute('stroke', 'black');
+      on_line_cut(rect);
       rect.setAttribute('stroke-width', '0.01');
       g.appendChild(rect);
       return g;
@@ -150,8 +165,7 @@ function renderPage(font, kerning, decorations, name) {
   var wholegroup = document.createElementNS(svgURI, 'g');
   svg.appendChild(wholegroup);
   var textgroup = document.createElementNS(svgURI, 'g');
-  textgroup.setAttribute('stroke', 'black');
-  textgroup.setAttribute('fill', 'none');
+  on_line_cut(textgroup);
   textgroup.setAttribute('stroke-width', '1');
   renderText(textgroup, font, name, kerning);
   // Add decoration
