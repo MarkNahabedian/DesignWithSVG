@@ -65,7 +65,7 @@ function parseKerning(kerning) {
 // child argument and that child's parent.
 var decorators = {
   'rectangle':
-  function(xmargin, ymargin) {
+  function(xmargin, ymargin, roundX, roundY) {
     return function(child) {
       var parent = child.parentNode;
       var bbox = child.getBBox();
@@ -84,6 +84,10 @@ var decorators = {
       rect.setAttribute('y', '0');
       rect.setAttribute('width', '' + (bbox.width + 2 * xmargin));
       rect.setAttribute('height', '' + (bbox.height + 2 * ymargin));
+      if (roundX && roundY) {
+        rect.setAttribute('rx', '' + roundX);
+        rect.setAttribute('ry', '' + roundY);
+      }
       rect.setAttribute('fill', 'none');
       rect.setAttribute('stroke', 'black');
       rect.setAttribute('stroke-width', '0.01');
