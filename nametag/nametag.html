@@ -20,6 +20,20 @@ function makeEmpty(element) {
 }
 
 
+function inchRect() {
+  // Show how big an inch is:
+  var rect = document.createElementNS(svgURI, 'rect');
+  rect.setAttribute('x', '0');
+  rect.setAttribute('y', '0');
+  rect.setAttribute('width', '1');
+  rect.setAttribute('height', '1');
+  rect.setAttribute('fill', 'none');
+  rect.setAttribute('stroke', 'blue');
+  rect.setAttribute('stroke-width', '.01');
+  return rect;
+}
+
+
 // parseKerning parses a string representing the additional X advance
 // between two characters.  The input string consists of one line per
 // pair of characters.  Each line starts with the two characters to
@@ -44,25 +58,35 @@ function parseKerning(kerning) {
 // The user can specify a set of decorators which successively wrap
 // the textgroup.  Each layer adds the previous layer as the child of
 // a new group, translating and scaling it as needed, adds additional
-// graphics to that group and returns the group.  The last group
-// returned is added as a child of the wholegroup element.
+// graphics to that group and returns the group.
+// It is assumed (and apparently required in order to get a meaningful
+// BBox) that child is already linked to the appropriate parent.  Each
+// layer of decoration inserts itself between the node passed as its
+// child argument and that child's parent.
 var decorators = {
-  "rectangle":
+  'rectangle':
   function(xmargin, ymargin) {
     return function(child) {
+      var parent = child.parentNode;
+      var bbox = child.getBBox();
       childg = document.createElementNS(svgURI, 'g');
+      childg.appendChild(document.createComment('rectangle ' +
+          xmargin + ' ' + ymargin));
+      parent.removeChild(child);
       childg.appendChild(child);
-      var bbox = childg.getBBox();
       childg.setAttribute('transform',
-        'translate(' + xmargin + ', ' + ymargin + ')');
+        'translate(' + (xmargin - bbox.x) + ', ' + (ymargin - bbox.y) + ')');
       var g = document.createElementNS(svgURI, 'g');
       g.appendChild(childg);
+      parent.appendChild(g);
       var rect = document.createElementNS(svgURI, 'rect');
       rect.setAttribute('x', '0');
       rect.setAttribute('y', '0');
       rect.setAttribute('width', '' + (bbox.width + 2 * xmargin));
       rect.setAttribute('height', '' + (bbox.height + 2 * ymargin));
       rect.setAttribute('fill', 'none');
+      rect.setAttribute('stroke', 'black');
+      rect.setAttribute('stroke-width', '0.01');
       g.appendChild(rect);
       return g;
     };
@@ -115,6 +139,9 @@ function renderPage(font, kerning, decorations, name) {
   makeEmpty(dimensions);
   makeEmpty(code);
   makeEmpty(svg);
+  svg.removeAttribute('width');
+  svg.removeAttribute('height');
+  svg.removeAttribute('viewbox');
 
   var wholegroup = document.createElementNS(svgURI, 'g');
   svg.appendChild(wholegroup);
@@ -125,26 +152,22 @@ function renderPage(font, kerning, decorations, name) {
   renderText(textgroup, font, name, kerning);
   // Add decoration
   var decorateme = textgroup;
+  wholegroup.appendChild(decorateme);
   for (i = 0; i < decorations.length; i++) {
+    var bbox = decorateme.getBBox();
+    decorateme.appendChild(document.createComment(
+        ' x: ' + bbox.x + '  y: ' + bbox.y +
+        '  width: ' + bbox.width + '  height: ' + bbox.height));
     var d = decorations[i](decorateme);
     if (d) {
       decorateme = d;
     }
   }
-  wholegroup.appendChild(decorateme);
 
-  // Show how big an inch is:
-  var rect = document.createElementNS(svgURI, 'rect');
-  wholegroup.appendChild(rect);
-  rect.setAttribute('x', '0');
-  rect.setAttribute('y', '0');
-  rect.setAttribute('width', '1');
-  rect.setAttribute('height', '1');
-  rect.setAttribute('fill', 'none');
-  rect.setAttribute('stroke', 'blue');
-  rect.setAttribute('stroke-width', '.01');
+  wholegroup.appendChild(inchRect());
 
   var bbox = wholegroup.getBBox();
+  console.log('wholegroup bbox: ' + bbox.width + ' ' + bbox.height);
   svg.setAttribute('width', '' + bbox.width + 'in');
   svg.setAttribute('height', '' + bbox.height + 'in');
   svg.setAttribute('viewBox', '' + bbox.x + ' ' + bbox.y + ' ' +
