@@ -31,8 +31,8 @@ function renderText(parent, font, text, kerning={}) {
     }
     if ('paths' in glyph) {
       var gpaths = glyph.paths;
-      for (var i = 0; i < gpaths.length; i++) {
-        var p = gpaths[i];
+      for (var j = 0; j < gpaths.length; j++) {
+        var p = gpaths[j];
         var path = document.createElementNS(svgURI, 'path');
         path.setAttribute('d', p);
         charg.appendChild(path);
