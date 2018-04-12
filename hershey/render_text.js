@@ -12,22 +12,37 @@ function renderText(parent, font, text, kerning={}) {
   var g = document.createElementNS(svgURI, 'g');
   parent.appendChild(g);
   g.setAttribute('transform', 'scale(' + (4 * 1.0/90)+ ')');
-  g.appendChild(document.createComment(text));
+  g.appendChild(document.createComment(' ' + text + ' '));
   var previous = '';
   for (var i = 0; i < text.length; i++) {
     var char = text[i];
+    // We add a group for each character because each character has its
+    // own transform and might require more than one path.
+    var charg = document.createElementNS(svgURI, 'g');
+    g.appendChild(charg);
+    charg.appendChild(document.createComment(' ' + char + ' '));
     x += kerning[previous + char] || 0;
     var glyph = glyphLookup(font, char);
-    if (!glyph ) {
+    if (!glyph) {
       var err = 'No glyph for ' + char;
       console.log(err);
-      g.appendChild(document.createComment(err));
+      charg.appendChild(document.createComment(err));
       continue;
     }
-    var path = document.createElementNS(svgURI, 'path');
-    path.setAttribute('d', glyph.d);
-    path.setAttribute('transform', 'translate(' + x + ', 0)');
-    g.appendChild(path);
+    if ('paths' in glyph) {
+      var gpaths = glyph.paths;
+      for (var i = 0; i < gpaths.length; i++) {
+        var p = gpaths[i];
+        var path = document.createElementNS(svgURI, 'path');
+        path.setAttribute('d', p);
+        charg.appendChild(path);
+      }
+    } else {
+      var path = document.createElementNS(svgURI, 'path');
+      path.setAttribute('d', glyph.d);
+      charg.appendChild(path);
+    }
+    charg.setAttribute('transform', 'translate(' + x + ', 0)');
     x += glyph.o;
     previous = char;
   }

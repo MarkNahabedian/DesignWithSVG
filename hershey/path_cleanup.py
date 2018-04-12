@@ -12,7 +12,9 @@ import svg.path
 
 def cleanup_font_paths(font):
   for char in font['chars']:
-    char['d'] = fix_path(svg.path.parse_path(char['d'])).d()
+    fixed = fix_path(svg.path.parse_path(char['d']))
+    del char['d']
+    char['paths'] = [f.d() for f in fixed]
 
 
 # load_font reads a json file as written by extract_font.py
@@ -83,6 +85,7 @@ class LineGroup(object):
 
 # fix_path transforms a parsed SVG path to an equivalent one that is
 # easier to cut on Shaper Origin.
+# The result is a list of parsed paths to avoid confusing Shaper Origin.
 def fix_path(parsed):
   # Expect every element to be a Line:
   for exp in parsed:
@@ -106,27 +109,29 @@ def fix_path(parsed):
     if not merge:
       i += 1
       continue
-  result = svg.path.Path()
+  result = []
   for lg in linegroups:
+    p = svg.path.Path()
+    result.append(p)
     for l in lg:
-      result.append(l)
+      p.append(l)
   return result
 
 
 def test(p, expect):
   parsed = svg.path.parse_path(p)
-  expectp = svg.path.parse_path(expect)
+  expectp = [svg.path.parse_path(e) for e in expect]
   fixed = fix_path(parsed)
   if not (fixed == expectp):
     print('FAIL', parsed.d(), '\n', fixed.d(), '\n\n')
 
-test('M0,0 L1,0  M1,1 L1,0', 'M0,0 L1,0 L1,1') # end - end
-test('M0,0 L0,1  M0,1 L1,1', 'M0,0 L0,1 L1,1') # end - start
-test('M0,0 L1,0  M0,0 L1,1', 'M1,1 L0,0 L1,0') # start - start
+test('M0,0 L1,0  M1,1 L1,0', ['M0,0 L1,0 L1,1']) # end - end
+test('M0,0 L0,1  M0,1 L1,1', ['M0,0 L0,1 L1,1']) # end - start
+test('M0,0 L1,0  M0,0 L1,1', ['M1,1 L0,0 L1,0']) # start - start
 test('M4,1 L4,22 M4,1 L12,22 M20,1 L12,22 M20,1 L20,22',
-     'M4,22 L4,1 L12,22 L20,1 L20,22 ')
+     ['M4,22 L4,1 L12,22 L20,1 L20,22'])
 test('M15,8 L15,22 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19',
-     'M15,8 L15,22 M15,11 L13,9 L11,8 L8,8 L6,9 L4,11 L3,14 L3,16 L4,19 L6,21 L8,22 L11,22 L13,21 L15,19')
+     ['M15,8 L15,22', 'M15,11 L13,9 L11,8 L8,8 L6,9 L4,11 L3,14 L3,16 L4,19 L6,21 L8,22 L11,22 L13,21 L15,19'])
 
 
 parser = argparse.ArgumentParser(description='Cleanup the paths in a Hershey font JSON file for Shaper Origin.')
