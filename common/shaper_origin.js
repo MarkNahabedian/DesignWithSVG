@@ -1,5 +1,11 @@
 // Library of functions specific to the use of Shaper Origin.
 
+var EXPORTED_SYMBOLS = [
+    'DEBUG_PATHS', 'inside_cut', 'outside_cut',
+    'on_line_cut', 'guide_line'
+];
+
+
 // If true then render all paths without fill for debugging.
 var DEBUG_PATHS = false;
 
