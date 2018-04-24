@@ -7,6 +7,7 @@
 
     </style>
     <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript" src="../hershey/render_text.js"></script>
     <script type="text/javascript">
 //<![CDATA[
@@ -17,23 +18,6 @@ function makeEmpty(element) {
     element.removeChild(children[i]);
   }
   return element;
-}
-
-
-function on_line_cut(shape) {
-  shape.setAttribute('fill', 'none');
-  shape.setAttribute('stroke', '#7F7F7F');  // gray
-  shape.setAttribute('opacity', '1.0');
-  return shape;
-}
-
-
-function guide_line(shape) {
-  shape.setAttribute('fill', 'none');
-  shape.setAttribute('stroke', '#0068FF');  // blue
-  shape.setAttribute('stroke-width', '.01');
-  shape.setAttribute('opacity', '1.0');
-  return shape;
 }
 
 

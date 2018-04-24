@@ -7,6 +7,7 @@
 
     </style>
     <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
@@ -54,38 +55,6 @@ class Geometry {
 
   svgHeight() {
     return this.inside_depth + this.stack_tab_depth + 2 * this.svg_margin;
-  }
-
-  inside_cut(path) {
-    if (DEBUG_PATHS) {
-      path.setAttribute('class', 'debug-paths');
-    } else {
-      path.setAttribute('fill', '#fff');    // white
-      path.setAttribute('stroke', '#000');  // black
-      path.setAttribute('stroke-width', '.01');
-      path.setAttribute('opacity', '1.0');
-    }
-    return path;
-  }
-
-  outside_cut(path) {
-    if (DEBUG_PATHS) {
-      path.setAttribute('class', 'debug-paths');
-    } else {
-      path.setAttribute('fill', '#000');    // black
-      path.setAttribute('stroke', '#000');  // black
-      path.setAttribute('stroke-width', '.01');
-      path.setAttribute('opacity', '1.0');
-    }
-    return path;
-  }
-
-  guide_line(path) {
-    path.setAttribute('fill', 'none');
-    path.setAttribute('stroke', '#00f');  // blue
-    path.setAttribute('stroke-width', '.01');
-    path.setAttribute('opacity', '1.0');
-    return path;
   }
 
   // bottom_joinery computes the horizontal positions of the mortises and
@@ -144,7 +113,7 @@ class Geometry {
       rect.setAttribute('y', this.svg_margin + this.inside_depth);
       rect.setAttribute('width', m[1] - m[0]);
       rect.setAttribute('height', this.wood_thickness);
-      this.inside_cut(rect);
+      inside_cut(rect);
       g.appendChild(rect);
     }
     parent.appendChild(g);    
@@ -159,7 +128,7 @@ class Geometry {
         ['h', - dx],
         ['v', - dy]
         ]);
-    this.guide_line(p);
+    guide_line(p);
     return p;
   }
 
@@ -211,7 +180,7 @@ class Geometry {
     this.side_end_across(edge_path, -1, this.inside_length, finger_joint_phase);
     this.side_end_down(edge_path, -1, finger_joint_phase, 1);
     var p = path(g, edge_path);
-    this.outside_cut(p);
+    outside_cut(p);
     this.add_bottom_mortises(image_element, this.outside_length);
 
     // Some guide lines
@@ -235,7 +204,7 @@ class Geometry {
     this.side_end_across(edge_path, -1, this.inside_width, finger_joint_phase);
     this.side_end_down(edge_path, -1, finger_joint_phase, 1);
     var p = path(g, edge_path);
-    this.outside_cut(p);
+    outside_cut(p);
 
     this.add_bottom_mortises(image_element, this.outside_width);
 
@@ -287,7 +256,7 @@ class Geometry {
     tenoned_edge(-1, this.outside_length, 'H', 'v', 1);
     tenoned_edge(-1, this.outside_width, 'V', 'h', -1);
     var p = path(g, edge_path);
-    this.outside_cut(p);
+    outside_cut(p);
 
     // Some guide lines
     if (ADD_GUIDELINES) {

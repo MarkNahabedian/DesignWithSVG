@@ -27,4 +27,4 @@
 .pocketing-cut  { fill: gray; }
 
 /* guide-line is used for reference lines and shapes which are not to be cut. */
-.guide-line      { stroke: blue; }
+.guide-line      { stroke: #0068FF; }
