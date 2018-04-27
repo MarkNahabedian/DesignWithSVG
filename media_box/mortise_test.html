@@ -1,0 +1,137 @@
+<html>
+  <head>
+    <title>Test Measurements for Mortise and Tenon Joints</title>
+    <style type="text/css">
+
+.debug-paths  { fill: none; stroke: black; stroke-width: 0.02; }
+
+    </style>
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript">
+//<![CDATA[
+
+// If true then render all paths without fill for debugging.
+var DEBUG_PATHS = false;
+
+
+class Geometry {
+  constructor() {
+    this.svg_margin = 0.25;
+    this.cutter_diameter = 1.0/8;
+    // 1/4 nominal baltic birch from Rockler:
+    this.wood_thickness = 1.1695 / 5;
+    // additional space metween mortise and tenon, shaved off from the tenon edges
+    this.joint_clearance = 0.01;
+    this.length = 2;
+    this.width = 1;
+    this.joint_length = 0.5;
+    // Calculated values
+    this.tenon_length = this.joint_length - this.joint_clearance;
+    this.tenon_depth = this.wood_thickness + this.joint_clearance;
+    this.cutter_radius = (this.cutter_diameter / 2);
+    // 45 degree dogbone
+    this.dogbone45 = (Math.sqrt(2) - 1) * this.cutter_radius * Math.sin(Math.PI/4);
+  }
+
+  svgWidth() {
+    return this.length + 2 * (this.wood_thickness + this.svg_margin);
+  }
+
+  svgHeight() {
+    return this.width + 2 * this.svg_margin;
+  }
+
+  update_svg(image_element) {
+    setupSVGViewport(image_element, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+    image_element.setAttribute('version', '1.1');
+    var g = document.createElementNS(svgURI, "g");
+    image_element.appendChild(g);
+    g.setAttribute('transform', 'translate(' +
+       this.svg_margin + ', ' + this.svg_margin + ')');
+    var edge_to_tenon = (this.width - this.joint_length) / 2 +
+        this.joint_clearance;
+    var p = path(g, [
+        ['M', this.tenon_depth, 0],
+        // Top edge
+        ['h', this.length - 2 * this.tenon_depth],
+        // Right tenon
+        ['v', edge_to_tenon],
+        ['l', - this.dogbone45, this.dogbone45],
+        ['l', this.dogbone45, - this.dogbone45],
+        ['h', this.tenon_depth],
+        ['v', this.tenon_length],
+        ['h', - this.tenon_depth],
+        ['l', - this.dogbone45, -this.dogbone45],
+        ['l', this.dogbone45, this.dogbone45],
+        ['v', edge_to_tenon],
+        // Bottom edge
+        ['h', - (this.length - 2 * this.tenon_depth)],
+        // Left tenon
+        ['v', - edge_to_tenon],
+        ['l', this.dogbone45, - this.dogbone45],
+        ['l', - this.dogbone45, this.dogbone45],
+        ['h', - this.tenon_depth],
+        ['v', - this.tenon_length],
+        ['h', this.tenon_depth],
+        ['l', this.dogbone45, this.dogbone45],
+        ['l', - this.dogbone45, - this.dogbone45],
+        ['v', - edge_to_tenon],
+    ]);
+    if (DEBUG_PATHS) {
+      guide_line(p);
+    } else {
+      outside_cut(p);    
+    }
+    var mortise = path(g, [
+        ['M', (this.length - this.joint_length) / 2,
+              (this.width - this.wood_thickness) / 2],
+        ['l', - this.dogbone45, - this.dogbone45],
+        ['l', this.dogbone45, this.dogbone45],
+        ['h', this.joint_length],
+        ['l', this.dogbone45, - this.dogbone45],
+        ['l', - this.dogbone45, this.dogbone45],
+        ['v', this.wood_thickness],
+        ['l', this.dogbone45, this.dogbone45],
+        ['l', - this.dogbone45, - this.dogbone45],
+        ['h', - this.joint_length],        
+        ['l', - this.dogbone45, this.dogbone45],
+        ['l', this.dogbone45, - this.dogbone45],
+    ]);
+    if (DEBUG_PATHS) {
+      guide_line(mortise);
+    } else {
+      inside_cut(mortise);    
+    }
+  }
+}
+
+
+geometry = new Geometry();
+
+function contentLoaded() {
+  setSVGNamespaces();
+  geometry.update_svg(document.getElementById('image'));
+  showSVG(document.getElementById('image'),
+          document.getElementById('code'));
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+//]]>
+    </script>
+  </head>
+  <body>
+    <p>
+      Test measurements for cutting a mortise and tenon joint on
+      Shaper Origin.
+    </p>
+
+    <pre id="code"> 
+    </pre>
+    <div style="margin:0.5in; border-width: 5px; border-color: green;">
+      <svg id="image"></svg>
+    </div>
+
+  </body>
+</html>
