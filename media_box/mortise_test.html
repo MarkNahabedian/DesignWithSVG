@@ -17,7 +17,7 @@ var DEBUG_PATHS = false;
 
 class Geometry {
   constructor() {
-    this.svg_margin = 0.25;
+    this.svg_margin = 0.5;
     this.cutter_diameter = 1.0/8;
     // 1/4 nominal baltic birch from Rockler:
     this.wood_thickness = 1.1695 / 5;
@@ -49,60 +49,104 @@ class Geometry {
     image_element.appendChild(g);
     g.setAttribute('transform', 'translate(' +
        this.svg_margin + ', ' + this.svg_margin + ')');
+    // NOTE: Adding the dogbones prevents Shaper Origin from doing an
+    // inside or an outside cut.  Instead we do on-line cuts and
+    // offset the paths ourselves.
+    var horizontal_edge = this.length - 2 * this.tenon_depth + 2 * this.cutter_radius;
+    var tenon_cut_length = this.tenon_length + 2 * this.cutter_radius;
     var edge_to_tenon = (this.width - this.joint_length) / 2 +
-        this.joint_clearance;
+        this.joint_clearance - this.cutter_radius;
     var p = path(g, [
         ['M', this.tenon_depth, 0],
+        // outside
+        ['m', - this.cutter_radius, - this.cutter_radius],
         // Top edge
-        ['h', this.length - 2 * this.tenon_depth],
+        ['h', horizontal_edge],
         // Right tenon
-        ['v', edge_to_tenon],
+        ['v', edge_to_tenon + this.cutter_radius],
+        // Dogbone
         ['l', - this.dogbone45, this.dogbone45],
         ['l', this.dogbone45, - this.dogbone45],
+        // The tenon itself
         ['h', this.tenon_depth],
-        ['v', this.tenon_length],
+        ['v', tenon_cut_length],
         ['h', - this.tenon_depth],
-        ['l', - this.dogbone45, -this.dogbone45],
+        // Dogbone
+        ['l', - this.dogbone45, - this.dogbone45],
         ['l', this.dogbone45, this.dogbone45],
-        ['v', edge_to_tenon],
+        // finish right end
+        ['v', edge_to_tenon + this.cutter_radius],
         // Bottom edge
-        ['h', - (this.length - 2 * this.tenon_depth)],
+        ['h', - horizontal_edge],
         // Left tenon
-        ['v', - edge_to_tenon],
+        ['v', - (edge_to_tenon + this.cutter_radius)],
+        // Dogbone
         ['l', this.dogbone45, - this.dogbone45],
         ['l', - this.dogbone45, this.dogbone45],
+        // The tenon itself
         ['h', - this.tenon_depth],
-        ['v', - this.tenon_length],
+        ['v', - tenon_cut_length],
         ['h', this.tenon_depth],
+        // Dogbone
         ['l', this.dogbone45, this.dogbone45],
         ['l', - this.dogbone45, - this.dogbone45],
-        ['v', - edge_to_tenon],
+        // Finish left end
+        ['v', - (edge_to_tenon + this.cutter_radius)],
     ]);
+    p.setAttribute('stroke-width', '0.01');
     if (DEBUG_PATHS) {
       guide_line(p);
     } else {
-      outside_cut(p);    
+      on_line_cut(p);    
     }
+    var h_length = this.joint_length - 2 * this.cutter_radius;
+    var v_length = this.wood_thickness - 2 * this.cutter_radius;
     var mortise = path(g, [
         ['M', (this.length - this.joint_length) / 2,
               (this.width - this.wood_thickness) / 2],
+        // Inside
+        ['m', this.cutter_radius, this.cutter_radius],
+        // Dogbone
         ['l', - this.dogbone45, - this.dogbone45],
         ['l', this.dogbone45, this.dogbone45],
-        ['h', this.joint_length],
+        // Edge
+        ['h', h_length],
+        // Dogbone
         ['l', this.dogbone45, - this.dogbone45],
         ['l', - this.dogbone45, this.dogbone45],
-        ['v', this.wood_thickness],
+        // Edge
+        ['v', v_length],
+        // Dogbone
         ['l', this.dogbone45, this.dogbone45],
         ['l', - this.dogbone45, - this.dogbone45],
-        ['h', - this.joint_length],        
+        // Edge
+        ['h', - h_length],        
+        // Dogbone
         ['l', - this.dogbone45, this.dogbone45],
         ['l', this.dogbone45, - this.dogbone45],
+        // Edge
+        ['v', - v_length],
     ]);
+    mortise.setAttribute('stroke-width', '0.01');
     if (DEBUG_PATHS) {
       guide_line(mortise);
     } else {
-      inside_cut(mortise);    
+      on_line_cut(mortise);    
     }
+    h_rule(g, 0, this.length, 0, 0.25, this.width);
+    v_rule(g, 0, this.width, 0, 0.25, this.length);
+  }
+}
+
+function h_rule(parent, start_x, end_x, start_y, y_incr, end_y) {
+  for (var y = start_y; y <= end_y; y += y_incr) {
+    guide_line(path(parent, [['M', start_x, y], ['H', end_x]]));
+  }
+}
+
+function v_rule(parent, start_y, end_y, start_x, x_incr, end_x) {
+  for (var x = start_x; x <= end_x; x += x_incr) {
+    guide_line(path(parent, [['M', x, start_y], ['V', end_y]]));
   }
 }
 
