@@ -22,12 +22,16 @@ class Geometry {
     // 1/4 nominal baltic birch from Rockler:
     this.wood_thickness = 1.1695 / 5;
     // additional space metween mortise and tenon, shaved off from the tenon edges
-    this.joint_clearance = 0.01;
+    this.joint_clearance = 0.005;
     this.length = 2;
     this.width = 1;
     this.joint_length = 0.5;
     // Calculated values
-    this.tenon_length = this.joint_length - this.joint_clearance;
+    // Enlarge the mortise rather than shaving off edges of the tenon.
+    // This is simpler to code and the gap at the faces (wood surfaces)
+    // can be increased as well as that at the edges. additional space
+    // metween mortise and tenon, shaved off from the tenon edges 
+    this.tenon_length = this.joint_length;
     this.tenon_depth = this.wood_thickness + this.joint_clearance;
     this.cutter_radius = (this.cutter_diameter / 2);
     // 45 degree dogbone
@@ -54,11 +58,12 @@ class Geometry {
     // offset the paths ourselves.
     var horizontal_edge = this.length - 2 * this.tenon_depth + 2 * this.cutter_radius;
     var tenon_cut_length = this.tenon_length + 2 * this.cutter_radius;
-    var edge_to_tenon = (this.width - this.joint_length) / 2 +
-        this.joint_clearance - this.cutter_radius;
+    var edge_to_tenon = (this.width - this.joint_length) / 2 -
+        this.cutter_radius;
     var p = path(g, [
         ['M', this.tenon_depth, 0],
-        // outside
+        // We're doing an outside cut as an on-line cut, so we need to
+        // offset by the cutter radius.
         ['m', - this.cutter_radius, - this.cutter_radius],
         // Top edge
         ['h', horizontal_edge],
@@ -99,11 +104,15 @@ class Geometry {
     } else {
       on_line_cut(p);    
     }
-    var h_length = this.joint_length - 2 * this.cutter_radius;
-    var v_length = this.wood_thickness - 2 * this.cutter_radius;
+    var h_length = this.joint_length -
+        2 * this.cutter_radius + 2 * this.joint_clearance;
+    var v_length = this.wood_thickness -
+        2 * this.cutter_radius + 2 * this.joint_clearance;
     var mortise = path(g, [
         ['M', (this.length - this.joint_length) / 2,
               (this.width - this.wood_thickness) / 2],
+        // Joint clearance
+        ['m', - this.joint_clearance, - this.joint_clearance],
         // Inside
         ['m', this.cutter_radius, this.cutter_radius],
         // Dogbone
