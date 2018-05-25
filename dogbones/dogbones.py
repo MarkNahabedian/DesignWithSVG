@@ -156,7 +156,7 @@ class PathHolder (object):
       if isinstance(step, svg.path.path.Line):
         line_index[step.start].append(step)
         line_index[step.end].append(step)
-    self.corners = []  # of Corner
+    self.corners = []    # list of Corner objects
     for point, lines in line_index.items():
       if len(lines) == 2:
         self.corners.append(Corner(self, point, lines[0], lines[1]))
@@ -170,8 +170,7 @@ class PathHolder (object):
         gui.line(pointX(step.start), pointY(step.start), pointX(step.end), pointY(step.end))
 
   def update(self):
-    # self.path_elt.setAttribute("d", )
-    pass
+    self.path_elt.setAttribute("d", self.parsed_path.d())
 
 
 class PathCollector (object):
@@ -248,7 +247,6 @@ class GUI (object):
 
   def line(self, fromX, fromY, toX, toY):
     # eventually apply scaling here
-    # print("%f %f %f %f" % (fromX, fromY, toX, toY))
     x1, y1 = transformer.toCanvas(fromX, fromY)
     x2, y2 = transformer.toCanvas(toX, toY)
     self.canvas.create_line(x1, y1, x2, y2, fill="#ffffff")
@@ -278,7 +276,6 @@ def main():
   dom = xml.dom.minidom.parse(args.input_file[0])
   pc = PathCollector()
   pc.gather(dom)
-  print(str(pc.paths))
   app = GUI(pc, cutter_diameter, dogbone_base)
   app.show()
   app.run()
@@ -286,7 +283,7 @@ def main():
     for corner in pc.corners:
       corner.make_dogbone()
   # Now update the DOM paths.
-  ps.update()
+  pc.update()
   # Write the new SVG file
   out = open(output_name(args.input_file[0]), "w")
   dom.writexml(out, addindent="  ", newl="\n")
