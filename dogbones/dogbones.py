@@ -24,14 +24,14 @@ dogbone_base = 0.005
 
 parser = argparse.ArgumentParser(description='Add dogbones to an SVG file of Shaper Origin cut paths.')
 
-parser.add_argument('input_file', type=str, nargs=1, action='store',
+parser.add_argument('input_file', type=str, nargs=None, action='store',
                     help='An SVG file of cut paths for Shaper Origin.')
 
-parser.add_argument('--cutter_diameter', type=float, nargs=1, action='store',
+parser.add_argument('--cutter_diameter', type=float, nargs=None, action='store',
                     default=cutter_diameter,
                     help='Diameter of the cutter bit.')
 
-parser.add_argument('--dogbone_base', type=float, nargs=1, action='store',
+parser.add_argument('--dogbone_base', type=float, nargs=None, action='store',
                     default=dogbone_base,
                     help='The width of the dogbone at the corner it extends from.')
 
@@ -48,6 +48,10 @@ def pointY(cplx):
 
 def cplxPoint(x, y):
   return complex(x, y)
+
+def unit_vector(start, end):
+  delta = end - start
+  return delta / cmath.polar(delta)[0]
 
 
 class Directionizer (object):
@@ -126,18 +130,19 @@ class Corner (object):
     apex = cplxPoint(
         self.x + length * math.cos(directionizer.toRadians(self.dogbone_direction)),
         self.y + length * math.sin(directionizer.toRadians(self.dogbone_direction)))
-    # Now open up the base of the dogbone.  For each of self.line1 and self.line2,we move
+    # Now open up the base of the dogbone.  For each of self.line1 and self.line2, we move
     # the self.x, self.y endpoint back along that line by 
     backoff = dogbone_base / math.sqrt(2)
-    # which end of which line gets which base point?
-    # In each line we replace the self.x, self.y point with the base point.
-    # each base point is put in the line whose other endpoint is closer to that base point.
+    # TODO: if dogbone is in line with one leg for the corner then we
+    # should only backoff the other leg.  In this case apex will line up with the
+    # segment that is not to be backed off.
+
     # The segments of a parsed path appear to be properly ordered.  We assume this below.
     insertion_index = self.pathholder.parsed_path.index(self.line1)
-    self.line1.end = self.line1.end + backoff * cmath.phase(self.line1.end - self.line1.start)
+    self.line1.end = self.line1.end - backoff * unit_vector(self.line1.start, self.line1.end)
     self.pathholder.parsed_path.insert(insertion_index + 1, 
         svg.path.Line(self.line1.end, apex))
-    self.line2.start = self.line2.start + backoff * cmath.phase(self.line2.start - self.line2.end)
+    self.line2.start = self.line2.start + backoff * unit_vector(self.line2.start, self.line2.end)
     self.pathholder.parsed_path.insert(insertion_index + 2, 
         svg.path.Line(apex, self.line2.start))
 
@@ -170,6 +175,7 @@ class PathHolder (object):
         gui.line(pointX(step.start), pointY(step.start), pointX(step.end), pointY(step.end))
 
   def update(self):
+    print("Updating %s" % self.path_elt.getAttribute("d"))
     self.path_elt.setAttribute("d", self.parsed_path.d())
 
 
@@ -186,7 +192,13 @@ class PathCollector (object):
       for child in node.childNodes:
         self.gather(child)
 
+  def render(self, gui):
+    print("Rendering %d paths" % len(self.paths))
+    for ph in self.paths:
+      ph.render(gui)
+
   def update(self):
+    print("Updating %d paths" % len(self.paths))
     for ph in self.paths:
       ph.update()
 
@@ -252,8 +264,7 @@ class GUI (object):
     self.canvas.create_line(x1, y1, x2, y2, fill="#ffffff")
 
   def show(self):
-    for ph in self.path_collector.paths:
-      ph.render(self)
+    self.path_collector.render(self)
 
   def run(self):
     self.root.mainloop()
@@ -273,19 +284,20 @@ def main():
   args = parser.parse_args()
   cutter_diameter = args.cutter_diameter
   dogbone_base = args.dogbone_base
-  dom = xml.dom.minidom.parse(args.input_file[0])
+  dom = xml.dom.minidom.parse(args.input_file)
   pc = PathCollector()
   pc.gather(dom)
   app = GUI(pc, cutter_diameter, dogbone_base)
   app.show()
   app.run()
-  for pc in app.path_collector.paths:
-    for corner in pc.corners:
+  for ph in app.path_collector.paths:
+    for corner in ph.corners:
+      print(str(corner))
       corner.make_dogbone()
   # Now update the DOM paths.
   pc.update()
   # Write the new SVG file
-  out = open(output_name(args.input_file[0]), "w")
+  out = open(output_name(args.input_file), "w")
   dom.writexml(out, addindent="  ", newl="\n")
   out.close()
 
