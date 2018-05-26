@@ -44,7 +44,16 @@ function path(parent, dSpec) {
     parent.appendChild(p);
   }
   p.setAttribute('d',
-      dSpec.map(function(piece) { return piece.join(' '); })
+      dSpec.map(function(piece) {
+          var p = piece.map(function(x) {
+            if (typeof(x) == 'number') {
+              return x.toFixed(4);
+            } else {
+              return x;
+            }
+          });
+          return p.join(' ');
+          })
           .join('  '));
   return p;
 }
