@@ -94,6 +94,26 @@ directionizer = Directionizer()
 transformer = Transformer()
 
 
+# svg.path seems to produce a lot of ridiculous floating point numbers
+# that don't quite match each other from line to line.  Here we round
+# line endpoints to the nearest 0.0001.
+
+def cleanupPath(p):
+  for step in p:
+    if isinstance(step, svg.path.Line):
+      cleanupLine(step)
+
+def cleanupLine(line):
+  line.start = cleanupPoint(line.start)
+  line.end = cleanupPoint(line.end)
+
+def cleanupPoint(cmplx):
+  return cplxPoint(cleanupFloat(pointX(cmplx)), cleanupFloat(pointY(cmplx)))
+
+def cleanupFloat(f):
+  return round(f, 4)
+
+
 class Corner (object):
   '''Corner represents a single corner in an SVG path.'''
   def __init__(self, pathholder, cplxpoint, line1, line2):
@@ -116,10 +136,11 @@ class Corner (object):
     return math.sqrt(dx * dx + dy * dy)
 
   def __str__(self):
-    return "%s(%f, %f, %r)" % (self.__class__.__name__, self.x, self.y, self.dogbone_direction)
+    return "%s(%f, %f, %r %r %r)" % (self.__class__.__name__, self.x, self.y, self.dogbone_direction, self.line1, self.line2)
 
   def make_dogbone(self):
     if self.dogbone_direction is None: return
+    print("make_dogbone before %s" % self)
     # length of dogbone:
     if (self.dogbone_direction % 2) == 0:
       # if direction is horizontal or vertical then length must be 0.5 * cutter_diameter
@@ -145,6 +166,7 @@ class Corner (object):
     self.line2.start = self.line2.start + backoff * unit_vector(self.line2.start, self.line2.end)
     self.pathholder.parsed_path.insert(insertion_index + 2, 
         svg.path.Line(apex, self.line2.start))
+    print("make_dogbone after %s" % self)
 
 
 class PathHolder (object):
@@ -154,6 +176,8 @@ class PathHolder (object):
     assert path_elt.tagName == "path"
     self.path_elt = path_elt
     self.parsed_path = svg.path.parse_path(self.path_elt.getAttribute("d"))
+    cleanupPath(self.parsed_path)
+    print("parsed_path %s" % self.parsed_path)
     # Index each Line byits two endpoints.  line_index maps an endpoint
     # to the Lines that hvae that endpoint.
     line_index = defaultdict(list)
