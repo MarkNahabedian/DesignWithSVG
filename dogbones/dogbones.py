@@ -94,14 +94,19 @@ directionizer = Directionizer()
 transformer = Transformer()
 
 
-# svg.path seems to produce a lot of ridiculous floating point numbers
-# that don't quite match each other from line to line.  Here we round
-# line endpoints to the nearest 0.0001.
-
 def cleanupPath(p):
+  '''svg.path.Path has some quirks which are problematic for us.
+     We try to address those here.'''
   for step in p:
     if isinstance(step, svg.path.Line):
       cleanupLine(step)
+      # Remove zero length lines
+      if step.length() == 0.0:
+        p.remove(step)
+
+# svg.path seems to produce a lot of ridiculous floating point numbers
+# that don't quite match each other from line to line.  Here we round
+# line endpoints to the nearest 0.0001.
 
 def cleanupLine(line):
   line.start = cleanupPoint(line.start)
@@ -178,7 +183,7 @@ class PathHolder (object):
     self.parsed_path = svg.path.parse_path(self.path_elt.getAttribute("d"))
     cleanupPath(self.parsed_path)
     print("parsed_path %s" % self.parsed_path)
-    # Index each Line byits two endpoints.  line_index maps an endpoint
+    # Index each Line by its two endpoints.  line_index maps an endpoint
     # to the Lines that hvae that endpoint.
     line_index = defaultdict(list)
     for step in self.parsed_path:
