@@ -153,12 +153,17 @@ class Corner (object):
     else:
       # if direction is a 45 degree diagonal then length is (sqrt(2) - 1) * 0.5 * cutter_diameter.
       length = (math.sqrt(2) - 1) * 0.5 * cutter_diameter
-    apex = cplxPoint(
-        self.x + length * math.cos(directionizer.toRadians(self.dogbone_direction)),
-        self.y + length * math.sin(directionizer.toRadians(self.dogbone_direction)))
+    # We can't just extend to a single point for the dogbone because that will
+    # leave an acute angle that is in part narrower than the cutter diameter
+    #  and Shaper Origin is smart enough to not cut there.
+    # Instead we make a rectangular extension.
+    def apex_endpoint(basepoint):
+      return cplxPoint(
+        pointX(basepoint) + length * math.cos(directionizer.toRadians(self.dogbone_direction)),
+        pointY(basepoint) + length * math.sin(directionizer.toRadians(sel f.dogbone_direction)))
     # Now open up the base of the dogbone.  For each of self.line1 and self.line2, we move
     # the self.x, self.y endpoint back along that line by 
-    backoff = dogbone_base / math.sqrt(2)
+    backoff = (dogbone_base + (cutter_diameter / 2)) / math.sqrt(2)
     # TODO: if dogbone is in line with one leg for the corner then we
     # should only backoff the other leg.  In this case apex will line up with the
     # segment that is not to be backed off.
@@ -166,11 +171,18 @@ class Corner (object):
     # The segments of a parsed path appear to be properly ordered.  We assume this below.
     insertion_index = self.pathholder.parsed_path.index(self.line1)
     self.line1.end = self.line1.end - backoff * unit_vector(self.line1.start, self.line1.end)
-    self.pathholder.parsed_path.insert(insertion_index + 1, 
-        svg.path.Line(self.line1.end, apex))
     self.line2.start = self.line2.start + backoff * unit_vector(self.line2.start, self.line2.end)
-    self.pathholder.parsed_path.insert(insertion_index + 2, 
-        svg.path.Line(apex, self.line2.start))
+    self.pathholder.parsed_path.insert(
+      insertion_index + 1, 
+      svg.path.Line(self.line1.end, apex_endpoint(self.line1.end)))
+    # It would be more elegant to use a circular arc, but I'm lazy.
+    self.pathholder.parsed_path.insert(
+      insertion_index + 2, 
+      svg.path.Line(apex_endpoint(self.line1.end),
+                    apex_endpoint(self.line2.start)))
+    self.pathholder.parsed_path.insert(
+      insertion_index + 3, 
+      svg.path.Line(apex_endpoint(self.line2.start), self.line2.start))
     print("make_dogbone after %s" % self)
 
 
@@ -267,11 +279,9 @@ def canvasButtonUpHandler(event):
 
 class GUI (object):
   '''GUI contains the application and its state.'''
-  def __init__(self, pathCollector, cutter_diameter, dogbone_base):
+  def __init__(self, pathCollector):
     assert isinstance(pathCollector, PathCollector)
     self.path_collector = pathCollector
-    self.cutter_diameter = cutter_diameter
-    self.dogbone_base = dogbone_base
     self.root = tkinter.Tk()
     frame = tkinter.Frame(self.root,
         width=1000,
@@ -316,7 +326,7 @@ def main():
   dom = xml.dom.minidom.parse(args.input_file)
   pc = PathCollector()
   pc.gather(dom)
-  app = GUI(pc, cutter_diameter, dogbone_base)
+  app = GUI(pc)
   app.show()
   app.run()
   for ph in app.path_collector.paths:
