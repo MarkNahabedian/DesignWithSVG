@@ -22,6 +22,10 @@ cutter_diameter = 0.125
 # Give the dogbone some minimal thickness to appease Shaper Origin
 dogbone_base = 0.005
 
+# Extra length to be added to the calculated length of the dogbones if
+# the calculated length is found to not be sufficient
+extra = 0.0
+
 parser = argparse.ArgumentParser(description='Add dogbones to an SVG file of Shaper Origin cut paths.')
 
 parser.add_argument('input_file', type=str, nargs=None, action='store',
@@ -34,6 +38,10 @@ parser.add_argument('--cutter_diameter', type=float, nargs=None, action='store',
 parser.add_argument('--dogbone_base', type=float, nargs=None, action='store',
                     default=dogbone_base,
                     help='The width of the dogbone at the corner it extends from.')
+
+parser.add_argument('--extra', type=float, nargs=None, action='store',
+                    default=extra,
+                    help='Additional depth to be added to each dogbone.')
 
 
 # svg.path represents points as complex numbers
@@ -153,6 +161,7 @@ class Corner (object):
     else:
       # if direction is a 45 degree diagonal then length is (sqrt(2) - 1) * 0.5 * cutter_diameter.
       length = (math.sqrt(2) - 1) * 0.5 * cutter_diameter
+    length += extra
     # We can't just extend to a single point for the dogbone because that will
     # leave an acute angle that is in part narrower than the cutter diameter
     #  and Shaper Origin is smart enough to not cut there.
@@ -160,7 +169,7 @@ class Corner (object):
     def apex_endpoint(basepoint):
       return cplxPoint(
         pointX(basepoint) + length * math.cos(directionizer.toRadians(self.dogbone_direction)),
-        pointY(basepoint) + length * math.sin(directionizer.toRadians(sel f.dogbone_direction)))
+        pointY(basepoint) + length * math.sin(directionizer.toRadians(self.dogbone_direction)))
     # Now open up the base of the dogbone.  For each of self.line1 and self.line2, we move
     # the self.x, self.y endpoint back along that line by 
     backoff = (dogbone_base + (cutter_diameter / 2)) / math.sqrt(2)
@@ -320,9 +329,11 @@ def main():
   global app
   global cutter_diameter
   global dogbone_base
+  global extra
   args = parser.parse_args()
   cutter_diameter = args.cutter_diameter
   dogbone_base = args.dogbone_base
+  extra = args.extra
   dom = xml.dom.minidom.parse(args.input_file)
   pc = PathCollector()
   pc.gather(dom)
