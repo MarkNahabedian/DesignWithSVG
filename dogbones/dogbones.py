@@ -57,9 +57,15 @@ def pointY(cplx):
 def cplxPoint(x, y):
   return complex(x, y)
 
-def unit_vector(start, end):
-  delta = end - start
-  return delta / cmath.polar(delta)[0]
+def unitVector(cplx):
+  return cplx / cmath.polar(cplx)[0]
+
+def perpendicular(cplx):
+  return cplxPoint(- pointY(cplx), pointX(cplx))
+
+def dotProduct(cplx1, cplx2):
+  return (pointX(cplx1) * pointX(cplx2) +
+          pointY(cplx1) * pointY(cplx2))
 
 
 class Directionizer (object):
@@ -81,6 +87,9 @@ class Directionizer (object):
     return self.toUnity(d) * 2 * math.pi
   def toDegrees(self, d):
     return self.toUnity(d) * 360
+  def toUnitVector(self, d):
+    return cplxPoint(math.cos(self.toRadians(d)),
+                     math.sin(self.toRadians(d)))
 
 
 class Transformer (object):
@@ -121,7 +130,8 @@ def cleanupLine(line):
   line.end = cleanupPoint(line.end)
 
 def cleanupPoint(cmplx):
-  return cplxPoint(cleanupFloat(pointX(cmplx)), cleanupFloat(pointY(cmplx)))
+  return cplxPoint(cleanupFloat(pointX(cmplx)),
+                   cleanupFloat(pointY(cmplx)))
 
 def cleanupFloat(f):
   return round(f, 4)
@@ -154,45 +164,46 @@ class Corner (object):
   def make_dogbone(self):
     if self.dogbone_direction is None: return
     print("make_dogbone before %s" % self)
-    # length of dogbone:
-    if (self.dogbone_direction % 2) == 0:
-      # if direction is horizontal or vertical then length must be 0.5 * cutter_diameter
-      length = 0.5 * cutter_diameter
-    else:
-      # if direction is a 45 degree diagonal then length is (sqrt(2) - 1) * 0.5 * cutter_diameter.
-      length = (math.sqrt(2) - 1) * 0.5 * cutter_diameter
-    length += extra
+    cutter_radius = cutter_diameter * 0.5
+    direction_vector = directionizer.toUnitVector(self.dogbone_direction)
+    length = (cutter_radius + extra) * direction_vector
+    width = (cutter_diameter + dogbone_base) * perpendicular(direction_vector)
+    # Width should have the same sign as the transition from the first
+    # leg of the corner to the second
+    vector1 = unitVector(self.line1.end - self.line1.start)
+    vector2 = unitVector(self.line2.end - self.line2.start)
+    if dotProduct(width, unitVector(vector1 + vector2)) < 0:
+      width = - width
     # We can't just extend to a single point for the dogbone because that will
     # leave an acute angle that is in part narrower than the cutter diameter
-    #  and Shaper Origin is smart enough to not cut there.
+    # and Shaper Origin is smart enough to not cut there.
     # Instead we make a rectangular extension.
-    def apex_endpoint(basepoint):
-      return cplxPoint(
-        pointX(basepoint) + length * math.cos(directionizer.toRadians(self.dogbone_direction)),
-        pointY(basepoint) + length * math.sin(directionizer.toRadians(self.dogbone_direction)))
+    #
     # Now open up the base of the dogbone.  For each of self.line1 and self.line2, we move
-    # the self.x, self.y endpoint back along that line by 
-    backoff = (dogbone_base + (cutter_diameter / 2)) / math.sqrt(2)
-    # TODO: if dogbone is in line with one leg for the corner then we
-    # should only backoff the other leg.  In this case apex will line up with the
-    # segment that is not to be backed off.
-
+    # the self.x, self.y endpoint back along that line by the projection of width to that Line
+    def backoff(line):
+      line_unit_vector = unitVector(line.end - line.start)
+      b = line_unit_vector * dotProduct(line_unit_vector, width)
+      return b
     # The segments of a parsed path appear to be properly ordered.  We assume this below.
     insertion_index = self.pathholder.parsed_path.index(self.line1)
-    self.line1.end = self.line1.end - backoff * unit_vector(self.line1.start, self.line1.end)
-    self.line2.start = self.line2.start + backoff * unit_vector(self.line2.start, self.line2.end)
+    self.line1.end = self.line1.end - backoff(self.line1)
+    self.line2.start = self.line2.start + backoff(self.line2)
+    dogbone1 = self.line1.end + length
+    dogbone2 = self.line2.start + length
     self.pathholder.parsed_path.insert(
       insertion_index + 1, 
-      svg.path.Line(self.line1.end, apex_endpoint(self.line1.end)))
+      svg.path.Line(self.line1.end, dogbone1))
     # It would be more elegant to use a circular arc, but I'm lazy.
     self.pathholder.parsed_path.insert(
       insertion_index + 2, 
-      svg.path.Line(apex_endpoint(self.line1.end),
-                    apex_endpoint(self.line2.start)))
+      svg.path.Line(dogbone1, dogbone2))
     self.pathholder.parsed_path.insert(
       insertion_index + 3, 
-      svg.path.Line(apex_endpoint(self.line2.start), self.line2.start))
+      svg.path.Line(dogbone2, self.line2.start))
     print("make_dogbone after %s" % self)
+    for step in self.pathholder.parsed_path[insertion_index:insertion_index + 5]:
+      print("step %s" % step)
 
 
 class PathHolder (object):

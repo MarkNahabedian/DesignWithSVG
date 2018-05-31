@@ -31,6 +31,3 @@ number of limitations:
 * It's currently assuned that the legs of the corner are horizontal or
   vertical.
 
-* Currently dogbones parallell to the X or Y axes are not supported,
-  only dogbones at 45 degrees to them.
-
