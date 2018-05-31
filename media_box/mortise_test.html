@@ -22,7 +22,7 @@ class Geometry {
     // 1/4 nominal baltic birch from Rockler:
     this.wood_thickness = 1.1695 / 5;
     // additional space metween mortise and tenon, shaved off from the tenon edges
-    this.joint_clearance = 0.005;
+    this.joint_clearance = 0.0;   // 0.005;
     this.length = 2;
     this.width = 1;
     this.joint_length = 0.5;
@@ -30,12 +30,10 @@ class Geometry {
     // Enlarge the mortise rather than shaving off edges of the tenon.
     // This is simpler to code and the gap at the faces (wood surfaces)
     // can be increased as well as that at the edges. additional space
-    // metween mortise and tenon, shaved off from the tenon edges 
+    // between mortise and tenon, shaved off from the tenon edges 
     this.tenon_length = this.joint_length;
     this.tenon_depth = this.wood_thickness + this.joint_clearance;
     this.cutter_radius = (this.cutter_diameter / 2);
-    // 45 degree dogbone
-    this.dogbone45 = (Math.sqrt(2) - 1) * this.cutter_radius * Math.sin(Math.PI/4);
   }
 
   svgWidth() {
@@ -53,94 +51,62 @@ class Geometry {
     image_element.appendChild(g);
     g.setAttribute('transform', 'translate(' +
        this.svg_margin + ', ' + this.svg_margin + ')');
-    // NOTE: Adding the dogbones prevents Shaper Origin from doing an
-    // inside or an outside cut.  Instead we do on-line cuts and
-    // offset the paths ourselves.
-    var horizontal_edge = this.length - 2 * this.tenon_depth + 2 * this.cutter_radius;
-    var tenon_cut_length = this.tenon_length + 2 * this.cutter_radius;
+    var horizontal_edge = this.length - 2 * this.tenon_depth;
+    var tenon_cut_length = this.tenon_length;
     var edge_to_tenon = (this.width - this.joint_length) / 2 -
         this.cutter_radius;
     var p = path(g, [
         ['M', this.tenon_depth, 0],
-        // We're doing an outside cut as an on-line cut, so we need to
-        // offset by the cutter radius.
-        ['m', - this.cutter_radius, - this.cutter_radius],
         // Top edge
         ['h', horizontal_edge],
         // Right tenon
         ['v', edge_to_tenon + this.cutter_radius],
-        // Dogbone
-        ['l', - this.dogbone45, this.dogbone45],
-        ['l', this.dogbone45, - this.dogbone45],
         // The tenon itself
         ['h', this.tenon_depth],
         ['v', tenon_cut_length],
         ['h', - this.tenon_depth],
-        // Dogbone
-        ['l', - this.dogbone45, - this.dogbone45],
-        ['l', this.dogbone45, this.dogbone45],
         // finish right end
         ['v', edge_to_tenon + this.cutter_radius],
         // Bottom edge
         ['h', - horizontal_edge],
         // Left tenon
         ['v', - (edge_to_tenon + this.cutter_radius)],
-        // Dogbone
-        ['l', this.dogbone45, - this.dogbone45],
-        ['l', - this.dogbone45, this.dogbone45],
         // The tenon itself
         ['h', - this.tenon_depth],
         ['v', - tenon_cut_length],
         ['h', this.tenon_depth],
-        // Dogbone
-        ['l', this.dogbone45, this.dogbone45],
-        ['l', - this.dogbone45, - this.dogbone45],
         // Finish left end
         ['v', - (edge_to_tenon + this.cutter_radius)],
+        ['z'],
     ]);
     p.setAttribute('stroke-width', '0.01');
     if (DEBUG_PATHS) {
       guide_line(p);
     } else {
-      on_line_cut(p);    
+      outside_cut(p);    
     }
-    var h_length = this.joint_length -
-        2 * this.cutter_radius + 2 * this.joint_clearance;
-    var v_length = this.wood_thickness -
-        2 * this.cutter_radius + 2 * this.joint_clearance;
+    var h_length = this.joint_length + 2 * this.joint_clearance;
+    var v_length = this.wood_thickness + 2 * this.joint_clearance;
     var mortise = path(g, [
         ['M', (this.length - this.joint_length) / 2,
               (this.width - this.wood_thickness) / 2],
         // Joint clearance
         ['m', - this.joint_clearance, - this.joint_clearance],
-        // Inside
-        ['m', this.cutter_radius, this.cutter_radius],
-        // Dogbone
-        ['l', - this.dogbone45, - this.dogbone45],
-        ['l', this.dogbone45, this.dogbone45],
         // Edge
         ['h', h_length],
-        // Dogbone
-        ['l', this.dogbone45, - this.dogbone45],
-        ['l', - this.dogbone45, this.dogbone45],
         // Edge
         ['v', v_length],
-        // Dogbone
-        ['l', this.dogbone45, this.dogbone45],
-        ['l', - this.dogbone45, - this.dogbone45],
         // Edge
         ['h', - h_length],        
-        // Dogbone
-        ['l', - this.dogbone45, this.dogbone45],
-        ['l', this.dogbone45, - this.dogbone45],
         // Edge
         ['v', - v_length],
+        ['z'],
     ]);
     mortise.setAttribute('stroke-width', '0.01');
     if (DEBUG_PATHS) {
       guide_line(mortise);
     } else {
-      on_line_cut(mortise);    
+      inside_cut(mortise);    
     }
     h_rule(g, 0, this.length, 0, 0.25, this.width);
     v_rule(g, 0, this.width, 0, 0.25, this.length);
