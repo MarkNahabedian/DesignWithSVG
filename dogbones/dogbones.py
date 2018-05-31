@@ -163,7 +163,6 @@ class Corner (object):
 
   def make_dogbone(self):
     if self.dogbone_direction is None: return
-    print("make_dogbone before %s" % self)
     cutter_radius = cutter_diameter * 0.5
     direction_vector = directionizer.toUnitVector(self.dogbone_direction)
     length = (cutter_radius + extra) * direction_vector
@@ -201,9 +200,6 @@ class Corner (object):
     self.pathholder.parsed_path.insert(
       insertion_index + 3, 
       svg.path.Line(dogbone2, self.line2.start))
-    print("make_dogbone after %s" % self)
-    for step in self.pathholder.parsed_path[insertion_index:insertion_index + 5]:
-      print("step %s" % step)
 
 
 class PathHolder (object):
@@ -214,7 +210,6 @@ class PathHolder (object):
     self.path_elt = path_elt
     self.parsed_path = svg.path.parse_path(self.path_elt.getAttribute("d"))
     cleanupPath(self.parsed_path)
-    print("parsed_path %s" % self.parsed_path)
     # Index each Line by its two endpoints.  line_index maps an endpoint
     # to the Lines that hvae that endpoint.
     line_index = defaultdict(list)
@@ -236,7 +231,6 @@ class PathHolder (object):
         gui.line(pointX(step.start), pointY(step.start), pointX(step.end), pointY(step.end))
 
   def update(self):
-    print("Updating %s" % self.path_elt.getAttribute("d"))
     self.path_elt.setAttribute("d", self.parsed_path.d())
 
 
@@ -254,12 +248,10 @@ class PathCollector (object):
         self.gather(child)
 
   def render(self, gui):
-    print("Rendering %d paths" % len(self.paths))
     for ph in self.paths:
       ph.render(gui)
 
   def update(self):
-    print("Updating %d paths" % len(self.paths))
     for ph in self.paths:
       ph.update()
 
@@ -353,7 +345,6 @@ def main():
   app.run()
   for ph in app.path_collector.paths:
     for corner in ph.corners:
-      print(str(corner))
       corner.make_dogbone()
   # Now update the DOM paths.
   pc.update()
