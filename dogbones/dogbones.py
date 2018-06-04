@@ -68,30 +68,6 @@ def dotProduct(cplx1, cplx2):
           pointY(cplx1) * pointY(cplx2))
 
 
-class Directionizer (object):
-  '''Directionizer rounds an angle to one of eight directions.'''
-  def __init__(self):
-    self.directions = 8
-  # The from... methods convert a direction expresses as the "from" units to
-  # a direction number (0...8).
-  def fromUnity(self, n):
-    return (round(float(n) * self.directions)) % 8
-  def fromRadians(self, r):
-    return self.fromUnity(r / (2 * math.pi))
-  def fromDegrees(self, d):
-    return self.fromUnity(d / 360)
-  # The to... methods convert from a direction number to the specified units.
-  def toUnity(self, d):
-    return d  / self.directions
-  def toRadians(self, d):
-    return self.toUnity(d) * 2 * math.pi
-  def toDegrees(self, d):
-    return self.toUnity(d) * 360
-  def toUnitVector(self, d):
-    return cplxPoint(math.cos(self.toRadians(d)),
-                     math.sin(self.toRadians(d)))
-
-
 class Transformer (object):
   '''Transform between SVG and cancvas coordinates.'''
   def __init__(self):
@@ -107,7 +83,6 @@ class Transformer (object):
     return self.xOffset + self.scale * float(x), self.yOffset + self.scale * float(y)
 
 
-directionizer = Directionizer()
 transformer = Transformer()
 
 
@@ -150,7 +125,8 @@ class Corner (object):
     else:
       self.line1 = line1
       self.line2 = line2
-    # dogbone_direction will be a number from 0 to 8
+    # dogbone_direction is None or a unit vector in the direction the
+    # dogbone should be cut.
     self.dogbone_direction = None
 
   def distance(self, x, y):
@@ -164,9 +140,8 @@ class Corner (object):
   def make_dogbone(self):
     if self.dogbone_direction is None: return
     cutter_radius = cutter_diameter * 0.5
-    direction_vector = directionizer.toUnitVector(self.dogbone_direction)
-    length = (cutter_radius + extra) * direction_vector
-    width = (cutter_diameter + dogbone_base) * perpendicular(direction_vector)
+    length = (cutter_radius + extra) * self.dogbone_direction
+    width = (cutter_diameter + dogbone_base) * perpendicular(self.dogbone_direction)
     # Width should have the same sign as the transition from the first
     # leg of the corner to the second
     vector1 = unitVector(self.line1.end - self.line1.start)
@@ -284,7 +259,7 @@ def canvasButtonUpHandler(event):
   if math.sqrt(dx * dx + dy * dy) < 2:
     app.active_corner = None
     return
-  app.active_corner[2].dogbone_direction = directionizer.fromRadians(math.atan2(dy, dx))
+  app.active_corner[2].dogbone_direction = unitVector(cplxPoint(dx, dy))
   app.active_corner = None
   sys.stdout.flush()
 
