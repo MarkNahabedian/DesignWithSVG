@@ -16,17 +16,28 @@ from collections import defaultdict
 import svg.path
 
 
+# Initially these are default values for command line arguments.  main
+# sets these globals from the command line inputs.
+
 # The diameter of the router bit
 cutter_diameter = 0.125
 
-# Give the dogbone some minimal thickness to appease Shaper Origin
+# Give the dogbone some minimal width to appease Shaper Origin
 dogbone_base = 0.005
 
 # Extra length to be added to the calculated length of the dogbones if
 # the calculated length is found to not be sufficient
 extra = 0.0
 
-parser = argparse.ArgumentParser(description='Add dogbones to an SVG file of Shaper Origin cut paths.')
+parser = argparse.ArgumentParser(description='''Add dogbones to an SVG file of Shaper Origin cut paths.
+
+Click on a blue dot to add a dogbone in that direction from the near corner.
+The selected direction turns gree.
+After closing the window a new SVG file with the dogbones will be written.
+
+Source code is at
+https://github.com/MarkNahabedian/DesignWithSVG/tree/master/dogbones
+''')
 
 parser.add_argument('input_file', type=str, nargs=None, action='store',
                     help='An SVG file of cut paths for Shaper Origin.')
@@ -44,6 +55,14 @@ parser.add_argument('--extra', type=float, nargs=None, action='store',
                     help='Additional depth to be added to each dogbone.')
 
 
+# Distance from a corner point to its direction selection dots in SVG
+# coordinates:
+direction_dot_distance = 0.08
+
+# Size of direction selection dots in canvas coordinates:
+dot_size = 4
+
+
 # svg.path represents points as complex numbers
 
 def pointX(cplx):
@@ -56,6 +75,9 @@ def pointY(cplx):
 
 def cplxPoint(x, y):
   return complex(x, y)
+
+def distance(cplx1, cplx2):
+  return abs(cplx2 - cplx1)
 
 def unitVector(cplx):
   return cplx / cmath.polar(cplx)[0]
@@ -129,6 +151,9 @@ class Corner (object):
     # dogbone should be cut.
     self.dogbone_direction = None
 
+  def cplxPoint(self):
+    return cplxPoint(self.x, self.y)
+
   def distance(self, x, y):
     dx = self.x - float(x)
     dy = self.y - float(y)
@@ -136,6 +161,22 @@ class Corner (object):
 
   def __str__(self):
     return "%s(%f, %f, %r %r %r)" % (self.__class__.__name__, self.x, self.y, self.dogbone_direction, self.line1, self.line2)
+
+  def directionDots(self):
+    '''Returns the unit vectors (as complex points) in the directions that
+    # a dogbone from the corner might go in.'''
+    # Unit vectors along legs, pointing away from the corner
+    l1 = unitVector(self.line1.start - self.line1.end)
+    l2 = unitVector(self.line2.end - self.line2.start)
+    # bisecting angle
+    l45 = unitVector(l1 + l2)
+    def point(vector):
+      return -vector
+    # unit vectors for dogbone direction selector dots:
+    return (point(l1), point(l45), point(l2))
+
+  def dotLocation(self, uv):
+    return self.cplxPoint() + direction_dot_distance * uv
 
   def make_dogbone(self):
     if self.dogbone_direction is None: return
@@ -201,9 +242,18 @@ class PathHolder (object):
     return "%s(%s)" % (self.__class__.__name__, str(self.parsed_path))
 
   def render(self, gui):
+    # draw the lines of the path.  We don't yet support curves, circles,
+    # rectangles, etc, only lines.
     for step in self.parsed_path:
       if isinstance(step, svg.path.path.Line):
-        gui.line(pointX(step.start), pointY(step.start), pointX(step.end), pointY(step.end))
+        gui.line(pointX(step.start), pointY(step.start),
+                 pointX(step.end), pointY(step.end))
+    # Draw the dogbone direction selector dots
+    for corner in self.corners:
+      for uv in corner.directionDots():
+        selected = corner.dogbone_direction == uv
+        dot = corner.dotLocation(uv)
+        gui.dot(pointX(dot), pointY(dot), selected)
 
   def update(self):
     self.path_elt.setAttribute("d", self.parsed_path.d())
@@ -223,6 +273,7 @@ class PathCollector (object):
         self.gather(child)
 
   def render(self, gui):
+    gui.clear()
     for ph in self.paths:
       ph.render(gui)
 
@@ -233,10 +284,13 @@ class PathCollector (object):
 
 def canvasButtonDownHandler(event):
   '''canvasButtonHandler is the mouse down event handler for the canvas.'''
-  hit_radius = 0.25
+  # distance from corner for consideration
+  hit_radius = direction_dot_distance * 2
+  # distance from dot for consideration
+  dot_event_horizon = distance(0, cplxPoint(*transformer.toSVG(dot_size, 0)))
   app = event.widget.application
   x, y = transformer.toSVG(event.x, event.y)
-  closest = None
+  closest = None     # The Corner closest to the mouse click.
   for pc in app.path_collector.paths:
     for corner in pc.corners:
       d = corner.distance(x, y)
@@ -246,22 +300,18 @@ def canvasButtonDownHandler(event):
         elif d < closest[0]:
           closest = (d, corner)
   if not (closest is None):
-    app.active_corner = (event.x, event.y, closest[1])
-  else:
-    app.active_corner = None
-
-def canvasButtonUpHandler(event):
-  app = event.widget.application
-  if not app.active_corner:
-    return
-  dx = event.x - app.active_corner[0]
-  dy = event.y - app.active_corner[1]
-  if math.sqrt(dx * dx + dy * dy) < 2:
-    app.active_corner = None
-    return
-  app.active_corner[2].dogbone_direction = unitVector(cplxPoint(dx, dy))
-  app.active_corner = None
-  sys.stdout.flush()
+    corner = closest[1]
+    dots = corner.directionDots()
+    hit = cplxPoint(x, y)
+    chosen = None
+    for uv in dots:
+      d = distance(corner.dotLocation(uv), hit)
+      if d <= dot_event_horizon:
+        if chosen is None or d < chosen[0]:
+          chosen = (d, uv)
+    if chosen:
+      corner.dogbone_direction = chosen[1]
+      event.widget.application.redraw()
 
 
 class GUI (object):
@@ -280,14 +330,29 @@ class GUI (object):
     self.canvas.pack(fill=tkinter.BOTH)
     self.canvas.application = self
     self.canvas.bind("<Button-1>", canvasButtonDownHandler)
-    self.canvas.bind("<ButtonRelease-1>", canvasButtonUpHandler)
-    self.active_corner = None
+#    self.canvas.bind("<ButtonRelease-1>", canvasButtonUpHandler)
+#    self.active_corner = None
+
+  def redraw(self):
+    self.path_collector.render(self)
+
+  def clear(self):
+    self.canvas.delete("all")
 
   def line(self, fromX, fromY, toX, toY):
     # eventually apply scaling here
     x1, y1 = transformer.toCanvas(fromX, fromY)
     x2, y2 = transformer.toCanvas(toX, toY)
     self.canvas.create_line(x1, y1, x2, y2, fill="#ffffff")
+
+  def dot(self, x, y, selected):
+    x1, y1 = transformer.toCanvas(x, y)
+    x2, y2 = transformer.toCanvas(x, y)
+    self.canvas.create_oval(x1 - dot_size, y1 - dot_size,
+                            x2 + dot_size, y2 + dot_size,
+                            fill=(
+                              "yellow" if selected
+                              else "blue"))
 
   def show(self):
     self.path_collector.render(self)
