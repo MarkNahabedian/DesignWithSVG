@@ -32,7 +32,8 @@ extra = 0.0
 parser = argparse.ArgumentParser(description='''Add dogbones to an SVG file of Shaper Origin cut paths.
 
 Click on a blue dot to add a dogbone in that direction from the near corner.
-The selected direction turns gree.
+The selected direction turns green.  Click near a corner but not on a dot
+to cancel the dogbone for that corner.
 After closing the window a new SVG file with the dogbones will be written.
 
 Source code is at
@@ -59,7 +60,7 @@ parser.add_argument('--extra', type=float, nargs=None, action='store',
 # coordinates:
 direction_dot_distance = 0.08
 
-# Size of direction selection dots in canvas coordinates:
+# Radius of direction selection dots, in canvas coordinates:
 dot_size = 4
 
 
@@ -287,7 +288,7 @@ def canvasButtonDownHandler(event):
   # distance from corner for consideration
   hit_radius = direction_dot_distance * 2
   # distance from dot for consideration
-  dot_event_horizon = distance(0, cplxPoint(*transformer.toSVG(dot_size, 0)))
+  dot_event_horizon = dot_size / transformer.scale
   app = event.widget.application
   x, y = transformer.toSVG(event.x, event.y)
   closest = None     # The Corner closest to the mouse click.
@@ -311,6 +312,9 @@ def canvasButtonDownHandler(event):
           chosen = (d, uv)
     if chosen:
       corner.dogbone_direction = chosen[1]
+      event.widget.application.redraw()
+    else:
+      corner.dogbone_direction = None
       event.widget.application.redraw()
 
 
