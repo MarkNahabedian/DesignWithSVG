@@ -14,7 +14,7 @@ extract_font.py to pull a single font out.
 make_samples.py displays all of the glyphs from one of those extracted
 font files complete with their ASCII code and dimensions.  I've
 checked in fonts/Sans_1-stroke.html -- the output of make_samples.py
-for the single stroke sans seripoh font.
+for the single stroke sans seriph font.
 
 The Shaper Origin requires that each path consist of only a single
 subpath that doesn't branch.  path_cleanup.py cleans up the paths in a
