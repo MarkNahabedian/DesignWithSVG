@@ -2,7 +2,7 @@ These are some tools I've written for creating vector graphics designs
 to be cut using a laser cutter or CNC router.
 
 The primary focus of these tools is the Shaper Origin, a hand held CNC
-router that takes SVG files for descrribing the cutting and engraving
+router that takes SVG files for describing the cutting and engraving
 paths.
 
 Being a computer programmer, I prefer to define my designs using code
@@ -20,7 +20,7 @@ to a file.
 converting them to SVG, displaying samples, and rendering text for
 Shaper Origin.
 
-<b>nametag</b> contains a utility for cutting an engraving a nametag
+<b>nametag</b> contains a utility for cutting and engraving a nametag
 using Shaper Origin or other engraving/etching device.
 
 <b>dogbones</b> provides a python program for adding dogbones (rotary
