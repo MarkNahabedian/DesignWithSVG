@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <title>Template HTML file using these libraries</title>
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript" src="dw6184_fixed_base.js">
+    <script type="text/javascript">
+//<![CDATA[
+console.log("start of script.");
+
+var SVG_MARGIN = 0.25;
+
+// Diameter of a 1/4 inch fender washer
+var WASHER_DIAMETER = 1.0;
+
+var STAR_KNOB_DIAMETER = 1.5;
+
+// Free fit clearance for 1/4 - 20 machine screw.
+var SCREW_CLEARANCE = 0.2660;
+
+// There will be a second fence that can be set so that the position
+// of the main fence can be set relative to it.
+// We need to ensure that the knobs of the two fences don't interfere
+// with one another.
+
+// COORDINATE AXES:
+// We define two axes so we can talk about orienting aspects of our
+// design.
+// The A axis runs parallel to the face of the fence.
+// The B axis runs perpendicular to it.
+// We append the relevant axis name to eaach dimension to emphasize
+// the axis that dimension runs parallel to.
+// The 0 position of each axis is at the center of the router spindle.
+
+class SubBaseGeometry {
+    constructor() {
+        // Dimensions are in inches.
+        this.corner_radius = 0.5;
+        this.slot_start_B = 0;
+        this.slot_length_B = 2;
+        this.slot_width_A = SCREW_CLEARANCE;
+        this.base_to_slot_A = 0.25 + Math.max(WASHER_DIAMETER, STAR_KNOB_DIAMETER) / 2;
+        this.beyond_slot_A = 1;
+        console.assert(this.beyond_slot_A > WASHER_DIAMETER/2,
+                       "beyond_slot must be greater than washer radius");
+        this.total_width_A = BASE_DIAMETER + 2 * (
+            this.base_to_slot_A + this.slot_width_A + this.beyond_slot_A);
+        this.total_height_B = BASE_DIAMETER +
+            this.slot_start_B + this.slot_length_B - BASE_DIAMETER / 2 +
+            this.beyond_slot_A;
+        // Our coordinate system is centered on the router spindle.
+        // These offsets translate from spindle centric coordinates to
+        // SVG coordinates:
+        this.x_translate_A = this.svg_margin + this.total_width_A / 2;
+        this.y_translate_B = this.svg_margin + this.total_height_B / 2;   // *** PROBABLY WRONG
+    }
+    
+    svgWidth() {
+        // Return the value for the width attribute of the SVG element.
+        return this.total_width_A + 2 * SVG_MARGIN;
+    }
+    
+    svgHeight() {
+        // Return the value for the height attribute of the SVG element.
+        return this.total_height_B + 2 * SVG_MARGIN;
+    }
+    
+    updateSVG(svg_elt) {
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+        var g = document.createElementNS(svgURI, "group");
+        g.setAttribute('transform', 'translate(' +
+                       this.svg_margin + this.x_translate_A + ', ' +
+                       this.svg_margin + this.y_translate_B + ')');
+        svg_elt.appendChild(g);
+        dw6184_center_home(g);
+        dw6184_mounting_hole(g, 1, 1);
+        dw6184_mounting_hole(g, -1, 1);
+        dw6184_mounting_hole(g, -1, -1);
+        dw6184_mounting_hole(g, 1, -1);
+        // Slots:
+        // Perimeter:
+        var perimeter = path(g, [
+            ['M', - this.total_width_A/ 2, - this.total_height_B / 2],
+            ['h', this.total_width],
+            ['v', this.total_height_B],
+            ['h', - this.total_width],
+            ['v', - this.total_height_B],
+        ]);
+        outside_cut(perimeter);
+    }
+};
+
+
+class FenceGeometry {
+    constructor(subbaseGeometry) {
+        // Dimensions are in inches.
+        this.sbg = subbaseGeometry
+    }
+
+    svgWidth() {
+        // Return the value for the width attribute of the SVG element.
+    }
+    
+    svgHeight() {
+        // Return the value for the height attribute of the SVG element.
+    }
+
+    updateSVG(svg_elt) {
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+        // DRAW INTO svg_elt HERE.
+    }
+};
+
+
+function contentLoaded() {
+    console.log("FOO.");
+    setSVGNamespaces();
+    var subbase = new SubBaseGeometry();
+    subbase.updateSVG(document.getElementById('SUBBASE_SVG_ELEMENT'));
+    showSVG(document.getElementById('SUBBASE_SVG_ELEMENT'),
+            document.getElementById('SUBBASE_CODE_ELEMENT'));
+    var fence = new FenceGeometry(subbase);
+    fence.updateSVG_fence(document.getElementById('FENCE_SVG_ELEMENT'));
+    showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
+            document.getElementById('FENCE_CODE_ELEMENT'));
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+console.log("end of script");
+
+//]]>
+
+    </script>
+  </head>
+  <body>
+
+    <h1>Edge Guide Sub-base plate for DeWalt  DW6184 Router Bae</h1>
+
+    <p>
+      The design provides two slots to accomodate an adjustable guide
+      fence that is mounted and adjusted using 1/4 - 20 machine screws
+      or carriage bolts and wingnuts or star knobs.
+    </p>
+
+    <p>
+      We also inclue accomodation for a second fence that can be set
+      to a position and have the primary fence adjusted relative to.
+      For example, one might set the secondary fence to butt against
+      the cutter, position the primary fence based on the secondary
+      feence and a spacer block, and then remove the secondary fence.
+    </p>
+
+    <p>
+      We assume the fence has a notch cut into it that is big enoughto
+      clear a 1/5 inch cutter.
+    </p>
+
+    <div>
+      <pre id="SUBBASE_CODE_ELEMENT"> 
+      </pre>
+      <svg id="SUBBASE_SVG_ELEMENT"></svg>
+    </div>
+
+    <div>
+      <pre id="FENCE_CODE_ELEMENT"> 
+      </pre>
+      <svg id="FENCE_SVG_ELEMENT"></svg>
+    </div>
+
+  </body>
+</html>
