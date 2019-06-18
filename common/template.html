@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>Template HTML file using these libraries</title>
+    <script type="text/javascript" src="svg_lib.js"></script>
+    <script type="text/javascript" src="shaper_origin.js"></script>
+    <script type="text/javascript">
+//<![CDATA[
+
+class Geometry {
+  constructor(/* application specific parameters */) {
+    // SET UP DESIGN PARAMETERS, ETC.
+  }
+
+    
+  svgWidth() {
+    // Return the value for the width attribute of the SVG element.
+  }
+
+    
+  svgHeight() {
+    // Return the value for the height attribute of the SVG element.
+  }
+
+    
+  updateSVG(svg_elt) {
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    // DRAW INTO svg_elt HERE.
+  }
+
+};
+
+
+function contentLoaded() {
+  setSVGNamespaces();
+  var g = new Geometry(...);
+  g.updateSVG(document.getElementById('SVG_ELEMENT'));
+  showSVG(document.getElementById('SVG_ELEMENT'),
+          document.getElementById('CODE_ELEMENT'));
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+//]]>
+
+    </script>
+  </head>
+  <body>
+
+    <h1>TITLE</h1>
+
+    <pre id="CODE_ELEMENT"> 
+    </pre>
+    <svg id="SVG_ELEMENT"></svg>
+
+  </body>
+</html>
