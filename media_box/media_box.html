@@ -27,7 +27,7 @@ class Geometry {
     this.inside_length = 7.75;  // Based on height of a DVD boxed set.
     this.inside_depth = 5.75;   // Based on distance from CD jewel case spine to open end.
 
-    this.wood_thickness = 1.1695 / 5;      // 1.4 nominal baltic birch from Rockler
+    this.wood_thickness = 1.1695 / 5;      // 1/4 nominal baltic birch from Rockler
 
     // Dimensions I've chosen
     // We add tabs that descend from the bottom of the box edges into
@@ -38,7 +38,7 @@ class Geometry {
     // The top edge of each corner of the box will be at the full
     // depth of the box.
     // We make sure that at each corner there will be 1/4 inch (inside
-    // dimension) that at full height:
+    // dimension) at full height:
     this.full_height_corner = 0.25;
 
     this.outside_length = this.inside_length + 2 * this.wood_thickness;
