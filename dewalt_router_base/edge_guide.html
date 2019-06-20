@@ -50,8 +50,8 @@ class SubBaseGeometry {
         // Our coordinate system is centered on the router spindle.
         // These offsets translate from spindle centric coordinates to
         // SVG coordinates:
-        this.x_translate_A = this.svg_margin + this.total_width_A / 2;
-        this.y_translate_B = this.svg_margin + this.total_height_B / 2;   // *** PROBABLY WRONG
+        this.x_translate_A = SVG_MARGIN + this.total_width_A / 2;
+        this.y_translate_B = SVG_MARGIN + this.total_height_B / 2;   // *** PROBABLY WRONG
     }
     
     svgWidth() {
@@ -68,15 +68,9 @@ class SubBaseGeometry {
         setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
         var g = document.createElementNS(svgURI, "g");
         g.setAttribute('transform', 'translate(' +
-                       this.svg_margin + this.x_translate_A + ', ' +
-                       this.svg_margin + this.y_translate_B + ')');
+                       (SVG_MARGIN + this.x_translate_A) + ', ' +
+                       (SVG_MARGIN + this.y_translate_B) + ')');
         svg_elt.appendChild(g);
-        dw6184_center_home(g);
-        dw6184_mounting_hole(g, 1, 1);
-        dw6184_mounting_hole(g, -1, 1);
-        dw6184_mounting_hole(g, -1, -1);
-        dw6184_mounting_hole(g, 1, -1);
-        // Slots:
         // Perimeter:
         var perimeter = path(g, [
             ['M', - this.total_width_A / 2, - this.total_height_B / 2],
@@ -86,6 +80,14 @@ class SubBaseGeometry {
             ['v', - this.total_height_B],
         ]);
         outside_cut(perimeter);
+        // Router base accomodations:
+        dw6184_base_perimeter(g);
+        dw6184_center_hole(g);
+        dw6184_mounting_hole(g, 1, 1);
+        dw6184_mounting_hole(g, -1, 1);
+        dw6184_mounting_hole(g, -1, -1);
+        dw6184_mounting_hole(g, 1, -1);
+        // Slots:
     }
 };
 
