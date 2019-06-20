@@ -3,10 +3,9 @@
     <title>Template HTML file using these libraries</title>
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
-    <script type="text/javascript" src="dw6184_fixed_base.js">
+    <script type="text/javascript" src="dw6184_fixed_base.js"></script>
     <script type="text/javascript">
 //<![CDATA[
-console.log("start of script.");
 
 var SVG_MARGIN = 0.25;
 
@@ -66,8 +65,8 @@ class SubBaseGeometry {
     }
     
     updateSVG(svg_elt) {
-        setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
-        var g = document.createElementNS(svgURI, "group");
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+        var g = document.createElementNS(svgURI, "g");
         g.setAttribute('transform', 'translate(' +
                        this.svg_margin + this.x_translate_A + ', ' +
                        this.svg_margin + this.y_translate_B + ')');
@@ -80,10 +79,10 @@ class SubBaseGeometry {
         // Slots:
         // Perimeter:
         var perimeter = path(g, [
-            ['M', - this.total_width_A/ 2, - this.total_height_B / 2],
-            ['h', this.total_width],
+            ['M', - this.total_width_A / 2, - this.total_height_B / 2],
+            ['h', this.total_width_A],
             ['v', this.total_height_B],
-            ['h', - this.total_width],
+            ['h', - this.total_width_A],
             ['v', - this.total_height_B],
         ]);
         outside_cut(perimeter);
@@ -106,27 +105,27 @@ class FenceGeometry {
     }
 
     updateSVG(svg_elt) {
-        setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
         // DRAW INTO svg_elt HERE.
     }
 };
 
 
 function contentLoaded() {
-    console.log("FOO.");
     setSVGNamespaces();
     var subbase = new SubBaseGeometry();
     subbase.updateSVG(document.getElementById('SUBBASE_SVG_ELEMENT'));
     showSVG(document.getElementById('SUBBASE_SVG_ELEMENT'),
             document.getElementById('SUBBASE_CODE_ELEMENT'));
+            /*
     var fence = new FenceGeometry(subbase);
-    fence.updateSVG_fence(document.getElementById('FENCE_SVG_ELEMENT'));
+    fence.updateSVG(document.getElementById('FENCE_SVG_ELEMENT'));
     showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
             document.getElementById('FENCE_CODE_ELEMENT'));
+*/
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
-console.log("end of script");
 
 //]]>
 
@@ -155,12 +154,14 @@ console.log("end of script");
       clear a 1/5 inch cutter.
     </p>
 
+    <h2>Subbase</h2>
     <div>
       <pre id="SUBBASE_CODE_ELEMENT"> 
       </pre>
       <svg id="SUBBASE_SVG_ELEMENT"></svg>
     </div>
 
+    <h2>Fence</h2>
     <div>
       <pre id="FENCE_CODE_ELEMENT"> 
       </pre>
