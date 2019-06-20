@@ -38,7 +38,7 @@ function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
     hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction) + "in");
     hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction) + "in");
     hole.setAttribute('r',   '' + (MH_DIAMETER / 2) + "in");
-    inside_cut(home);
+    inside_cut(hole);
     xml_parent.appendChild(hole);
 }
 
