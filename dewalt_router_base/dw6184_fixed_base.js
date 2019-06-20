@@ -7,12 +7,12 @@
 // All dimensions are in inches.
 
 var EXPORTED_SYMBOLS = [
-    "BASE_DIAMETER", "CENTER_HOLE_DIAMETER",
-    "MH_DIAGONAL_DISTANCE", "MH_XY_DELTA",
-    "MH_DIAMETER", "MH_COUNTERSINK_DIAMETER",
-    "MH_COUNTERSINK_DEPTH",
-    "dw6184_mounting_hole",
-    "dw6184_center_home"
+    'BASE_DIAMETER', 'CENTER_HOLE_DIAMETER',
+    'MH_DIAGONAL_DISTANCE', 'MH_XY_DELTA',
+    'MH_DIAMETER', 'MH_COUNTERSINK_DIAMETER',
+    'MH_COUNTERSINK_DEPTH',
+    'dw6184_mounting_hole',
+    'dw6184_center_home'
 ];
 
 
@@ -34,19 +34,19 @@ var MH_COUNTERSINK_DEPTH = 0.1635;
 // direction specified.  x_direction and y_direction should each be
 // either 1 or -1.
 function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
-    var hole = document.createElementNS(svgURI, "circle");
-    hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction) + "in");
-    hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction) + "in");
-    hole.setAttribute('r',   '' + (MH_DIAMETER / 2) + "in");
+    var hole = document.createElementNS(svgURI, 'circle');
+    hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction));
+    hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction));
+    hole.setAttribute('r',   '' + (MH_DIAMETER / 2));
     inside_cut(hole);
     xml_parent.appendChild(hole);
 }
 
-function dw6184_center_home(xml_parent) {
-    var hole = document.createElementNS(svgURI, "circle");
-    hole.setAttribute('cx',   '' + 0 + "in");
-    hole.setAttribute('cy',   '' + 0 + "in");
-    hole.setAttribute('r',   '' + (CENTER_HOLE_DIAMETER / 2) + "in");
+function dw6184_center_hole(xml_parent) {
+    var hole = document.createElementNS(svgURI, 'circle');
+    hole.setAttribute('cx',   '' + 0);
+    hole.setAttribute('cy',   '' + 0);
+    hole.setAttribute('r',   '' + (CENTER_HOLE_DIAMETER / 2));
     inside_cut(hole);
     xml_parent.appendChild(hole);
 }
