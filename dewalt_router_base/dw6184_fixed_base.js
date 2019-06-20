@@ -11,8 +11,9 @@ var EXPORTED_SYMBOLS = [
     'MH_DIAGONAL_DISTANCE', 'MH_XY_DELTA',
     'MH_DIAMETER', 'MH_COUNTERSINK_DIAMETER',
     'MH_COUNTERSINK_DEPTH',
+    'dw6184_base_perimeter',
     'dw6184_mounting_hole',
-    'dw6184_center_home'
+    'dw6184_center_hole'
 ];
 
 
@@ -29,6 +30,15 @@ var MH_DIAMETER = 0.1770;    // Loose clearance for #8-36 machine screw
 var MH_COUNTERSINK_DIAMETER = 0.3970;
 var MH_COUNTERSINK_DEPTH = 0.1635;
 
+
+function dw6184_base_perimeter(xml_parent) {
+    var perimeter = document.createElementNS(svgURI, 'circle');
+    perimeter.setAttribute('cx', '' + 0);
+    perimeter.setAttribute('cy', '' + 0);
+    perimeter.setAttribute('r', '' + (BASE_DIAMETER / 2));
+    guide_line(perimeter);
+    xml_parent.appendChild(perimeter);
+}
 
 // Generate an SVG circle in the specified XML parent element in the
 // direction specified.  x_direction and y_direction should each be
