@@ -34,34 +34,34 @@ var SCREW_CLEARANCE = 0.2660;
 class SubBaseGeometry {
     constructor() {
         // Dimensions are in inches.
+        var base_radius = BASE_DIAMETER / 2;
+        this.back_edge_B = - base_radius - 0.5;
+        this.front_edge_B = base_radius + 2;
         this.corner_radius = 0.5;
-        this.slot_start_B = 0;
-        this.slot_length_B = 2;
         this.slot_width_A = SCREW_CLEARANCE;
-        this.base_to_slot_A = 0.25 + Math.max(WASHER_DIAMETER, STAR_KNOB_DIAMETER) / 2;
         this.beyond_slot_A = 1;
-        console.assert(this.beyond_slot_A > WASHER_DIAMETER/2,
-                       "beyond_slot must be greater than washer radius");
-        this.total_width_A = BASE_DIAMETER + 2 * (
-            this.base_to_slot_A + this.slot_width_A + this.beyond_slot_A);
-        this.total_height_B = BASE_DIAMETER +
-            this.slot_start_B + this.slot_length_B - BASE_DIAMETER / 2 +
-            this.beyond_slot_A;
+        this.adjuster_clearance = Math.max(WASHER_DIAMETER, STAR_KNOB_DIAMETER) / 2;
+        console.assert(this.beyond_slot_A > this.adjuster_clearance,
+                       'beyond_slot must be greater than adjuster_clearance');
+        this.half_width_A = base_radius + 2 * this.adjuster_clearance +
+                            this.slot_width_A + this.beyond_slot_A +
+                            // extra width
+                            2;
         // Our coordinate system is centered on the router spindle.
         // These offsets translate from spindle centric coordinates to
         // SVG coordinates:
-        this.x_translate_A = SVG_MARGIN + this.total_width_A / 2;
-        this.y_translate_B = SVG_MARGIN + this.total_height_B / 2;   // *** PROBABLY WRONG
+        this.x_translate_A = SVG_MARGIN + this.half_width_A;
+        this.y_translate_B = SVG_MARGIN + Math.abs(this.back_edge_B);
     }
     
     svgWidth() {
         // Return the value for the width attribute of the SVG element.
-        return this.total_width_A + 2 * SVG_MARGIN;
+        return 2 * (this.half_width_A + SVG_MARGIN);
     }
     
     svgHeight() {
         // Return the value for the height attribute of the SVG element.
-        return this.total_height_B + 2 * SVG_MARGIN;
+        return Math.abs(this.front_edge_B - this.back_edge_B) + 2 * SVG_MARGIN;
     }
     
     updateSVG(svg_elt) {
@@ -73,11 +73,11 @@ class SubBaseGeometry {
         svg_elt.appendChild(g);
         // Perimeter:
         var perimeter = path(g, [
-            ['M', - this.total_width_A / 2, - this.total_height_B / 2],
-            ['h', this.total_width_A],
-            ['v', this.total_height_B],
-            ['h', - this.total_width_A],
-            ['v', - this.total_height_B],
+            ['M', - this.half_width_A, this.back_edge_B],
+            ['H', this.half_width_A],
+            ['V', this.front_edge_B],
+            ['H', - this.half_width_A],
+            ['V', this.back_edge_B],
         ]);
         outside_cut(perimeter);
         // Router base accomodations:
@@ -88,6 +88,32 @@ class SubBaseGeometry {
         dw6184_mounting_hole(g, -1, -1);
         dw6184_mounting_hole(g, 1, -1);
         // Slots:
+        var geo = this;
+        var draw_slot = function(direction) {
+            var slot_outside_edge_A = geo.half_width_A - geo.beyond_slot_A;
+            var slot = path(g, [
+                ['M',
+                 direction * slot_outside_edge_A,
+                 geo.back_edge_B + geo.adjuster_clearance],
+                ['V', geo.front_edge_B - geo.adjuster_clearance],
+                ['h', - direction * geo.slot_width_A],
+                ['V', geo.back_edge_B + geo.adjuster_clearance],
+                ['h', direction * geo.slot_width_A]
+            ]);
+            inside_cut(slot);
+            guide_line(path(g, [
+                ['M', direction * (slot_outside_edge_A + geo.adjuster_clearance),
+                 geo.back_edge_B],
+                ['V', geo.front_edge_B]]));
+            guide_line(path(g, [
+                ['M', direction * (slot_outside_edge_A -
+                                   geo.slot_width_A -
+                                   geo.adjuster_clearance),
+                 geo.back_edge_B],
+                ['V', geo.front_edge_B]]));
+        };
+        draw_slot(-1);
+        draw_slot(1);
     }
 };
 
