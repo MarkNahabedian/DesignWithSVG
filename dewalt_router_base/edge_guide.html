@@ -47,6 +47,8 @@ class SubBaseGeometry {
                             this.slot_width_A + this.beyond_slot_A +
                             // extra width
                             2;
+        this.slot_center_A = this.half_width_A - this.beyond_slot_A -
+            this.slot_width_A / 2;
         // Our coordinate system is centered on the router spindle.
         // These offsets translate from spindle centric coordinates to
         // SVG coordinates:
@@ -90,7 +92,7 @@ class SubBaseGeometry {
         // Slots:
         var geo = this;
         var draw_slot = function(direction) {
-            var slot_outside_edge_A = geo.half_width_A - geo.beyond_slot_A;
+            var slot_outside_edge_A = geo.slot_center_A + geo.slot_width_A;
             var slot = path(g, [
                 ['M',
                  direction * slot_outside_edge_A,
@@ -148,19 +150,52 @@ class FenceGeometry {
     constructor(subbaseGeometry) {
         // Dimensions are in inches.
         this.sbg = subbaseGeometry
+        this.cutter_clearance_radius = 0.5;
+        this.fence_height_B = 1 + this.cutter_clearance_radius;
     }
 
     svgWidth() {
         // Return the value for the width attribute of the SVG element.
+        return this.sbg.svgWidth();
     }
     
     svgHeight() {
         // Return the value for the height attribute of the SVG element.
+        return this.fence_height_B + 2 * SVG_MARGIN;
     }
 
     updateSVG(svg_elt) {
         setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-        // DRAW INTO svg_elt HERE.
+        var g = document.createElementNS(svgURI, 'g');
+        g.setAttribute('transform', 'translate(' +
+                       (SVG_MARGIN + this.sbg.x_translate_A) + ', ' +
+                       SVG_MARGIN + ')');
+        var perimeter = path(g, [
+            ['M', - this.sbg.half_width_A, 0],
+            ['H', - this.cutter_clearance_radius],
+            ['A', this.cutter_clearance_radius, this.cutter_clearance_radius,
+             0.0, false, false,
+             this.cutter_clearance_radius, 0],
+            ['H', this.sbg.half_width_A],
+            ['V', this.fence_height_B],
+            ['H', - this.sbg.half_width_A],
+            ['V', 0]
+        ]);
+        outside_cut(perimeter);
+        g.appendChild(perimeter);
+        svg_elt.appendChild(g);
+        // Holes for the positioning hardware
+        var geo = this;
+        var hole = function(x) {
+            var hole = document.createElementNS(svgURI, 'circle');
+            hole.setAttribute('cx',   '' + x);
+            hole.setAttribute('cy',   '' + (geo.fence_height_B / 2));
+            hole.setAttribute('r',   '' + (SCREW_CLEARANCE / 2));
+            inside_cut(hole);
+            g.appendChild(hole);
+        };
+        hole(this.sbg.slot_center_A);
+        hole(- this.sbg.slot_center_A);
     }
 };
 
@@ -171,12 +206,10 @@ function contentLoaded() {
     subbase.updateSVG(document.getElementById('SUBBASE_SVG_ELEMENT'));
     showSVG(document.getElementById('SUBBASE_SVG_ELEMENT'),
             document.getElementById('SUBBASE_CODE_ELEMENT'));
-            /*
     var fence = new FenceGeometry(subbase);
     fence.updateSVG(document.getElementById('FENCE_SVG_ELEMENT'));
     showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
             document.getElementById('FENCE_CODE_ELEMENT'));
-*/
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
