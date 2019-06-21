@@ -46,11 +46,12 @@ function path(parent, dSpec) {
   p.setAttribute('d',
       dSpec.map(function(piece) {
           var p = piece.map(function(x) {
-            if (typeof(x) == 'number') {
+            if (typeof(x) == 'number')  {
               return x.toFixed(4);
-            } else {
-              return x;
             }
+              if (x == true) { return '1'; }
+              if (x == false) { return '0'; }
+            return x;
           });
           return p.join(' ');
           })
