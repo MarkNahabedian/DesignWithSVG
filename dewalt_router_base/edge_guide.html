@@ -66,7 +66,7 @@ class SubBaseGeometry {
     
     updateSVG(svg_elt) {
         setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-        var g = document.createElementNS(svgURI, "g");
+        var g = document.createElementNS(svgURI, 'g');
         g.setAttribute('transform', 'translate(' +
                        (SVG_MARGIN + this.x_translate_A) + ', ' +
                        (SVG_MARGIN + this.y_translate_B) + ')');
@@ -114,6 +114,32 @@ class SubBaseGeometry {
         };
         draw_slot(-1);
         draw_slot(1);
+        // Add some more guielines just to get a sense ofmeasurement.
+        var spacing = 0.5;
+        var g1 = document.createElementNS(svgURI, "g");
+        for (var y = 0; y > this.back_edge_B; y -= spacing) {
+            guide_line(path(g1, [
+                ['M', - this.half_width_A, y],
+                ['H', this.half_width_A]
+            ]));
+        }
+        for (var y = spacing; y < this.front_edge_B; y += spacing) {
+            guide_line(path(g1, [
+                ['M', - this.half_width_A, y],
+                ['H', this.half_width_A]
+            ]));
+        }
+        for (var x = 0; x < this.half_width_A; x += spacing) {
+            guide_line(path(g1, [
+                ['M', x, - spacing / 2],
+                ['v', spacing]
+            ]));
+            guide_line(path(g1, [
+                ['M', - x, - spacing / 2],
+                ['v', spacing]
+            ]));
+        }
+        g.appendChild(g1);
     }
 };
 
