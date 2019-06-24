@@ -187,12 +187,19 @@ class FenceGeometry {
         // Holes for the positioning hardware
         var geo = this;
         var hole = function(x) {
+            var y = geo.fence_height_B / 2;
             var hole = document.createElementNS(svgURI, 'circle');
             hole.setAttribute('cx',   '' + x);
-            hole.setAttribute('cy',   '' + (geo.fence_height_B / 2));
+            hole.setAttribute('cy',   '' + y);
             hole.setAttribute('r',   '' + (SCREW_CLEARANCE / 2));
             inside_cut(hole);
             g.appendChild(hole);
+            var clearance = document.createElementNS(svgURI, 'circle');
+            clearance.setAttribute('cx',   '' + x);
+            clearance.setAttribute('cy',   '' + y);
+            clearance.setAttribute('r',   '' + geo.sbg.adjuster_clearance);
+            guide_line(clearance);
+            g.appendChild(clearance);
         };
         hole(this.sbg.slot_center_A);
         hole(- this.sbg.slot_center_A);
