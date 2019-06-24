@@ -98,10 +98,10 @@ class SubBaseGeometry {
             var slot = path(g, [
                 ['M',
                  direction * slot_outside_edge_A,
-                 geo.back_edge_B + geo.adjuster_clearance],
+                 geo.back_edge_B + geo.adjuster_clearance - SCREW_CLEARANCE / 2],
                 ['V', geo.front_edge_B - geo.adjuster_clearance],
                 ['h', - direction * geo.slot_width_A],
-                ['V', geo.back_edge_B + geo.adjuster_clearance],
+                ['V', geo.back_edge_B + geo.adjuster_clearance +  SCREW_CLEARANCE / 2],
                 ['h', direction * geo.slot_width_A]
             ]);
             inside_cut(slot);
@@ -215,6 +215,25 @@ class FenceGeometry {
 };
 
 
+function show_dimensions(parent, subbase, fence) {
+    var dimension = function(text) {
+        console.log(text);
+        var t = document.createElementNS(svgURI, 'p');
+        var t1 = document.createTextNode(text);
+        t.appendChild(t1);
+        parent.appendChild(t);
+    };
+    dimension('Subbase width: ' + (2 * subbase.half_width_A));
+    dimension('Subbase height: ' + (subbase.front_edge_B - subbase.back_edge_B));
+    var fence_adjustment_hole_offset = fence.fence_height_B / 2;
+    dimension('Fence max back position: ' + (
+        subbase.back_edge_B + subbase.adjuster_clearance + fence_adjustment_hole_offset));
+    dimension('Fence max front position: ' + (
+        subbase.front_edge_B - subbase.adjuster_clearance -fence_adjustment_hole_offset));
+    console.log(parent);
+}
+
+
 function contentLoaded() {
     setSVGNamespaces();
     var subbase = new SubBaseGeometry();
@@ -225,6 +244,8 @@ function contentLoaded() {
     fence.updateSVG(document.getElementById('FENCE_SVG_ELEMENT'));
     showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
             document.getElementById('FENCE_CODE_ELEMENT'));
+    show_dimensions(document.getElementById('DIMENSIONS'),
+        subbase, fence);
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
@@ -255,6 +276,9 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
       We assume the fence has a notch cut into it that is big enoughto
       clear a 1/5 inch cutter.
     </p>
+
+    <h2>Dimensions</h2>
+    <div id="DIMENSIONS"></div> 
 
     <h2>Subbase</h2>
     <div>
