@@ -9,6 +9,8 @@
 
 var SVG_MARGIN = 0.25;
 
+var GUIDE_GRID_SPACING = 0.5;
+
 // Diameter of a 1/4 inch fender washer
 var WASHER_DIAMETER = 1.0;
 
@@ -117,7 +119,7 @@ class SubBaseGeometry {
         draw_slot(-1);
         draw_slot(1);
         // Add some more guielines just to get a sense ofmeasurement.
-        var spacing = 0.5;
+        var spacing = GUIDE_GRID_SPACING;
         var g1 = document.createElementNS(svgURI, "g");
         for (var y = 0; y > this.back_edge_B; y -= spacing) {
             guide_line(path(g1, [
@@ -203,6 +205,12 @@ class FenceGeometry {
         };
         hole(this.sbg.slot_center_A);
         hole(- this.sbg.slot_center_A);
+        for (var y = GUIDE_GRID_SPACING; y < this.fence_height_B; y += GUIDE_GRID_SPACING) {
+            guide_line(path(g, [
+                ['M', - this.sbg.half_width_A, y],
+                ['H', this.sbg.half_width_A]
+            ]));
+        }
     }
 };
 
