@@ -1,6 +1,13 @@
 <html>
   <head>
     <title>Template HTML file using these libraries</title>
+    <style type="text/css">
+
+.dimensions  {
+             display: block;
+             font-weight: heavier;
+}
+    </style>
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript" src="dw6184_fixed_base.js"></script>
@@ -10,6 +17,8 @@
 var SVG_MARGIN = 0.25;
 
 var GUIDE_GRID_SPACING = 0.5;
+
+var ROUNDED_CORNER_RADIUS = 0.25;
 
 // Diameter of a 1/4 inch fender washer
 var WASHER_DIAMETER = 1.0;
@@ -75,13 +84,37 @@ class SubBaseGeometry {
                        (SVG_MARGIN + this.x_translate_A) + ', ' +
                        (SVG_MARGIN + this.y_translate_B) + ')');
         svg_elt.appendChild(g);
+        var left_A = - this.half_width_A;
+        var right_A = this.half_width_A;
+        var front_B = this.front_edge_B;
+        var back_B = this.back_edge_B;
         // Perimeter:
         var perimeter = path(g, [
-            ['M', - this.half_width_A, this.back_edge_B],
-            ['H', this.half_width_A],
-            ['V', this.front_edge_B],
-            ['H', - this.half_width_A],
-            ['V', this.back_edge_B],
+            ['M', left_A + ROUNDED_CORNER_RADIUS, back_B],
+            ['H', right_A - ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             right_A, back_B + ROUNDED_CORNER_RADIUS
+            ],
+            ['V', front_B - ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             right_A - ROUNDED_CORNER_RADIUS, front_B
+            ],
+            ['H', left_A + ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             left_A, front_B - ROUNDED_CORNER_RADIUS
+            ],
+            ['V', this.back_edge_B + ROUNDED_CORNER_RADIUS ],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             left_A + ROUNDED_CORNER_RADIUS, back_B
+            ]            
         ]);
         outside_cut(perimeter);
         // Router base accomodations:
@@ -172,16 +205,37 @@ class FenceGeometry {
         g.setAttribute('transform', 'translate(' +
                        (SVG_MARGIN + this.sbg.x_translate_A) + ', ' +
                        SVG_MARGIN + ')');
+        var left_A = - this.sbg.half_width_A;
+        var right_A = this.sbg.half_width_A;
+        var top_B = 0;
+        var bottom_B = this.fence_height_B;
         var perimeter = path(g, [
-            ['M', - this.sbg.half_width_A, 0],
+            ['M', left_A + ROUNDED_CORNER_RADIUS, top_B],
             ['H', - this.cutter_clearance_radius],
+            // Cutter cutout
             ['A', this.cutter_clearance_radius, this.cutter_clearance_radius,
              0.0, false, false,
              this.cutter_clearance_radius, 0],
-            ['H', this.sbg.half_width_A],
-            ['V', this.fence_height_B],
-            ['H', - this.sbg.half_width_A],
-            ['V', 0]
+            ['H', right_A - ROUNDED_CORNER_RADIUS],
+            // corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             right_A, top_B + ROUNDED_CORNER_RADIUS],
+            ['V', bottom_B - ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             right_A - ROUNDED_CORNER_RADIUS, bottom_B],
+            ['H', left_A + ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - this.sbg.half_width_A, this.fence_height_B - ROUNDED_CORNER_RADIUS],
+            ['V', ROUNDED_CORNER_RADIUS],
+            // Corner
+            ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - this.sbg.half_width_A + ROUNDED_CORNER_RADIUS, 0]
         ]);
         outside_cut(perimeter);
         g.appendChild(perimeter);
@@ -278,7 +332,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
     </p>
 
     <h2>Dimensions</h2>
-    <div id="DIMENSIONS"></div> 
+    <div id="DIMENSIONS" class="dimensions"></div> 
 
     <h2>Subbase</h2>
     <div>
