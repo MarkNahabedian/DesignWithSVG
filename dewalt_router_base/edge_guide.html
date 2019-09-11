@@ -38,7 +38,7 @@ var SCREW_CLEARANCE = 0.2660;
 // design.
 // The A axis runs parallel to the face of the fence.
 // The B axis runs perpendicular to it.
-// We append the relevant axis name to eaach dimension to emphasize
+// We append the relevant axis name to each dimension to emphasize
 // the axis that dimension runs parallel to.
 // The 0 position of each axis is at the center of the router spindle.
 
@@ -89,6 +89,8 @@ class SubBaseGeometry {
         var front_B = this.front_edge_B;
         var back_B = this.back_edge_B;
         // Perimeter:
+        var pg = document.createElementNS(svgURI, 'g');
+        g.appendChild(pg);
         var perimeter = path(g, [
             ['M', left_A + ROUNDED_CORNER_RADIUS, back_B],
             ['H', right_A - ROUNDED_CORNER_RADIUS],
@@ -118,17 +120,21 @@ class SubBaseGeometry {
         ]);
         outside_cut(perimeter);
         // Router base accomodations:
-        dw6184_base_perimeter(g);
-        dw6184_center_hole(g);
-        dw6184_mounting_hole(g, 1, 1);
-        dw6184_mounting_hole(g, -1, 1);
-        dw6184_mounting_hole(g, -1, -1);
-        dw6184_mounting_hole(g, 1, -1);
+        var bg = document.createElementNS(svgURI, 'g');
+        g.appendChild(bg);
+        dw6184_base_perimeter(bg);
+        dw6184_center_hole(bg);
+        dw6184_mounting_hole(bg, 1, 1);
+        dw6184_mounting_hole(bg, -1, 1);
+        dw6184_mounting_hole(bg, -1, -1);
+        dw6184_mounting_hole(bg, 1, -1);
         // Slots:
         var geo = this;
         var draw_slot = function(direction) {
+            var sg = document.createElementNS(svgURI, 'g');
+            g.appendChild(sg);
             var slot_outside_edge_A = geo.slot_center_A + geo.slot_width_A;
-            var slot = path(g, [
+            var slot = path(sg, [
                 ['M',
                  direction * slot_outside_edge_A,
                  geo.back_edge_B + geo.adjuster_clearance - SCREW_CLEARANCE / 2],
@@ -138,11 +144,11 @@ class SubBaseGeometry {
                 ['h', direction * geo.slot_width_A]
             ]);
             inside_cut(slot);
-            guide_line(path(g, [
+            guide_line(path(sg, [
                 ['M', direction * (slot_outside_edge_A + geo.adjuster_clearance),
                  geo.back_edge_B],
                 ['V', geo.front_edge_B]]));
-            guide_line(path(g, [
+            guide_line(path(sg, [
                 ['M', direction * (slot_outside_edge_A -
                                    geo.slot_width_A -
                                    geo.adjuster_clearance),
@@ -151,7 +157,7 @@ class SubBaseGeometry {
         };
         draw_slot(-1);
         draw_slot(1);
-        // Add some more guielines just to get a sense ofmeasurement.
+        // Add some more guielines just to get a sense of measurement.
         var spacing = GUIDE_GRID_SPACING;
         var g1 = document.createElementNS(svgURI, "g");
         for (var y = 0; y > this.back_edge_B; y -= spacing) {
