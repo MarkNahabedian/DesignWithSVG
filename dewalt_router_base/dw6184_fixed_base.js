@@ -55,6 +55,16 @@ function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
     xml_parent.appendChild(hole);
 }
 
+
+function dw6184_mounting_hole_countersink(xml_parent, x_direction, y_direction) {
+    var hole = document.createElementNS(svgURI, 'circle');
+    hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction));
+    hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction));
+    hole.setAttribute('r',   '' + (MH_COUNTERSINK_DIAMETER / 2));
+    pocket_cut(hole);
+    xml_parent.appendChild(hole);
+}
+
 // dw6184_center_hole returns a circle, centered on the spindle,
 // representing the clearance hole in the middle of the base plate.
 function dw6184_center_hole(xml_parent) {

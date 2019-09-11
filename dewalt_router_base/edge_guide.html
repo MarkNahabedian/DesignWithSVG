@@ -124,6 +124,10 @@ class SubBaseGeometry {
         g.appendChild(bg);
         dw6184_base_perimeter(bg);
         dw6184_center_hole(bg);
+        dw6184_mounting_hole_countersink(bg, 1, 1);
+        dw6184_mounting_hole_countersink(bg, -1, 1);
+        dw6184_mounting_hole_countersink(bg, -1, -1);
+        dw6184_mounting_hole_countersink(bg, 1, -1);
         dw6184_mounting_hole(bg, 1, 1);
         dw6184_mounting_hole(bg, -1, 1);
         dw6184_mounting_hole(bg, -1, -1);

@@ -2,7 +2,7 @@
 
 var EXPORTED_SYMBOLS = [
     'DEBUG_PATHS', 'inside_cut', 'outside_cut',
-    'on_line_cut', 'guide_line'
+    'on_line_cut', 'pocket_cut', 'guide_line'
 ];
 
 
@@ -39,6 +39,17 @@ function on_line_cut(shape) {
   } else {
     shape.setAttribute('fill', 'none');
     shape.setAttribute('stroke', '#7F7F7F');  // gray
+    shape.setAttribute('opacity', '1.0');
+  }
+  return shape;
+}
+
+function pocket_cut(shape) {
+  if (DEBUG_PATHS) {
+    shape.setAttribute('class', 'debug-shapes');
+  } else {
+      shape.setAttribute('fill', '#7F7F7F');    // gray
+    shape.setAttribute('stroke', 'none');
     shape.setAttribute('opacity', '1.0');
   }
   return shape;
