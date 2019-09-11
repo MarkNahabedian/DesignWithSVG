@@ -1,7 +1,7 @@
-// Parameters and layout for DeWalt DW6184 fix base router sub-base
-// playe mounting.
+// Parameters and layout for DeWalt DW6184 fixed base router sub-base
+// mounting.
 
-// Parameters and laout assume an origin point that is at the center
+// Parameters and layout assume an origin point that is at the center
 // of the router spindle.
 
 // All dimensions are in inches.
@@ -31,6 +31,8 @@ var MH_COUNTERSINK_DIAMETER = 0.3970;
 var MH_COUNTERSINK_DEPTH = 0.1635;
 
 
+// dw6184_base_perimeter Returns the circle that bounds the outer edge
+// of the metal DW6184 router base.
 function dw6184_base_perimeter(xml_parent) {
     var perimeter = document.createElementNS(svgURI, 'circle');
     perimeter.setAttribute('cx', '' + 0);
@@ -42,7 +44,8 @@ function dw6184_base_perimeter(xml_parent) {
 
 // Generate an SVG circle in the specified XML parent element in the
 // direction specified.  x_direction and y_direction should each be
-// either 1 or -1.
+// either 1 or -1.  The resulting circle represents a single mounting
+// hole for connecting the plate to the router base.
 function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
     var hole = document.createElementNS(svgURI, 'circle');
     hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction));
@@ -52,6 +55,8 @@ function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
     xml_parent.appendChild(hole);
 }
 
+// dw6184_center_hole returns a circle, centered on the spindle,
+// representing the clearance hole in the middle of the base plate.
 function dw6184_center_hole(xml_parent) {
     var hole = document.createElementNS(svgURI, 'circle');
     hole.setAttribute('cx',   '' + 0);
