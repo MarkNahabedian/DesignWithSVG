@@ -31,7 +31,7 @@ var MH_COUNTERSINK_DIAMETER = 0.3970;
 var MH_COUNTERSINK_DEPTH = 0.1635;
 
 
-// dw6184_base_perimeter Returns the circle that bounds the outer edge
+// dw6184_base_perimeter returns the circle that bounds the outer edge
 // of the metal DW6184 router base.
 function dw6184_base_perimeter(xml_parent) {
     var perimeter = document.createElementNS(svgURI, 'circle');

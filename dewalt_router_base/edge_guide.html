@@ -11,6 +11,7 @@
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript" src="dw6184_fixed_base.js"></script>
+    <script type="text/javascript" src="dw6182_plunge_base.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
@@ -119,19 +120,27 @@ class SubBaseGeometry {
             ]            
         ]);
         outside_cut(perimeter);
-        // Router base accomodations:
-        var bg = document.createElementNS(svgURI, 'g');
-        g.appendChild(bg);
-        dw6184_base_perimeter(bg);
-        dw6184_center_hole(bg);
-        dw6184_mounting_hole_countersink(bg, 1, 1);
-        dw6184_mounting_hole_countersink(bg, -1, 1);
-        dw6184_mounting_hole_countersink(bg, -1, -1);
-        dw6184_mounting_hole_countersink(bg, 1, -1);
-        dw6184_mounting_hole(bg, 1, 1);
-        dw6184_mounting_hole(bg, -1, 1);
-        dw6184_mounting_hole(bg, -1, -1);
-        dw6184_mounting_hole(bg, 1, -1);
+        // dw6184 router base accomodations:
+        var bg4 = document.createElementNS(svgURI, 'g');
+        g.appendChild(bg4);
+        dw6184_base_perimeter(bg4);
+        dw6184_center_hole(bg4);
+        dw6184_mounting_hole_countersink(bg4, 1, 1);
+        dw6184_mounting_hole_countersink(bg4, -1, 1);
+        dw6184_mounting_hole_countersink(bg4, -1, -1);
+        dw6184_mounting_hole_countersink(bg4, 1, -1);
+        dw6184_mounting_hole(bg4, 1, 1);
+        dw6184_mounting_hole(bg4, -1, 1);
+        dw6184_mounting_hole(bg4, -1, -1);
+        dw6184_mounting_hole(bg4, 1, -1);
+        // dw6182 router base accomodations:
+        var bg2 = document.createElementNS(svgURI, 'g');
+        g.appendChild(bg2);
+        dw6182_base_extent(bg2);
+        dw6182_mounting_hole(bg2, 1, 1);
+        dw6182_mounting_hole(bg2, -1, 1);
+        dw6182_mounting_hole(bg2, -1, -1);
+        dw6182_mounting_hole(bg2, 1, -1);
         // Slots:
         var geo = this;
         var draw_slot = function(direction) {
