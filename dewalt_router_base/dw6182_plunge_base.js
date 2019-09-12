@@ -7,6 +7,9 @@
 // All dimensions are in inches.
 
 var EXPORTED_SYMBOLS = [
+    'BASE_TOTAL_WIDTH',
+    'BASE_TOTAL_DEPTH',
+    'dw6182_base_extent',
     'dw6182_mounting_hole'
 ];
 

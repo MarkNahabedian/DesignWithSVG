@@ -46,16 +46,20 @@ var SCREW_CLEARANCE = 0.2660;
 class SubBaseGeometry {
     constructor() {
         // Dimensions are in inches.
-        var base_radius = BASE_DIAMETER / 2;
-        this.back_edge_B = - base_radius - 0.5;
-        this.front_edge_B = base_radius + 2;
+        // Dimensions of metal base expressed as distance from
+        // spindle center.  We take the larger of the dw6182 and
+        // dw6184 dimensions.
+        var base_A = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_WIDTH / 2);
+        var base_B = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_DEPTH / 2);
+        this.back_edge_B = - base_B - 0.5;
+        this.front_edge_B = base_B + 2;
         this.corner_radius = 0.5;
         this.slot_width_A = SCREW_CLEARANCE;
         this.beyond_slot_A = 1;
         this.adjuster_clearance = Math.max(WASHER_DIAMETER, STAR_KNOB_DIAMETER) / 2;
         console.assert(this.beyond_slot_A > this.adjuster_clearance,
                        'beyond_slot must be greater than adjuster_clearance');
-        this.half_width_A = base_radius + 2 * this.adjuster_clearance +
+        this.half_width_A = base_A + 2 * this.adjuster_clearance +
                             this.slot_width_A + this.beyond_slot_A +
                             // extra width
                             2;
