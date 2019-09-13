@@ -3,7 +3,12 @@ to be cut using a laser cutter or CNC router.
 
 The primary focus of these tools is the Shaper Origin, a hand held CNC
 router that takes SVG files for describing the cutting and engraving
-paths.
+paths.at
+
+A web view of some of these tools is available at
+<a href="https://marknahabedian.github.io/DesignWithSVG/">
+https://marknahabedian.github.io/DesignWithSVG/
+</a>.
 
 Being a computer programmer, I prefer to define my designs using code
 to describe exactly what I want, rather than using a graphical user
