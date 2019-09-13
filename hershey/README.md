@@ -24,8 +24,8 @@ ordering the strokes in each subpath.
 
 render_text.js provides the JavaScript function renderText for
 rendering small amounts of text as SVG.  It takes a parent element to
-add child SVG elements to, a font as read from a file written by
-extract_font.py, a string of text and an optional kerning table.  The
+add child SVG elements to, a font as read from a file (previusly written by
+extract_font.py), a string of text and an optional kerning table.  The
 font files do not appear to have the proper spacing between glyphs.
 The kerning table allows one to add additional spacing between any
 specified pair of characters.  fonts/Sans_1-stroke.kerning contains a
