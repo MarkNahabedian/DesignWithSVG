@@ -16,6 +16,10 @@ var EXPORTED_SYMBOLS = [
 
 var BASE_TOTAL_WIDTH = 5.7875;
 var BASE_TOTAL_DEPTH = 4.42;
+var BASE_END_RADIUS = 3;
+var BASE_ARC_HEIGHT = BASE_END_RADIUS - Math.sqrt(
+    BASE_END_RADIUS * BASE_END_RADIUS -
+        (BASE_TOTAL_DEPTH / 2) * (BASE_TOTAL_DEPTH / 2));
 
 var CENTER_HOLE_DIAMETER = 1.1975;
 
@@ -29,14 +33,21 @@ var MH_DIAMETER = 0.1770;    // Loose clearance for #8-36 machine screw
 // dw6182_base_extent returns a rectangle that bounds the outer edge
 // of the metal DW6182 router base.
 function dw6182_base_extent(xml_parent) {
-    var dx = BASE_TOTAL_WIDTH / 2;
+    var dx = BASE_TOTAL_WIDTH / 2 - BASE_ARC_HEIGHT;
     var dy = BASE_TOTAL_DEPTH / 2;
     var bounds = path(xml_parent, [
         ['M', -dx, -dy],
         ['H', dx],
-        ['V', dy],
+        // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+        ['A',
+         BASE_END_RADIUS, BASE_END_RADIUS,
+         0, false, true,
+         dx, dy],
         ['H', -dx],
-        ['z']
+        ['A',
+         BASE_END_RADIUS, BASE_END_RADIUS,
+         0, false, true,
+         -dx, -dy]
     ]);
     guide_line(bounds);
     xml_parent.appendChild(bounds);
