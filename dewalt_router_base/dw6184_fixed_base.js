@@ -12,7 +12,7 @@ var EXPORTED_SYMBOLS = [
     'MH_DIAMETER', 'MH_COUNTERSINK_DIAMETER',
     'MH_COUNTERSINK_DEPTH',
     'dw6184_base_perimeter',
-    'dw6184_mounting_hole',
+    'dw6184_mounting_hole_center',
     'dw6184_center_hole'
 ];
 
@@ -42,27 +42,12 @@ function dw6184_base_perimeter(xml_parent) {
     xml_parent.appendChild(perimeter);
 }
 
-// Generate an SVG circle in the specified XML parent element in the
-// direction specified.  x_direction and y_direction should each be
-// either 1 or -1.  The resulting circle represents a single mounting
-// hole for connecting the plate to the router base.
-function dw6184_mounting_hole(xml_parent, x_direction, y_direction) {
-    var hole = document.createElementNS(svgURI, 'circle');
-    hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction));
-    hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction));
-    hole.setAttribute('r',   '' + (MH_DIAMETER / 2));
-    inside_cut(hole);
-    xml_parent.appendChild(hole);
-}
-
-
-function dw6184_mounting_hole_countersink(xml_parent, x_direction, y_direction) {
-    var hole = document.createElementNS(svgURI, 'circle');
-    hole.setAttribute('cx',   '' + (MH_XY_DELTA * x_direction));
-    hole.setAttribute('cy',   '' + (MH_XY_DELTA * y_direction));
-    hole.setAttribute('r',   '' + (MH_COUNTERSINK_DIAMETER / 2));
-    pocket_cut(hole);
-    xml_parent.appendChild(hole);
+// dw6184_mounting_hole_center returns [x. y] of the center of the
+// specified mounting hole x_direction and y_direction should each be
+// either 1 or -1.
+function dw6184_mounting_hole_center(x_direction, y_direction) {
+    return [ (MH_XY_DELTA * x_direction),
+             (MH_XY_DELTA * y_direction) ];
 }
 
 // dw6184_center_hole returns a circle, centered on the spindle,

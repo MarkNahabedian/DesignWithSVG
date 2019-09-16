@@ -129,22 +129,12 @@ class SubBaseGeometry {
         g.appendChild(bg4);
         dw6184_base_perimeter(bg4);
         dw6184_center_hole(bg4);
-        dw6184_mounting_hole_countersink(bg4, 1, 1);
-        dw6184_mounting_hole_countersink(bg4, -1, 1);
-        dw6184_mounting_hole_countersink(bg4, -1, -1);
-        dw6184_mounting_hole_countersink(bg4, 1, -1);
-        dw6184_mounting_hole(bg4, 1, 1);
-        dw6184_mounting_hole(bg4, -1, 1);
-        dw6184_mounting_hole(bg4, -1, -1);
-        dw6184_mounting_hole(bg4, 1, -1);
+        mounting_holes(bg4, dw6184_mounting_hole_center);
         // dw6182 router base accomodations:
         var bg2 = document.createElementNS(svgURI, 'g');
         g.appendChild(bg2);
         dw6182_base_extent(bg2);
-        dw6182_mounting_hole(bg2, 1, 1);
-        dw6182_mounting_hole(bg2, -1, 1);
-        dw6182_mounting_hole(bg2, -1, -1);
-        dw6182_mounting_hole(bg2, 1, -1);
+        mounting_holes(bg2, dw6182_mounting_hole_center);
         // Slots:
         var geo = this;
         var draw_slot = function(direction) {
@@ -202,6 +192,32 @@ class SubBaseGeometry {
         g.appendChild(g1);
     }
 };
+
+
+// mounting_hole creates an SVG circle element for a hole centered at
+// center (a two wlwmwnt array of x, y) with the specified diameter.
+// The hole is returned.
+function hole(center, diameter) {
+    var hole = document.createElementNS(svgURI, 'circle');
+    hole.setAttribute('cx',   '' + center[0]);
+    hole.setAttribute('cy',   '' + center[1]);
+    hole.setAttribute('r',   '' + (diameter / 2));
+    return hole;
+}
+
+function mounting_hole(xml_parent, center) {
+    xml_parent.appendChild(
+        pocket_cut(hole(center, MH_COUNTERSINK_DIAMETER)));
+    xml_parent.appendChild(
+        inside_cut(hole(center, MH_DIAMETER)));
+}
+
+function mounting_holes(xml_parent, center_function) {
+    mounting_hole(xml_parent, center_function(-1, -1));
+    mounting_hole(xml_parent, center_function(-1, 1));
+    mounting_hole(xml_parent, center_function(1, 1));
+    mounting_hole(xml_parent, center_function(1, -1));
+}
 
 
 class FenceGeometry {

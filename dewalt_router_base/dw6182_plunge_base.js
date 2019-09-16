@@ -10,7 +10,7 @@ var EXPORTED_SYMBOLS = [
     'BASE_TOTAL_WIDTH',
     'BASE_TOTAL_DEPTH',
     'dw6182_base_extent',
-    'dw6182_mounting_hole'
+    'dw6182_mounting_hole_center'
 ];
 
 
@@ -54,15 +54,11 @@ function dw6182_base_extent(xml_parent) {
 }
 
 
-// Generate an SVG circle in the specified XML parent element in the
-// direction specified.  x_direction and y_direction should each be
-// either 1 or -1.  The resulting circle represents a single mounting
-// hole for connecting the plate to the router base.
-function dw6182_mounting_hole(xml_parent, x_direction, y_direction) {
-    var hole = document.createElementNS(svgURI, 'circle');
-    hole.setAttribute('cx',   '' + (x_direction * MH_LONG_DISTANCE / 2));
-    hole.setAttribute('cy',   '' + (y_direction * MH_SHORT_DISTANCE / 2));
-    hole.setAttribute('r',   '' + (MH_DIAMETER / 2));
-    inside_cut(hole);
-    xml_parent.appendChild(hole);
+// dw6182_mounting_hole_center returns [x. y] of the center of the
+// specified mounting hole x_direction and y_direction should each be
+// either 1 or -1.
+function dw6182_mounting_hole_center(x_direction, y_direction) {
+    return [ (x_direction * MH_LONG_DISTANCE / 2),
+             (y_direction * MH_SHORT_DISTANCE / 2) ];
 }
+
