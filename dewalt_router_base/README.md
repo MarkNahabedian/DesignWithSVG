@@ -4,6 +4,6 @@ for a router edge guide base plate that could be mounted onto either
 of those bases.
 
 The design can be viewed at
-[here](href="https://marknahabedian.github.io/DesignWithSVG/edge_guide.html)
+[here](https://marknahabedian.github.io/DesignWithSVG/dewalt_router_base/edge_guide.html)
 and is suitable for cutting using
 Shaper Origin.
