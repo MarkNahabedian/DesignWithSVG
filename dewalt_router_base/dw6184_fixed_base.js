@@ -24,7 +24,7 @@ var BASE_DIAMETER = 3.9385;
 var CENTER_HOLE_DIAMETER = 1.1975;  // *** Measure again.  We should pick a diameter that works with our centering cone.
 
 //Mounting holes for attaching the sub-base plate to the base:
-var MH_DIAGONAL_DISTANCE = 3.6525;
+var MH_DIAGONAL_DISTANCE = 3.30525;
 var MH_XY_DELTA = (MH_DIAGONAL_DISTANCE / 2) * Math.cos(Math.PI / 4);
 var MH_DIAMETER = 0.1770;    // Loose clearance for #8-36 machine screw
 var MH_COUNTERSINK_DIAMETER = 0.3970;
