@@ -128,7 +128,6 @@ class SubBaseGeometry {
         var bg4 = document.createElementNS(svgURI, 'g');
         g.appendChild(bg4);
         dw6184_base_perimeter(bg4);
-        dw6184_center_hole(bg4);
         mounting_holes(bg4, dw6184_mounting_hole_center);
         // dw6182 router base accomodations:
         var bg2 = document.createElementNS(svgURI, 'g');
@@ -164,7 +163,7 @@ class SubBaseGeometry {
         };
         draw_slot(-1);
         draw_slot(1);
-        // Add some more guielines just to get a sense of measurement.
+        // Add some more guide lines just to get a sense of measurement.
         var spacing = GUIDE_GRID_SPACING;
         var g1 = document.createElementNS(svgURI, "g");
         for (var y = 0; y > this.back_edge_B; y -= spacing) {
@@ -310,8 +309,7 @@ class FenceGeometry {
 
 function show_dimensions(parent, subbase, fence) {
     var dimension = function(text) {
-        console.log(text);
-        var t = document.createElementNS(svgURI, 'p');
+        var t = document.createElement('p');
         var t1 = document.createTextNode(text);
         t.appendChild(t1);
         parent.appendChild(t);
@@ -323,7 +321,6 @@ function show_dimensions(parent, subbase, fence) {
         subbase.back_edge_B + subbase.adjuster_clearance + fence_adjustment_hole_offset));
     dimension('Fence max front position: ' + (
         subbase.front_edge_B - subbase.adjuster_clearance -fence_adjustment_hole_offset));
-    console.log(parent);
 }
 
 
