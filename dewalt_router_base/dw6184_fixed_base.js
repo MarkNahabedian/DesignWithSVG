@@ -12,8 +12,7 @@ var EXPORTED_SYMBOLS = [
     'MH_DIAMETER', 'MH_COUNTERSINK_DIAMETER',
     'MH_COUNTERSINK_DEPTH',
     'dw6184_base_perimeter',
-    'dw6184_mounting_hole_center',
-    'dw6184_center_hole'
+    'dw6184_mounting_hole_center'
 ];
 
 
@@ -49,15 +48,3 @@ function dw6184_mounting_hole_center(x_direction, y_direction) {
     return [ (MH_XY_DELTA * x_direction),
              (MH_XY_DELTA * y_direction) ];
 }
-
-// dw6184_center_hole returns a circle, centered on the spindle,
-// representing the clearance hole in the middle of the base plate.
-function dw6184_center_hole(xml_parent) {
-    var hole = document.createElementNS(svgURI, 'circle');
-    hole.setAttribute('cx',   '' + 0);
-    hole.setAttribute('cy',   '' + 0);
-    hole.setAttribute('r',   '' + (CENTER_HOLE_DIAMETER / 2));
-    inside_cut(hole);
-    xml_parent.appendChild(hole);
-}
-
