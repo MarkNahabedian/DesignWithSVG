@@ -16,6 +16,13 @@ font files complete with their ASCII code and dimensions.  I've
 checked in fonts/Sans_1-stroke.html -- the output of make_samples.py
 for the single stroke sans seriph font.
 
+<a href="https://marknahabedian.github.io/DesignWithSVG/hershey/fonts/Sans_1-stroke.html">
+Sans_1-stroke.html</a>
+is the output of make_samples.py when applied to Hershey's single
+stroke sans-serif font.  Youcan see the glyph for each character, some
+metrics like the glyph's width and height, and the SVG path code
+(prior to path_cleanup.py)).
+
 The Shaper Origin requires that each path consist of only a single
 subpath that doesn't branch.  path_cleanup.py cleans up the paths in a
 JSON font file (as written by extract_font.py) by splitting
@@ -30,3 +37,5 @@ font files do not appear to have the proper spacing between glyphs.
 The kerning table allows one to add additional spacing between any
 specified pair of characters.  fonts/Sans_1-stroke.kerning contains a
 small number of kerning pairs -- those I needed to make some nametags.
+
+
