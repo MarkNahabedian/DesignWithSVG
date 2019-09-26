@@ -63,3 +63,7 @@ will have rounded corners with a 0.2 inch radius.  The second line
 adds another 0.2 inch margin around the previous rectangle, this one
 with right angle corners.
 
+
+#Example
+
+<img src="example-Mark.svg" />
