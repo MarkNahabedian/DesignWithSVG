@@ -29,6 +29,9 @@ var STAR_KNOB_DIAMETER = 1.5;
 // Free fit clearance for 1/4 - 20 machine screw.
 var SCREW_CLEARANCE = 0.2660;
 
+var STOP_PIN_INSET = 0.5;
+var STOP_PIN_DIAMETER = 0.25;
+
 // There will be a second fence that can be set so that the position
 // of the main fence can be set relative to it.
 // We need to ensure that the knobs of the two fences don't interfere
@@ -51,7 +54,7 @@ class SubBaseGeometry {
         // dw6184 dimensions.
         var base_A = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_WIDTH / 2);
         var base_B = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_DEPTH / 2);
-        this.back_edge_B = - base_B - 0.5;
+        this.back_edge_B = - base_B - 1;
         this.front_edge_B = base_B + 2;
         this.corner_radius = 0.5;
         this.slot_width_A = SCREW_CLEARANCE;
@@ -170,22 +173,31 @@ class SubBaseGeometry {
             var p2 = dw6184_mounting_hole_center(1, -1);
             var txt = document.createElementNS(svgURI, 'text');
             txt.appendChild(document.createTextNode(
-                'pocket depth ' + MH_COUNTERSINK_DEPTH +
-                    ' inch'));
+                'pocket depth ' + MH_COUNTERSINK_DEPTH + ' inch'));
             guide_line(txt);
             g.appendChild(txt);
+            txt.removeAttribute('stroke-width');
+            txt.setAttribute('x', '0');
+            txt.setAttribute('y', '0');
+            txt.setAttribute('font-family', 'sans-serif');
+            txt.setAttribute('fill', txt.getAttribute('stroke'));
             var scale = 'scale(' +
                 (0.8 * (p2[0] - p1[0]) /
                  txt.getBBox().width) + ')';
+            txt.setAttribute('transform', scale);
             var trans = 'translate(' + 
-                ((p2[0] - p1[0]) / 2 - txt.getBBox().width / 2) +
-                ', ' + p1[1] + ')';
+                (- txt.getBBox().width / 2) + ' ' + p1[1] + ')';
             txt.setAttribute('transform', scale + trans);
-            txt.setAttribute('x', '0');
-            txt.setAttribute('y', '0');
-            txt.removeAttribute('stroke-width');
-            txt.removeAttribute('fill');
         }
+        // We make a hole for a stop pin that can help with makiing
+        // stopped grooves.
+        var stop_pin_hole = document.createElementNS(svgURI, 'circle');
+        stop_pin_hole.setAttribute('id', 'stop_pin_hole');
+        stop_pin_hole.setAttribute('r', '' + STOP_PIN_DIAMETER/2);
+        stop_pin_hole.setAttribute('cx', '' + 0);
+        stop_pin_hole.setAttribute('cy', '' + (back_B + STOP_PIN_INSET));
+        inside_cut(stop_pin_hole);
+        g.appendChild(stop_pin_hole);
         // Add some more guide lines just to get a sense of measurement.
         var spacing = GUIDE_GRID_SPACING;
         var g1 = document.createElementNS(svgURI, "g");
