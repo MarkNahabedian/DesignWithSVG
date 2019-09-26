@@ -64,6 +64,15 @@ adds another 0.2 inch margin around the previous rectangle, this one
 with right angle corners.
 
 
-#Example
+# Example
+
+Here is an example of the SVG output with input text "Mark" and a
+rounded rectangle border and cut path:
 
 <img src="example-Mark.svg" />
+
+Here is a picture of the resulting nametag, cut using the 60 degree V
+engraving bit that comes with Shaper Origin:
+
+<img src="example-Mark-cut.jpg" size="100%" />
+
