@@ -563,8 +563,9 @@ function contentLoaded() {
 
     var end_stop_upright = new EndStopUprightGeometry(
         new EndStopClampJawGeometry());
-    end_stop_upright.updateSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'),
-                               document.getElementById('END_STOP_UPRIGHT_CODE_ELEMENT'));
+    end_stop_upright.updateSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'));
+    showSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'),
+            document.getElementById('END_STOP_UPRIGHT_CODE_ELEMENT'));
     /*
     end_stop_upright.jaw_geometry.updateSVG(
         document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
