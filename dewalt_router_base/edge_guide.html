@@ -15,11 +15,15 @@
     <script type="text/javascript">
 //<![CDATA[
 
+// Extra spacs between the bounding rectangle of a part and the edges
+// of the SVG element.
 var SVG_MARGIN = 0.25;
 
 var GUIDE_GRID_SPACING = 0.5;
 
 var ROUNDED_CORNER_RADIUS = 0.25;
+
+var BASE_PLATE_THICKNESS = 0.25;
 
 // Diameter of a 1/4 inch fender washer
 var WASHER_DIAMETER = 1.0;
@@ -31,6 +35,11 @@ var SCREW_CLEARANCE = 0.2660;
 
 var STOP_PIN_INSET = 0.5;
 var STOP_PIN_DIAMETER = 0.25;
+
+var MAX_STOCK_THICKNESS = 2;
+
+var STOP_ADJUSTMENT_SCREW_DIAMETER = 0.25;
+var END_STOP_CLAMP_SCREW_DIAMETER = 0.375;   // ***** To be determined
 
 // There will be a second fence that can be set so that the position
 // of the main fence can be set relative to it.
@@ -253,6 +262,37 @@ function mounting_holes(xml_parent, center_function) {
     mounting_hole(xml_parent, center_function(1, -1));
 }
 
+function draw_grid(group, spacing, x1, x2, y1, y2) {
+    var vrules = document.createElementNS(svgURI, 'g');
+    group.appendChild(vrules);
+    for (var x = 0; x < x2; x += spacing) {
+        guide_line(path(vrules, [
+            ['M', x, y1],
+            ['V', y2]
+        ]));
+    }
+    for (var x = - spacing; x > x1; x -= spacing) {
+        guide_line(path(vrules, [
+            ['M', x, y1],
+            ['V', y2]
+        ]));
+    }
+    var hrules = document.createElementNS(svgURI, 'g');
+    group.appendChild(hrules);
+    for (var y = 0; y <= y2; y += spacing) {
+        guide_line(path(hrules, [
+            ['M', x1, y],
+            ['H', x2]
+        ]));
+    }
+    for (var y = - spacing; y >= y1; y -= spacing) {
+        guide_line(path(hrules, [
+            ['M', x1, y],
+            ['H', x2]
+        ]));
+    }
+}
+
 
 class FenceGeometry {
     constructor(subbaseGeometry) {
@@ -342,6 +382,157 @@ class FenceGeometry {
 };
 
 
+// In oder to make stopped grooves, we have an end stop piece that
+// clamps on to the end of the work and has a protrusion with an
+// adjusting screw that will butt against the stop pin of the base
+// plate.  This end stop has three wooden parts: an upright, a top jaw
+// (the bottom of which sits on the stock), and a bottom "jaw" that
+// just provides s screw hole for the threaded rod that clamps to the
+// bottom of the stock.  The two jaws are glued into dados that are
+// cut in the upright.  Part of the upright hangs out over the path of
+// the base plate so that the base plate can freely pass the upright
+// but the upright can still reach the path of the stop peg.
+class EndStopUprightGeometry {
+    constructor(jaw_geometry) {
+        jaw_geometry.upright = this;
+        this.jaw_geometry = jaw_geometry;     // a EndStompClapJawGeometry
+        this.cutter_diameter = 0.25;
+        this.extra = 0.25;
+        // Origin:
+        // x = 0 is at what would be the back edge of the base plate.
+        // Negative x is into the base plate.
+        // y = 0 is at the top of the stock or the bottom of the base plate.
+        // Increasing y is above the stock.
+        // distance between back of base and front edge of top clamp jaw.
+        this.base_clearance = 0.5;
+        // max_stock_thickness is the thickest piece of stock we might clamp to.
+        this.max_stock_thickness = MAX_STOCK_THICKNESS;
+        this.upright_clamp_width = 2;
+        this.dado_width = this.jaw_geometry.stock_thickness;
+        this.dado_spacing = this.max_stock_thickness;
+        this.screw_extra = STOP_ADJUSTMENT_SCREW_DIAMETER / 2 + this.extra;
+        this.stop_adjust_height = Math.max(BASE_PLATE_THICKNESS, this.dado_width) +
+            ROUNDED_CORNER_RADIUS + this.screw_extra;
+        this.stop_adjust_center_x = 0 - STOP_PIN_INSET;
+        this.front_x = this.stop_adjust_center_x - this.screw_extra;
+        this.back_x = this.base_clearance + this.upright_clamp_width;
+        this.top_y = this.stop_adjust_height + this.screw_extra;
+        this.bottom_y = - this.max_stock_thickness - this.dado_width - this.extra;
+    }
+
+    svgWidth() {
+        return this.back_x - this.front_x + 2 * SVG_MARGIN;;
+    }
+    
+    svgHeight() {
+        return this.top_y - this.bottom_y + 2 * SVG_MARGIN;;
+    }
+    
+    updateSVG(svg_elt) {
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+        var g = document.createElementNS(svgURI, 'g');
+        svg_elt.appendChild(g);
+        g.setAttribute('transform', 'translate(' +
+                       (SVG_MARGIN - this.front_x) + ', ' +
+                       (SVG_MARGIN - this.bottom_y) + ')');
+        var perimeter = path(g, [
+            ['M', this.front_x + this.base_clearance +
+             ROUNDED_CORNER_RADIUS,
+             this.bottom_y],
+            ['H', this.back_x - ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
+            ['V', this.top_y - ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
+            ['H', this.front_x + ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
+            ['V', this.stop_adjust_height - this.screw_extra - ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
+            ['H', this.base_clearance - ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, false,
+             ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
+            ['V', this.bottom_y + ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS]
+        ]);
+        outside_cut(perimeter);
+        g.appendChild(perimeter);
+        // Hole for adjustment screw
+        g.appendChild(inside_cut(hole(
+            [this.stop_adjust_center_x, this.stop_adjust_height],
+            0.2100 // Tap hole for 1/4 - 20 machine screw, guess for wood
+        )));
+        // Dados for the clamp jaws
+        pocket_cut(path(g, [
+            ['M', this.base_clearance - this.cutter_diameter, 0],
+            ['H', this.back_x + this.cutter_diameter],
+            ['v', this.dado_width],
+            ['H', this.base_clearance - this.cutter_diameter],
+            ['V', 0]
+        ]));
+        pocket_cut(path(g, [
+            ['M', this.base_clearance - this.cutter_diameter,
+             - this.max_stock_thickness],
+            ['H', this.back_x + this.cutter_diameter],
+            ['v', - this.dado_width],
+            ['H', this.base_clearance - this.cutter_diameter],
+            ['V', - this.max_stock_thickness]
+        ]));
+        // Bounding box guide lines
+        guide_line(path(g, [
+            ['M', this.front_x, this.bottom_y],
+            ['H', this.back_x],
+            ['V', this.top_y],
+            ['H', this.front_x],
+            ['V', this.bottom_y]
+        ]));
+        // Guide line for router base
+        guide_line(path(g, [
+            ['M', -1, 0],
+            ['H', 0],
+            ['V', BASE_PLATE_THICKNESS],
+            ['H', -1]
+        ]));
+        // Grid
+        var grid = document.createElementNS(svgURI, 'g');
+        g.appendChild(grid);
+        draw_grid(grid, GUIDE_GRID_SPACING,
+                  this.front_x, this.back_x,
+                  this.bottom_y, this.top_y);
+    }
+};
+
+
+class EndStopClampJawGeometry {
+    constructor() {
+        this.upright = null;
+        this.stock_thickness = 0.5;   // ***** measure stock
+    }
+    
+    svgWidth() {
+        // Return the value for the width attribute of the SVG element.
+    }
+    
+    svgHeight() {
+        // Return the value for the height attribute of the SVG element.
+    }
+    
+  updateSVG(svg_elt) {
+      setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+      // DRAW INTO svg_elt HERE.
+  }
+};
+
+
 function show_dimensions(parent, subbase, fence) {
     var dimension = function(text) {
         var t = document.createElement('p');
@@ -369,6 +560,16 @@ function contentLoaded() {
     fence.updateSVG(document.getElementById('FENCE_SVG_ELEMENT'));
     showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
             document.getElementById('FENCE_CODE_ELEMENT'));
+
+    var end_stop_upright = new EndStopUprightGeometry(
+        new EndStopClampJawGeometry());
+    end_stop_upright.updateSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'),
+                               document.getElementById('END_STOP_UPRIGHT_CODE_ELEMENT'));
+    /*
+    end_stop_upright.jaw_geometry.updateSVG(
+        document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
+        document.getElementById('END_STOP_JAW_CODE_ELEMENT'));
+    */
     show_dimensions(document.getElementById('DIMENSIONS'),
         subbase, fence);
 }
@@ -418,6 +619,30 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
       </pre>
       <svg id="FENCE_SVG_ELEMENT"></svg>
     </div>
+
+    <h2>End Stop Upright</h2>
+    <p>
+      There are two of these and they will be mirror images of each
+      other.  We only give the desigbn for one because I think Shaper
+      Origin provides on-tool mirroring.
+    </p>
+    <div>
+      <pre id="END_STOP_UPRIGHT_CODE_ELEMENT"> 
+      </pre>
+      <svg id="END_STOP_UPRIGHT_SVG_ELEMENT"></svg>
+    </div>
+
+    <h2>>End Stop Clamp Jaw</h2>
+    <p>
+      There are two of these per end stop.  Only the bottom one needs
+      to have the hole drilled through it.
+    </p>
+    <div>
+      <pre id="END_STOP_JAW_CODE_ELEMENT"> 
+      </pre>
+      <svg id="END_STOP_JAW_SVG_ELEMENT"></svg>
+    </div>
+
 
   </body>
 </html>
