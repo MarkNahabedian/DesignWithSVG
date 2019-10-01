@@ -563,8 +563,12 @@ class EndStopClampJawGeometry {
              this.dado_depth + this.clamp_screw_offset],
             this.clamp_screw_diameter // loose fit clearance
         )));
-        
-  }
+        // Guide line showing insertion into dado
+        guide_line(path(g, [
+            ['M', 0, this.dado_depth],
+            ['H', this.upright.upright_clamp_width]
+        ]));
+    }
 };
 
 
@@ -606,12 +610,6 @@ function contentLoaded() {
         'END_STOP_JAW_SVG_ELEMENT'));
     showSVG(document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
             document.getElementById('END_STOP_JAW_CODE_ELEMENT'));
-    
-    /*
-    end_stop_upright.jaw_geometry.updateSVG(
-        document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
-        document.getElementById('END_STOP_JAW_CODE_ELEMENT'));
-    */
     show_dimensions(document.getElementById('DIMENSIONS'),
         subbase, fence);
 }
