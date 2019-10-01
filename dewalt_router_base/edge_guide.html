@@ -517,19 +517,53 @@ class EndStopClampJawGeometry {
     constructor() {
         this.upright = null;
         this.stock_thickness = 0.5;   // ***** measure stock
+        this.dado_depth = this.stock_thickness / 2;
+        this.jaw_reach = 2;
+        this.t_nut_width = 1;         // ***** measure
+        this.clamp_screw_offset = 1;
+        this.total_jaw_length = null;
+        this.clamp_screw_diameter = 0.2660; // Free fit for 1/4 - 20 machine screw
     }
     
     svgWidth() {
-        // Return the value for the width attribute of the SVG element.
+        return this.upright.upright_clamp_width + 2 * SVG_MARGIN;
     }
     
     svgHeight() {
-        // Return the value for the height attribute of the SVG element.
+        this.total_jaw_length = this.dado_depth +
+            this.clamp_screw_offset +
+            this.t_nut_width / 2+ this.upright.extra;
+        return this.total_jaw_length + 2 * SVG_MARGIN;
     }
     
-  updateSVG(svg_elt) {
-      setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-      // DRAW INTO svg_elt HERE.
+    updateSVG(svg_elt) {
+        setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+        var g = document.createElementNS(svgURI, 'g');
+        svg_elt.appendChild(g);
+        g.setAttribute('transform', 'translate(' +
+                       (SVG_MARGIN) + ', ' +
+                       (SVG_MARGIN) + ')');
+        var perimeter = path(g, [
+            ['M', 0, 0],
+            ['H',this.upright.upright_clamp_width], 
+            ['V', this.total_jaw_length - ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
+            ['H', 0 + ROUNDED_CORNER_RADIUS],
+            ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+             0.0, false, true,
+             - ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
+            ['V', 0]
+        ]);
+        outside_cut(perimeter);
+        g.appendChild(perimeter);
+        g.appendChild(inside_cut(hole(
+            [this.upright.upright_clamp_width / 2,
+             this.dado_depth + this.clamp_screw_offset],
+            this.clamp_screw_diameter // loose fit clearance
+        )));
+        
   }
 };
 
@@ -567,6 +601,12 @@ function contentLoaded() {
     end_stop_upright.updateSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'));
     showSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'),
             document.getElementById('END_STOP_UPRIGHT_CODE_ELEMENT'));
+
+    end_stop_upright.jaw_geometry.updateSVG(document.getElementById(
+        'END_STOP_JAW_SVG_ELEMENT'));
+    showSVG(document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
+            document.getElementById('END_STOP_JAW_CODE_ELEMENT'));
+    
     /*
     end_stop_upright.jaw_geometry.updateSVG(
         document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
