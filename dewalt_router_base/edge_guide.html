@@ -451,7 +451,7 @@ class EndStopUprightGeometry {
             ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
              0.0, false, true,
              - ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
-            ['V', this.stop_adjust_height - this.screw_extra - ROUNDED_CORNER_RADIUS],
+            ['V', this.stop_adjust_height - this.screw_extra + ROUNDED_CORNER_RADIUS],
             ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
              0.0, false, true,
              ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
@@ -496,12 +496,13 @@ class EndStopUprightGeometry {
             ['V', this.bottom_y]
         ]));
         // Guide line for router base
-        guide_line(path(g, [
+        var base = guide_line(path(g, [
             ['M', -1, 0],
             ['H', 0],
             ['V', BASE_PLATE_THICKNESS],
             ['H', -1]
         ]));
+        base.setAttribute('fill', base.getAttribute('stroke'));
         // Grid
         var grid = document.createElementNS(svgURI, 'g');
         g.appendChild(grid);
