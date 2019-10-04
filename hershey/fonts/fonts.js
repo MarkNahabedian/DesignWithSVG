@@ -30,7 +30,7 @@ function availableFonts(call_me_with_font_names_array) {
 	var got = req.responseText.split('\n');
 	for(var i = 0; i < got.length; i++) {
 	    if (got[i].length > 0) {
-		fonts.pushback(got[i]);
+		fonts.push(got[i]);
 	    }
 	}
 	call_me_with_font_names_array(fonts);
