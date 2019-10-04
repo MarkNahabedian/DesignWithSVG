@@ -22,7 +22,7 @@ function absURI(relative) {
     return document.documentURI + '/' + relative;
 }
 
-function availableFonts(call_me_with_font_names_array) {
+function availableFonts(fonts_array_callback) {
     var fonts = []
     var req = new XMLHttpRequest();
     var fontsURI = dirname(absURI()) + '/fonts.txt';
@@ -33,7 +33,7 @@ function availableFonts(call_me_with_font_names_array) {
 		fonts.push(got[i]);
 	    }
 	}
-	call_me_with_font_names_array(fonts);
+	fonts_array_callback(fonts);
     });
     req.open('GET', fontsURI);
     req.send();
