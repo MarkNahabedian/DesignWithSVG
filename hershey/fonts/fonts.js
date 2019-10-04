@@ -3,7 +3,8 @@
 var EXPORTED_SYMBOLS = [
     'fontCleanedUpFile',
     'fontKerningFile',
-    'availableFonts'
+    'availableFonts',
+    
 ];
 
 function fontCleanedUpFile(fontname) {
@@ -21,11 +22,18 @@ function absURI(relative) {
     return document.documentURI + '/' + relative;
 }
 
-function availableFonts() {
+function availableFonts(call_me_with_font_names_array) {
+    var fonts = []
     var req = new XMLHttpRequest();
     var fontsURI = dirname(absURI()) + '/fonts.txt';
     req.addEventListener('load', function() {
-	console.log(this.responseText);
+	var got = req.responseText.split('\n');
+	for(var i = 0; i < got.length; i++) {
+	    if (got[i].length > 0) {
+		fonts.pushback(got[i]);
+	    }
+	}
+	call_me_with_font_names_array(fonts);
     });
     req.open('GET', fontsURI);
     req.send();
