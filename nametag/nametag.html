@@ -239,6 +239,12 @@ function updateFont(txt) {
   updateRender();
 }
 
+function updateText(txt) {
+  sessionStorage.setItem('text', JSON.stringify(txt));
+  updateRender();
+}
+
+
 // updateFontLocal reads the font and kerning from the selected client local files.
 function updateFontLocal(filelist) {
   var fontPromise = null;
@@ -291,7 +297,7 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
       </p>
       <p>Text:
         <input id="text" name="text" type="text" size="30"
-               onchange="updateRender()"/>
+               onchange="updateText(this.value)"/>
       </p>
       <p>Kerning:<br/>
         <textarea id="kerning" name="kerning"
