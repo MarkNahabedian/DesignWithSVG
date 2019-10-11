@@ -12,6 +12,7 @@
     <script type="text/javascript">
 //<![CDATA[
 
+
 function makeEmpty(element) {
   var children = element.childNodes;
   for (var i = children.length - 1; i >= 0; i--) {
@@ -155,14 +156,16 @@ function renderPage(font, kerning, decorations, name) {
   // Add decoration
   var decorateme = textgroup;
   wholegroup.appendChild(decorateme);
-  for (i = 0; i < decorations.length; i++) {
-    var bbox = decorateme.getBBox();
-    decorateme.appendChild(document.createComment(
-        ' x: ' + bbox.x + '  y: ' + bbox.y +
-        '  width: ' + bbox.width + '  height: ' + bbox.height));
-    var d = decorations[i](decorateme);
-    if (d) {
-      decorateme = d;
+  if (decorations) {
+    for (i = 0; i < decorations.length; i++) {
+      var bbox = decorateme.getBBox();
+      decorateme.appendChild(document.createComment(
+          ' x: ' + bbox.x + '  y: ' + bbox.y +
+          '  width: ' + bbox.width + '  height: ' + bbox.height));
+      var d = decorations[i](decorateme);
+      if (d) {
+        decorateme = d;
+      }
     }
   }
 
@@ -181,46 +184,78 @@ function renderPage(font, kerning, decorations, name) {
 }
 
 
-// doUpdate is called when the update button is clicked.
-function doUpdate() {
-  saveFormValues();
-  var fontinput = document.getElementById('font');
-  var nameinput = document.getElementById('text');
-  var kerninginput = document.getElementById('kerning');
-  var decoinput = document.getElementById('decoration');
-  var name = nameinput.value;
+// To render the SVG name tag, we not only need the text, we also need
+// the font, the corrected kerning, and the decorations.  All four of
+// these are backed up in sessionStorage so that the are preserved
+// across page reloads.  They each also have input controls so the
+// user can alter their values.  The name text can always be trivially
+// read from its single input element, whose id is 'text'.
+//
+// Decorations and kerning have a special syntax that must be parsed,
+// so we save the parsed value in currentDecorations and update that
+// and its corresponding sessionStorage value whenever its input item
+// is updated.
+//
+// The name text does not need to be parsed and can be directly
+// accessed from the input element.
+//
+// Font and related input items are used to select a font file (and
+// possibly a kerning file) whose contents must first be read.  We
+// save the resulting file contents in sessionStorage.
 
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var font = JSON.parse(reader.result);
-    var kerning = parseKerning(kerninginput.value);
-    var decos = parseDecorators(decoinput.value);
-    renderPage(font, kerning, decos, name);
-  }
-  reader.readAsText(fontinput.files[0]);
+// Current values to be used for drawing the name tag:
+var currentFont = null;            // sessionStorage item 'font',
+                                   // input id 'font'
+var currentKerning = null;         // sessionStorage item 'kerning',
+                                   // input id 'kerning'
+var currentDecorations = null;     // sessionStorage item 'decorations'
+
+function updateRender() {
+  console.log('updateRender');
+  var name = document.getElementById('text');
+  renderPage(currentFont, currentKerning, currentDecorations, name);
 }
 
+function updateDecorations(txt) {
+  console.log('updateDecorations');
+  sessionStorage.setItem('decorations', JSON.stringify(txt));
+  currentDecorations = parseDecorators(txt);
+  updateRender();
+}
 
-function saveFormValues() {
-  var inputs = document.querySelectorAll('input,textarea');
-  for (var i = 0; i < inputs.length; i++) {
-    var input = inputs[i];
-    var id = input.getAttribute('id');
-    if (id) {
-      sessionStorage.setItem(id, JSON.stringify(input.value));
+function updateKerning(txt) {
+  console.log('updateKerning');
+  sessionStorage.setItem('kerning', JSON.stringify(txt));
+  currentKerning = parseKerning(txt);
+  updateRender();
+}
+
+function updateFont(txt) {
+  console.log('updateFont');
+  // In this case txt is already JSON encoded.
+  sessionStorage.setItem('font', txt);
+    console.log('font starts with' + txt.substring(0, 10));
+  currentFont = JSON.parse(txt);
+  updateRender();
+}
+
+// updateFontLocal reads the font and kerning from the selected client local files.
+function updateFontLocal(filelist) {
+  var fontPromise = null;
+  var kerningPromise = null;
+    for (var i = 0; i < filelist.length; i++) {
+    var f = filelist[i]
+    if (f.name.endsWith('.json')) {
+      if (fontPromise == null) {
+        fontPromise = f.text().then(updateFont, console.log);
+      }
+    } else if (f.name.endsWith('.kerning')) {
+      if (kerningPromise == null) {
+        kerningPromise = f.text().then(updateKerning, console.log);
+      }
     }
   }
-/*
-  sessionStorage.setItem('text', JSON.stringify(document.getElementById('text').value));
-  sessionStorage.setItem('kerning', JSON.stringify(document.getElementById('kerning').value));
-  sessionStorage.setItem('font', JSON.stringify(document.getElementById('font').files));
-*/
 }
-
-
-// ***** Neither of these seem to work:
-window.onbeforeunloaded = saveFormValues;
-document.addEventListener("beforeunloaded", saveFormValues, false);
 
 
 function formDefaults() {
@@ -228,18 +263,10 @@ function formDefaults() {
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
   var decoinput = document.getElementById('decoration');
-  var params = (new URL(document.location)).searchParams;
-  
   nameinput.value = JSON.parse(sessionStorage.getItem('text'));
   kerninginput.value = JSON.parse(sessionStorage.getItem('kerning'));
   decoinput.value = JSON.parse(sessionStorage.getItem('decoration'));
-
-  // fontinput.value = JSON.parse(sessionStorage.getItem('font'));
-  /*
-  var dt = ataTransfer();
-  
-  fontinput.files = dt.files;
-  */
+  updateFont(sessionStorage.getItem('font'));
 }
 
 
@@ -251,19 +278,36 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
   </head>
   <body>
     <form>
-      <p>
+      <p id="font-selection">
         Select a single stroke Hershey font expressed in a JSON file
         local to your computer.  See 
         <a href="https://github.com/MarkNahabedian/DesignWithSVG/tree/master/hershey">
           https://github.com/MarkNahabedian/DesignWithSVG/tree/master/hershey
         </a>
         for how to get a single font file.
+        <br />
+        Font file: <input id="font" name="font" type="file"
+                          onchange="updateFontLocal(this.files)"/>
       </p>
-      <p>Font file: <input id="font" name="font" type="file"/></p>
-      <p>Text: <input id="text" name="text" type="text" size="30"/></p>
-      <p>Kerning:<br/><textarea id="kerning" name="kerning" rows="10" cols="30"></textarea></p>
-      <p>Decoration:<br/><textarea id="decoration" name="decoration" rows="10" cols="30"></textarea></p>
-      <p><input type="button" value="Update" onClick='doUpdate();'/></p>
+      <p>Text:
+        <input id="text" name="text" type="text" size="30"
+               onchange="updateRender()"/>
+      </p>
+      <p>Kerning:<br/>
+        <textarea id="kerning" name="kerning"
+                  rows="10"
+                  cols="30"
+                  onchange="updateKerning(this.value)">
+        </textarea>
+      </p>
+      <p>Decoration:<br/>
+        <textarea id="decoration"
+                  name="decoration"
+                  rows="10" cols="30"
+                  onchange='updateDecorations(this.value)'>
+        </textarea>
+      </p>
+      <p><input type="button" value="Update" onClick='updateRender();'/></p>
     </form>
     <pre id="dimensions"></pre> 
     <pre id="code"></pre>
