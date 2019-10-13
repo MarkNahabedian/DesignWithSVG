@@ -8,6 +8,7 @@ var EXPORTED_SYMBOLS = [ 'renderText' ];
 // kerning is a map from pairs or characters to additional X advance
 // between them.
 function renderText(parent, font, text, kerning={}) {
+  console.log('renderText ' + text);
   var x = 0;
   var g = document.createElementNS(svgURI, 'g');
   parent.appendChild(g);
@@ -49,11 +50,16 @@ function renderText(parent, font, text, kerning={}) {
   return g;
 }
 
+
 function glyphLookup(font, character) {
   var glyphs = font.chars;
   var index = character.charCodeAt(0) - 33;
   if (index < 0 || index >= glyphs.length ) {
     return null;
   }
-  return glyphs[index];
+  var glyph = glyphs[index];
+  if (!glyph) {
+    return null;
+  }
+  return glyph;
 }
