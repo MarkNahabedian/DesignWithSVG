@@ -203,7 +203,9 @@ function renderPage(font, kerning, decorations, name) {
 // save the resulting file contents in sessionStorage.
 
 // Current values to be used for drawing the name tag:
-var currentFont = null;            // sessionStorage item 'font',
+var currentFont = null;            // JSON representation of the font
+                                   // as read from the font file.
+                                   // sessionStorage item 'font',
                                    // input id 'font'
 var currentKerning = null;         // sessionStorage item 'kerning',
                                    // input id 'kerning'
