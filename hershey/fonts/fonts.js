@@ -4,7 +4,7 @@ var EXPORTED_SYMBOLS = [
     'fontCleanedUpFile',
     'fontKerningFile',
     'availableFonts',
-    
+    'fontsURI'
 ];
 
 function fontCleanedUpFile(fontname) {
@@ -20,6 +20,10 @@ function absURI(relative) {
 	return document.documentURI;
     }
     return document.documentURI + '/' + relative;
+}
+
+function fontsURI() {
+    return dirname(absURI());
 }
 
 function availableFonts(fonts_array_callback) {
