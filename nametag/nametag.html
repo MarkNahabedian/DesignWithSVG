@@ -172,7 +172,6 @@ function renderPage(font, kerning, decorations, name) {
   wholegroup.appendChild(inchRect());
 
   var bbox = wholegroup.getBBox();
-  console.log('wholegroup bbox: ' + bbox.width + ' ' + bbox.height);
   svg.setAttribute('width', '' + bbox.width + 'in');
   svg.setAttribute('height', '' + bbox.height + 'in');
   svg.setAttribute('viewBox', '' + bbox.x + ' ' + bbox.y + ' ' +
@@ -234,7 +233,6 @@ function updateFont(txt) {
   console.log('updateFont');
   // In this case txt is already JSON encoded.
   sessionStorage.setItem('font', txt);
-    console.log('font starts with' + txt.substring(0, 10));
   currentFont = JSON.parse(txt);
   updateRender();
 }
@@ -271,7 +269,9 @@ function formDefaults() {
   var decoinput = document.getElementById('decoration');
   nameinput.value = JSON.parse(sessionStorage.getItem('text'));
   kerninginput.value = JSON.parse(sessionStorage.getItem('kerning'));
-  decoinput.value = JSON.parse(sessionStorage.getItem('decoration'));
+  currentKerning = parseKerning(kerninginput.value);
+  decoinput.value = JSON.parse(sessionStorage.getItem('decorations'));
+  currentDecorations = parseDecorators(decoinput.value);
   updateFont(sessionStorage.getItem('font'));
 }
 
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
       <p><input type="button" value="Update" onClick='updateRender();'/></p>
     </form>
     <pre id="dimensions"></pre> 
-    <pre id="code"></pre>
     <svg id="image" xmlns="http://www.w3.org/2000/svg"></svg>
+    <pre id="code"></pre>
   </body>
 </html>
