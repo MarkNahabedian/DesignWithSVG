@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript" src="../hershey/render_text.js"></script>
+    <script type="text/javascript" src="../hershey/fonts/fonts.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
@@ -264,7 +265,43 @@ function updateFontLocal(filelist) {
 }
 
 
+function chooseCheckedInFont(fontname) {
+  var loader = function(uri, updater) {
+    fetch(uri).then(function(response) {
+      if (!response.ok) {
+        console.log(response.statusText);
+        return;
+      }
+      response.body.text().then(updater, console.log);
+    });
+  };
+  var base = fontsURI() + '/';
+  loader(base + fontCleanedUpFile(fontname), updateFont);
+  loader(base + fontKerningFile(fontname), updateKerning);
+}
+
+var AVAILABLE_FONTS = [];
+
+function showAvailableFonts(ul) {
+  availableFonts(function(fontsarray) {
+    AVAILABLE_FONTS = fontsarray;
+    for (var i = 0; i < AVAILABLE_FONTS; i++) {
+      var fontName = AVAILABLE_FONTS[i];
+      var li = document.createElement('li');
+      ul.appendChild(li);
+      var button = document.createElement('button');
+      li.appendChild(button);
+      button.setAttribute('type', 'button');
+      button.setAttribute('onclick',
+                          'chooseCheckedInFont("' + fontname + '")');
+      button.appendChild(document.createTextNode(fontname));
+    }
+  });
+}
+
+
 function formDefaults() {
+  showAvailableFonts(document.getElementById('checked-in-fonts'));
   var fontinput = document.getElementById('font');
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
@@ -287,7 +324,10 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
   <body>
     <form>
       <p id="font-selection">
-        Select a single stroke Hershey font expressed in a JSON file
+        Select one of these checked in fonts
+        <ul id="checked-in-fonts">
+        </ul>
+        or select a single stroke Hershey font expressed in a JSON file
         local to your computer.  See 
         <a href="https://github.com/MarkNahabedian/DesignWithSVG/tree/master/hershey">
           https://github.com/MarkNahabedian/DesignWithSVG/tree/master/hershey
