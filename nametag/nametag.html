@@ -212,7 +212,7 @@ var currentDecorations = null;     // sessionStorage item 'decorations'
 function updateRender() {
   console.log('updateRender');
   var name = document.getElementById('text');
-  renderPage(currentFont, currentKerning, currentDecorations, name);
+  renderPage(currentFont, currentKerning, currentDecorations, name.value);
 }
 
 function updateDecorations(txt) {
