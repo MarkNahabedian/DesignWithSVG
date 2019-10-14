@@ -29,15 +29,22 @@ function fontsURI() {
 
 function availableFonts(fonts_array_callback) {
     var fURI = fontsURI() + '/fonts.txt';
-    console.log(fURI);
     fetch(fURI).then(function(response) {
         if (!response.ok) {
             console.log(response.statusText);
             return;
         }
-        response.body.text().then(
+        response.text().then(
             function(txt) {
-                fonts_array_callback(txt.split('\n'))
+                var fonts = [];
+                var split = txt.split('\n');
+                for (var i = 0; i < split.length; i++) {
+                    var font = split[i];
+                    if (font.length > 0) {
+                        fonts.push(font);
+                    }
+                }
+                fonts_array_callback(fonts)
             },
             console.log);
     });
