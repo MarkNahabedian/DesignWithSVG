@@ -272,7 +272,7 @@ function chooseCheckedInFont(fontname) {
         console.log(response.statusText);
         return;
       }
-      response.body.text().then(updater, console.log);
+      response.text().then(updater, console.log);
     });
   };
   var base = fontsURI() + '/';
@@ -285,13 +285,14 @@ var AVAILABLE_FONTS = [];
 function showAvailableFonts(ul) {
   availableFonts(function(fontsarray) {
     AVAILABLE_FONTS = fontsarray;
-    for (var i = 0; i < AVAILABLE_FONTS; i++) {
+    for (var i = 0; i < AVAILABLE_FONTS.length; i++) {
       var fontName = AVAILABLE_FONTS[i];
       var li = document.createElement('li');
       ul.appendChild(li);
       var button = document.createElement('button');
       li.appendChild(button);
       button.setAttribute('type', 'button');
+      button.setAttribute('value', fontname);
       button.setAttribute('onclick',
                           'chooseCheckedInFont("' + fontname + '")');
       button.appendChild(document.createTextNode(fontname));
