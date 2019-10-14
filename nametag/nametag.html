@@ -292,10 +292,10 @@ function showAvailableFonts(ul) {
       var button = document.createElement('button');
       li.appendChild(button);
       button.setAttribute('type', 'button');
-      button.setAttribute('value', fontname);
+      button.setAttribute('value', fontName);
       button.setAttribute('onclick',
-                          'chooseCheckedInFont("' + fontname + '")');
-      button.appendChild(document.createTextNode(fontname));
+                          'chooseCheckedInFont("' + fontName + '")');
+      button.appendChild(document.createTextNode(fontName));
     }
   });
 }
