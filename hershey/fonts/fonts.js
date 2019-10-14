@@ -15,35 +15,33 @@ function fontKerningFile(fontname) {
     return fontname + '.kerning';
 }
 
-function absURI(relative) {
-    if (!relative) {
-	return document.documentURI;
-    }
-    return document.documentURI + '/' + relative;
-}
-
 function fontsURI() {
-    return dirname(absURI());
+    var scripts = document.getElementsByTagName("script");
+    for (var i = 0; i < scripts.length; i++) {
+        var src = scripts[i].src;
+        var split = src.split('/');
+        if (split[split.length - 1] == 'fonts.js') {
+            return split.slice(0, -1).join('/');
+        }
+    }
+    return null;
 }
 
 function availableFonts(fonts_array_callback) {
-    var fonts = []
-    var req = new XMLHttpRequest();
-    var fontsURI = dirname(absURI()) + '/fonts.txt';
-    req.addEventListener('load', function() {
-	var got = req.responseText.split('\n');
-	for(var i = 0; i < got.length; i++) {
-	    if (got[i].length > 0) {
-		fonts.push(got[i]);
-	    }
-	}
-	fonts_array_callback(fonts);
+    var fURI = fontsURI() + '/fonts.txt';
+    console.log(fURI);
+    fetch(fURI).then(function(response) {
+        if (!response.ok) {
+            console.log(response.statusText);
+            return;
+        }
+        response.body.text().then(
+            function(txt) {
+                fonts_array_callback(txt.split('\n'))
+            },
+            console.log);
     });
-    req.open('GET', fontsURI);
-    req.send();
 }
 
-function dirname(path) {
-    return path.split('/').slice(0, -1).join('/');
-}
+
 
