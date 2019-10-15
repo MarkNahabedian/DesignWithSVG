@@ -62,12 +62,10 @@ class LineGroup(object):
     self.check()
   def merge(self, other):
     def reverse(l):
-      # list.reverse() is destructive and doesn't return uts result.
+      # list.reverse() is destructive and doesn't return its result.
       rl = list(l)
       rl.reverse()
       return rl
-    def flip(line):
-      return svg.path.Line(start=line.end, end=line.start)
     if self.end == other.start:
       for l in other.lines:
         self.append(l)
@@ -83,16 +81,42 @@ class LineGroup(object):
     return False
 
 
+# Technically we would need to flip each kind of path component,
+# but I expect there are only Lines in the Hersheyfonts.  If
+# there are curves this code will replace them with lines having
+# the same end points.
+
+def flip(step):
+  try:
+    flipper = FLIPPERS[step.__class__]
+    return flipper(step)
+  except KeyError:
+    print("Don't know how to flip %r\n", step)
+    return None
+
+FLIPPERS = {}
+
+def flipper(stepType):
+  def defineFlipper(f):
+    FLIPPERS[stepType] = f
+  return defineFlipper
+
+@flipper(svg.path.Move)
+def flipMove(step):
+  return svg.path.Move(to=step.start)
+
+@flipper(svg.path.Line)
+def flipLine(step):
+  return svg.path.Line(start=step.end, end=step.start)
+
+
 # fix_path transforms a parsed SVG path to an equivalent one that is
 # easier to cut on Shaper Origin.
 # The result is a list of parsed paths to avoid confusing Shaper Origin.
 def fix_path(parsed):
   # Expect every element to be a Line:
-  for exp in parsed:
-    if not isinstance(exp, svg.path.Line):
-      raise Exception('Unsupported SVG path component: %r' % exp)
   # Arrange the lines so that they line up end to end
-  linegroups = [LineGroup([line]) for line in parsed]
+  linegroups = [LineGroup([step]) for step in parsed]
   i = 0
   while True:
     if i >= len(linegroups):
@@ -119,11 +143,14 @@ def fix_path(parsed):
 
 
 def test(p, expect):
+  def noMove(p):
+    return [step for step in p
+            if step.__class__ != svg.path.Move]
   parsed = svg.path.parse_path(p)
-  expectp = [svg.path.parse_path(e) for e in expect]
-  fixed = fix_path(parsed)
+  expectp = [noMove(svg.path.parse_path(e)) for e in expect]
+  fixed = [noMove(p) for p in fix_path(parsed)]
   if not (fixed == expectp):
-    print('FAIL', parsed.d(), '\n', fixed.d(), '\n\n')
+    print('FAIL', p, ': \n    ', expectp, '\n    ', fixed, '\n\n')
 
 test('M0,0 L1,0  M1,1 L1,0', ['M0,0 L1,0 L1,1']) # end - end
 test('M0,0 L0,1  M0,1 L1,1', ['M0,0 L0,1 L1,1']) # end - start
