@@ -277,7 +277,11 @@ function chooseCheckedInFont(fontname) {
   };
   var base = fontsURI() + '/';
   loader(base + fontCleanedUpFile(fontname), updateFont);
-  loader(base + fontKerningFile(fontname), updateKerning);
+  loader(base + fontKerningFile(fontname),
+         function(txt) {
+             document.getElementById('kerning').value = txt;
+             updateKerning(txt);
+         });
 }
 
 var AVAILABLE_FONTS = [];
