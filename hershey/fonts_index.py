@@ -7,8 +7,8 @@
 import os
 import os.path
 import re
-from git import Repo
-from yattag import Doc
+from git import Repo      # pip install gitpython
+from yattag import Doc    # pip install yattag
 
 
 INDEX_FILE_NAME = "index.html"
