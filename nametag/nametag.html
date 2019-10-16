@@ -316,7 +316,14 @@ function formDefaults() {
   currentKerning = parseKerning(kerninginput.value);
   decoinput.value = JSON.parse(sessionStorage.getItem('decorations'));
   currentDecorations = parseDecorators(decoinput.value);
-  updateFont(sessionStorage.getItem('font'));
+  var font = sessionStorage.getItem('font');
+  if (font) {
+    updateFont(font);
+  } else {
+    if (AVAILABLE_FONTS.length > 0) {
+      chooseCheckedInFont(AVAILABLE_FONTS[0]);
+    }
+  }
 }
 
 
