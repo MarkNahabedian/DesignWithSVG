@@ -304,6 +304,8 @@ function showAvailableFonts(ul) {
     if (!sessionStorage.getItem('font')) {
       if (AVAILABLE_FONTS.length > 0) {
         chooseCheckedInFont(AVAILABLE_FONTS[0]);
+      } else {
+        console.log('No available fonts to choose a default from.');
       }
     }
   });
