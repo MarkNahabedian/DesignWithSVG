@@ -153,7 +153,14 @@ function renderPage(font, kerning, decorations, name) {
   var textgroup = document.createElementNS(svgURI, 'g');
   on_line_cut(textgroup);
   textgroup.setAttribute('stroke-width', '1');
-  renderText(textgroup, font, name, kerning);
+  if (font) {
+    renderText(textgroup, font, name, kerning);
+  } else {
+    alert('No font selected.  Please choose a font.');
+  }
+  if (name.length == 0) {
+    alert('No text has been entered.');
+  }
   // Add decoration
   var decorateme = textgroup;
   wholegroup.appendChild(decorateme);
@@ -169,9 +176,7 @@ function renderPage(font, kerning, decorations, name) {
       }
     }
   }
-
   wholegroup.appendChild(inchRect());
-
   var bbox = wholegroup.getBBox();
   svg.setAttribute('width', '' + bbox.width + 'in');
   svg.setAttribute('height', '' + bbox.height + 'in');
