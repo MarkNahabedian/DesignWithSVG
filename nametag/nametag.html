@@ -155,11 +155,6 @@ function renderPage(font, kerning, decorations, name) {
   textgroup.setAttribute('stroke-width', '1');
   if (font) {
     renderText(textgroup, font, name, kerning);
-  } else {
-    alert('No font selected.  Please choose a font.');
-  }
-  if (name.length == 0) {
-    alert('No text has been entered.');
   }
   // Add decoration
   var decorateme = textgroup;
