@@ -302,12 +302,15 @@ function showAvailableFonts(ul) {
                           'chooseCheckedInFont("' + fontName + '")');
       button.appendChild(document.createTextNode(fontName));
     }
-    if (!sessionStorage.getItem('font')) {
+    var font = sessionStorage.getItem('font');
+    if (!font || font == 'null') {
       if (AVAILABLE_FONTS.length > 0) {
         chooseCheckedInFont(AVAILABLE_FONTS[0]);
       } else {
         console.log('No available fonts to choose a default from.');
       }
+    } else {
+      console.log('currentFont is already ' + currentFont.name);
     }
   });
 }
@@ -320,7 +323,8 @@ function formDefaults() {
   var nameinput = document.getElementById('text');
   var kerninginput = document.getElementById('kerning');
   var decoinput = document.getElementById('decoration');
-  nameinput.value = JSON.parse(sessionStorage.getItem('text'));
+  nameinput.value = JSON.parse(sessionStorage.getItem('text')) ||
+        'sample text'; 
   kerninginput.value = JSON.parse(sessionStorage.getItem('kerning'));
   currentKerning = parseKerning(kerninginput.value);
   decoinput.value = JSON.parse(sessionStorage.getItem('decorations'));
