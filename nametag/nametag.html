@@ -266,6 +266,7 @@ function updateFontLocal(filelist) {
 
 
 function chooseCheckedInFont(fontname) {
+  chooseCheckedInFont(fontname);
   var loader = function(uri, updater) {
     fetch(uri).then(function(response) {
       if (!response.ok) {
