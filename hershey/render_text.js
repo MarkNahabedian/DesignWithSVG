@@ -17,6 +17,12 @@ function renderText(parent, font, text, kerning={}) {
   var previous = '';
   for (var i = 0; i < text.length; i++) {
     var char = text[i];
+    if (char == ' ') {
+      var en = glyphLookup(font, 'n');
+      x += en.o;
+      previous = char;
+      continue;
+    }
     // We add a group for each character because each character has its
     // own transform and might require more than one path.
     var charg = document.createElementNS(svgURI, 'g');
