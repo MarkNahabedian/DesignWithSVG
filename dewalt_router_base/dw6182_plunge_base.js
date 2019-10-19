@@ -25,8 +25,8 @@ var CENTER_HOLE_DIAMETER = 1.1975;
 
 
 //Mounting holes for attaching the sub-base plate to the base:
-var MH_LONG_DISTANCE = (3.2865 + 2.91) / 2;
-var MH_SHORT_DISTANCE = (2.415 + 2.8025) / 2;
+var MH_LONG_DISTANCE = 3.11024;        // 79 mm
+var MH_SHORT_DISTANCE = 2.59843;       // 66 mm
 var MH_DIAMETER = 0.1770;    // Loose clearance for #8-36 machine screw
 
 
