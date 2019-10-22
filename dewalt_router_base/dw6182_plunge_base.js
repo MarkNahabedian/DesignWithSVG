@@ -55,7 +55,7 @@ function dw6182_base_extent(xml_parent) {
 
 
 // dw6182_mounting_hole_center returns [x. y] of the center of the
-// specified mounting hole x_direction and y_direction should each be
+// specified mounting hole.  x_direction and y_direction should each be
 // either 1 or -1.
 function dw6182_mounting_hole_center(x_direction, y_direction) {
     return [ (x_direction * MH_LONG_DISTANCE / 2),
