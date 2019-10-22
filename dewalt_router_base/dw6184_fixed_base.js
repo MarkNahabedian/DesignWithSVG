@@ -21,7 +21,7 @@ var EXPORTED_SYMBOLS = [
 // plate.
 var BASE_DIAMETER = 3.9385;
 
-var CENTER_HOLE_DIAMETER = 1.1975;  // *** Measure again.  We should pick a diameter that works with our centering cone.
+var CENTER_HOLE_DIAMETER = 1.1975;
 
 //Mounting holes for attaching the sub-base plate to the base:
 var MH_SPACING = 2.40157;                 // 61 mm

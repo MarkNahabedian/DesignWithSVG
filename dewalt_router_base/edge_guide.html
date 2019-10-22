@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript" src="dw6184_fixed_base.js"></script>
     <script type="text/javascript" src="dw6182_plunge_base.js"></script>
+    <script type="text/javascript" src="guide_bushing.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
@@ -136,11 +137,14 @@ class SubBaseGeometry {
             ]            
         ]);
         outside_cut(perimeter);
+        // Center hole
+        var ch = document.createElementNS(svgURI, 'g');
+        g.appendChild(ch);
+        ch.appendChild(inside_cut(hole([0, 0], BASE_PLATE_HOLE_DIAMETER)));
         // dw6184 router base accomodations:
         var bg4 = document.createElementNS(svgURI, 'g');
         g.appendChild(bg4);
         dw6184_base_perimeter(bg4);
-        dw6184_center_hole(bg4);
         mounting_holes(bg4, dw6184_mounting_hole_center);
         // dw6182 router base accomodations:
         var bg2 = document.createElementNS(svgURI, 'g');
@@ -648,6 +652,22 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h2>Subbase</h2>
     <div>
+      <ul>
+        <li>
+          Cut pockets for recessing the mounting screw keads as
+          directed in the drawing.
+        </li>
+        <li>
+          Make sure that the center hole is a snug fit for a guide
+          bushing and adjust as necessary.
+        </li>
+        <li>
+          Increase the diameter and decrease the depth of cut of the
+          center hole to accomodate the flange on the guide
+          bushuings.  These measurements are probably more significant
+          than the diameter of the center hole itself.
+        </li>
+      </ul>
       <pre id="SUBBASE_CODE_ELEMENT"> 
       </pre>
       <svg id="SUBBASE_SVG_ELEMENT"></svg>
