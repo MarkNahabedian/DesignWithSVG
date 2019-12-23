@@ -35,6 +35,46 @@ function update_units() {
 }
 
 
+/*
+            <tr>
+              <td class="radius">
+                <input type="text" size="8" onchange="update_dividing_rings()"/>
+              </td>
+              <td class="count">
+                <input type="text" size="2" onchange="update_dividing_rings()"/>
+              </td>
+              <td></td>
+            </tr>
+*/
+
+function add_dividing_ring(radius='', count='') {
+  var tbody = document.querySelector('#dividing-rings table tbody');
+  var tr = document.createElement('tr');
+  function td(value, key) {
+    var td = document.createElement('td');
+    tr.appendChild(td);
+    if (key) {
+      td.setAttribute('class', key);
+      var input = document.createElement('input');
+      td.appendChild(input);
+      input.setAttribute('type', 'text');
+      input.setAttribute('onchange', 'update_dividing_rings()');
+      input.setAttribute('value', '' + value);
+    } else {
+    td.textContent = '' + value;
+    }
+  }
+  td(radius, 'radius');
+  td(count, 'count');
+  if (typeof count === 'string') {
+    td('');
+  } else {
+    td(360 / count);
+  }
+  tbody.appendChild(tr);
+}
+
+
 function update_dividing_rings() {
   // For each row in the dividing-rings table we extract the radius
   // and number of holes.  We sort that data by radius and then refill
@@ -97,6 +137,7 @@ class Geometry {
 
 function contentLoaded() {
   console.log('contentLoaded');
+  add_dividing_ring();
   update_units()
     /*
   setSVGNamespaces();
@@ -167,15 +208,6 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="radius">
-                <input type="text" size="8" onchange="update_dividing_rings()"/>
-              </td>
-              <td class="count">
-                <input type="text" size="2" onchange="update_dividing_rings()"/>
-              </td>
-              <td></td>
-            </tr>
           </tbody>
         </table>
       </div>
