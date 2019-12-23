@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Layout for Dividing Plate</title>
+    <style type="text/css">
+.BadInput  {
+      background-color: Orange;
+}
+</style>
+<!--
+    <script type="text/javascript" src="svg_lib.js"></script>
+    <script type="text/javascript" src="shaper_origin.js"></script>
+-->
+    <script type="text/javascript">
+//<![CDATA[
+
+var UNITS_CHOICES = {
+    'IMPERIAL': 'inches',
+    "METRIC": 'millimeters'
+};
+
+
+function update_units() {
+  console.log('update_units');
+  var buttons = document.querySelectorAll('input[type="radio"],[name="choose-units"]');
+  for (var i = 0; i < buttons.length; i++) {
+    var b = buttons[i];
+    if (b.checked) {
+      var choice = b.value;
+      console.log('update_units ' + choice);
+      document.querySelector('#plate-diameter-units').textContent = UNITS_CHOICES[choice];
+      break;
+    }
+  }
+}
+
+
+function update_dividing_rings() {
+  // For each row in the dividing-rings table we extract the radius
+  // and number of holes.  We sort that data by radius and then refill
+  // the table, calculating the "angle delta" while doing so.  We then
+  // make sure we leave a single empty row at the end.
+  var ok = true;
+  var rows = document.querySelectorAll('#dividing-rings table tbody tr');
+  var data = [];
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var rowData = new Map();
+    function doDatum(selector, key) {
+      var cell = row.querySelector(selector);
+      var val = cell.value;
+      if (val == '')
+        return;
+      if (isNaN(val) || val <= 0) {
+        ok = false;
+        cell.setAttribute('class', 'BadInput');
+        return;
+      }
+      console.log('setting ' + key + ' ' + val);
+      rowData.set(key, val);
+    }
+    doDatum('td.radius input', 'radius');
+    doDatum('td.count input', 'count');
+    console.log(rowData,);
+    if (rowData.size > 0)
+      data.push(rowData);
+  }
+  console.log(data);
+  if (!ok)
+     return;
+}
+
+
+class Geometry {
+  constructor(/* application specific parameters */) {
+    // SET UP DESIGN PARAMETERS, ETC.
+  }
+
+    
+  svgWidth() {
+    // Return the value for the width attribute of the SVG element.
+  }
+
+    
+  svgHeight() {
+    // Return the value for the height attribute of the SVG element.
+  }
+
+    
+  updateSVG(svg_elt) {
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    // DRAW INTO svg_elt HERE.
+  }
+
+};
+
+
+function contentLoaded() {
+  console.log('contentLoaded');
+  update_units()
+    /*
+  setSVGNamespaces();
+  var g = new Geometry(...);
+  g.updateSVG(document.getElementById('SVG_ELEMENT'));
+  showSVG(document.getElementById('SVG_ELEMENT'),
+          document.getElementById('CODE_ELEMENT'));
+    */
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+//]]>
+
+    </script>
+  </head>
+  <body>
+
+    <h1>Layout for Dividing Plate</h1>
+
+    <p>
+      In this
+      <a href="Mr. Pete's video https://youtu.be/GkEiFHIxVdI">
+        YouTube video</a>,
+      Lyle Peterson shows how to make a dividing plate using the DRO
+      on a milling machine.  If you're at all interested in learning
+      about machining, his YouTube channel and instructional videos
+      are an invaluable educational resource.
+    </p>
+
+    <p>
+      He used a table from Machinery's Handbook to determine the
+      coordinates for drilling and did not go iinto the math.  The
+      math is simple for anyone who has learned trigonometry.  Rather
+      than posting a rescription of how to do the math, I figured it
+      wouldn't be much more work for me, and would be more helpful to
+      others, if I just implemented a web page that does the
+      calculations.
+    </p>
+
+    <form>
+      <div id="choose-units">
+        Do you prefer your meansurements in imperial or metric?
+        <div>
+          <input type="radio" name="choose-units" value="IMPERIAL"
+                 oninput="update_units()"
+                 checked=""/>
+          <label>Imperial</label>
+        </div>
+        <div>
+          <input type="radio" id="overall_diameter" name="choose-units" value="METRIC"
+                 oninput="update_units()" />
+          <label>Metric</label>
+        </div>
+        <div id="plate-diameter">
+          Overall diameter of the dividing plate:
+          <input type="text" size="8" placeholder="5"/>
+          <span id="plate-diameter-units">UNITS</span>
+        </div>
+      </div>
+      <div id="dividing-rings">
+        <table>
+          <thead>
+            <tr>
+              <th>radius</th>
+              <th>number of holes</th>
+              <th>angle delta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="radius">
+                <input type="text" size="8" onchange="update_dividing_rings()"/>
+              </td>
+              <td class="count">
+                <input type="text" size="2" onchange="update_dividing_rings()"/>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </form>
+
+
+    <pre id="CODE_ELEMENT"> 
+    </pre>
+    <svg id="SVG_ELEMENT"></svg>
+
+  </body>
+</html>
