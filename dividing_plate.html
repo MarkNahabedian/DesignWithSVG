@@ -35,18 +35,6 @@ function update_units() {
 }
 
 
-/*
-            <tr>
-              <td class="radius">
-                <input type="text" size="8" onchange="update_dividing_rings()"/>
-              </td>
-              <td class="count">
-                <input type="text" size="2" onchange="update_dividing_rings()"/>
-              </td>
-              <td></td>
-            </tr>
-*/
-
 function add_dividing_ring(radius='', count='') {
   var tbody = document.querySelector('#dividing-rings table tbody');
   var tr = document.createElement('tr');
@@ -59,9 +47,9 @@ function add_dividing_ring(radius='', count='') {
       td.appendChild(input);
       input.setAttribute('type', 'text');
       input.setAttribute('onchange', 'update_dividing_rings()');
-      input.setAttribute('value', '' + value);
+      input.value = '' + value;
     } else {
-    td.textContent = '' + value;
+      td.textContent = '' + value;
     }
   }
   td(radius, 'radius');
@@ -88,26 +76,42 @@ function update_dividing_rings() {
     var rowData = new Map();
     function doDatum(selector, key) {
       var cell = row.querySelector(selector);
-      var val = cell.value;
+      var val = parseFloat(cell.value);
       if (val == '')
         return;
       if (isNaN(val) || val <= 0) {
         ok = false;
         cell.setAttribute('class', 'BadInput');
         return;
+      } else {
+        cell.removeAttribute('class');
       }
-      console.log('setting ' + key + ' ' + val);
       rowData.set(key, val);
     }
     doDatum('td.radius input', 'radius');
     doDatum('td.count input', 'count');
-    console.log(rowData,);
     if (rowData.size > 0)
       data.push(rowData);
   }
-  console.log(data);
-  if (!ok)
+  if (!ok) {
      return;
+  }
+  // The data is good.  We now clear the table and re-fill it.
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].remove();
+  }
+  data.sort(function(a, b) {
+    var aval = a['radius'];
+    var bval = b['radius'];
+    if (aval < bval) return -1;
+    if (aval > bval) return 1;
+    return 0;
+  });
+  for (i = 0; i < data.length; i++) {
+    add_dividing_ring(data[i].get('radius'), data[i].get('count'));
+  }
+  // Add an empty row so the user can add more.
+  add_dividing_ring();
 }
 
 
