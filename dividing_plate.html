@@ -15,6 +15,27 @@ table
   margin: 2em;
 }
 
+td.radius
+{
+  text-align: center;
+}
+
+td.angle
+{
+  text-align: right;
+}
+
+td.count
+{
+  text-align: center;
+}
+
+td,th
+{
+  padding-right: 1em;
+  padding-left:  1em;
+}
+
 tr.new-ring  
 {
   border-top-style: solid;
@@ -66,6 +87,7 @@ function add_dividing_ring(radius='', count='') {
       input.value = '' + value;
     } else {
       td.textContent = '' + value;
+      td.setAttribute('class', 'angle');
     }
   }
   td(radius, 'radius');
@@ -144,24 +166,25 @@ function add_hole_location_rows(radius, count) {
     if (hole_number == 0) {
       tr.setAttribute('class', 'new-ring');
     }
-    function td(text) {
+    function td(text, cls) {
       var elt = document.createElement('td');
       tr.appendChild(elt);
+      elt.setAttribute('class', cls);
       elt.textContent = '' + text;
       return elt;
     }
     var angle = hole_number * 360 / count;
     if (hole_number == 0) {
-      var cell = td(radius);
+      var cell = td(radius, 'radius');
       cell.setAttribute('rowspan', '' + count);
-      var cell = td(count);
+      var cell = td(count, 'count');
       cell.setAttribute('rowspan', '' + count);
     }
-    td(hole_number);
-    td(angle);
+    td(hole_number, 'count');
+    td(angle, 'angle');
     var radians = angle * Math.PI / 180;
-    td(radius * Math.cos(radians));
-    td(radius * Math.sin(radians));
+    td(radius * Math.cos(radians, 'pos'));
+    td(radius * Math.sin(radians, 'pos'));
     tbody.appendChild(tr);
   }
 }
