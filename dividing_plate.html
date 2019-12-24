@@ -3,9 +3,25 @@
   <head>
     <title>Layout for Dividing Plate</title>
     <style type="text/css">
-.BadInput  {
-      background-color: Orange;
+
+.BadInput
+{
+  background-color: Orange;
 }
+
+table
+{
+  border-collapse: collapse;
+  margin: 2em;
+}
+
+tr.new-ring  
+{
+  border-top-style: solid;
+  border-top-color: blue;
+  border-top-width: thin;
+}
+
 </style>
 <!--
     <script type="text/javascript" src="svg_lib.js"></script>
@@ -122,10 +138,12 @@ function update_dividing_rings() {
 
 
 function add_hole_location_rows(radius, count) {
-  console.log('add_hole_location_rows', radius, count);
   var tbody = document.querySelector('#hole-locations tbody');
   for (var hole_number = 0; hole_number < count; hole_number++) {
     var tr = document.createElement('tr');
+    if (hole_number == 0) {
+      tr.setAttribute('class', 'new-ring');
+    }
     function td(text) {
       var elt = document.createElement('td');
       tr.appendChild(elt);
@@ -158,7 +176,6 @@ function update_hole_locations_table(data) {
   data.forEach(function(d) {
     add_hole_location_rows(d.get('radius'), d.get('count'));
   });
-  console.log('update_hole_locations_table done');
 }
 
 
