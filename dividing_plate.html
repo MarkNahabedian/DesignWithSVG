@@ -62,6 +62,11 @@ function add_dividing_ring(radius='', count='') {
   tbody.appendChild(tr);
 }
 
+/*
+ISSUE:  changing count doesn't update angle
+ISSUE:  not getting sorted
+*/
+
 
 function update_dividing_rings() {
   // For each row in the dividing-rings table we extract the radius
@@ -76,9 +81,9 @@ function update_dividing_rings() {
     var rowData = new Map();
     function doDatum(selector, key) {
       var cell = row.querySelector(selector);
-      var val = parseFloat(cell.value);
-      if (val == '')
+      if (cell.value == '')
         return;
+      var val = parseFloat(cell.value);
       if (isNaN(val) || val <= 0) {
         ok = false;
         cell.setAttribute('class', 'BadInput');
@@ -112,6 +117,48 @@ function update_dividing_rings() {
   }
   // Add an empty row so the user can add more.
   add_dividing_ring();
+  update_hole_locations_table(data);
+}
+
+
+function add_hole_location_rows(radius, count) {
+  console.log('add_hole_location_rows', radius, count);
+  var tbody = document.querySelector('#hole-locations tbody');
+  for (var hole_number = 0; hole_number < count; hole_number++) {
+    var tr = document.createElement('tr');
+    function td(text) {
+      var elt = document.createElement('td');
+      tr.appendChild(elt);
+      elt.textContent = '' + text;
+      return elt;
+    }
+    var angle = hole_number * 360 / count;
+    if (hole_number == 0) {
+      var cell = td(radius);
+      cell.setAttribute('rowspan', '' + count);
+      var cell = td(count);
+      cell.setAttribute('rowspan', '' + count);
+    }
+    td(hole_number);
+    td(angle);
+    var radians = angle * Math.PI / 180;
+    td(radius * Math.cos(radians));
+    td(radius * Math.sin(radians));
+    tbody.appendChild(tr);
+  }
+}
+
+
+function update_hole_locations_table(data) {
+  var tbody = document.querySelector('#hole-locations tbody');
+  // First remove previous rows:
+  while (tbody.firstChild)
+    tbody.firstChild.remove();
+  // Now add rows fr the new data
+  data.forEach(function(d) {
+    add_hole_location_rows(d.get('radius'), d.get('count'));
+  });
+  console.log('update_hole_locations_table done');
 }
 
 
@@ -218,6 +265,20 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
       
     </form>
 
+    <div id="hole-locations">
+      <table>
+        <thead>
+          <th>radius</th>
+          <th>count</th>
+          <th>hole number</th>
+          <th>angle</th>
+          <th>X</th>
+          <th>Y</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
 
     <pre id="CODE_ELEMENT"> 
     </pre>
