@@ -101,8 +101,8 @@ function add_dividing_ring(radius='', count='') {
 }
 
 /*
-ISSUE:  changing count doesn't update angle
 ISSUE:  not getting sorted
+ISSUE:  tab order
 */
 
 
@@ -144,8 +144,8 @@ function update_dividing_rings() {
     rows[i].remove();
   }
   data.sort(function(a, b) {
-    var aval = a['radius'];
-    var bval = b['radius'];
+    var aval = a.get('radius');
+    var bval = b.get('radius');
     if (aval < bval) return -1;
     if (aval > bval) return 1;
     return 0;
