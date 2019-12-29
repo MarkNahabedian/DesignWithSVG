@@ -101,8 +101,7 @@ function add_dividing_ring(radius='', count='') {
 }
 
 /*
-ISSUE:  not getting sorted
-ISSUE:  tab order
+ISSUE:  tab order   messed up after sort
 */
 
 
@@ -139,10 +138,14 @@ function update_dividing_rings() {
   if (!ok) {
      return;
   }
-  // The data is good.  We now clear the table and re-fill it.
-  for (var i = 0; i < rows.length; i++) {
-    rows[i].remove();
+  // The data is good.  Sort it and update.
+  function focus_identifier (input) {
+    return (document.evaluate('string(ancestor::td[1]/@class)',
+                              input, null, XPathResult.STRING_TYPE,
+                              null).stringValue
+            + ';' + input.value);
   }
+  var focused = focus_identifier(document.activeElement);
   data.sort(function(a, b) {
     var aval = a.get('radius');
     var bval = b.get('radius');
@@ -151,10 +154,25 @@ function update_dividing_rings() {
     return 0;
   });
   for (i = 0; i < data.length; i++) {
-    add_dividing_ring(data[i].get('radius'), data[i].get('count'));
+    var row = rows[i];        // <tr>
+    var datum = data[i];
+    row.querySelector('td.radius input').value = '' + (datum.get('radius') || '');
+    row.querySelector('td.count input').value = '' +  (datum.get('count') || '');
   }
   // Add an empty row so the user can add more.
-  add_dividing_ring();
+  if (data.length >= rows.length) {
+    add_dividing_ring();
+  }
+  // Refocus
+  var inputs = document.querySelector('#dividing-rings table tbody input')
+  for (var i = 0; i < inputs.length; i++) {
+    var input = inputs[i];
+    if (focus_identifier(input) == focused &&
+        input.getAttribute('class') == focused_class) {
+      input.focus();
+    }
+  }
+  // Show
   update_hole_locations_table(data);
 }
 
