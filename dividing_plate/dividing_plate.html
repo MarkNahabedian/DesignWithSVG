@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Layout for Dividing Plate</title>
+    <style type="text/css">
+
+.BadInput
+{
+  background-color: Orange;
+}
+
+table
+{
+  border-collapse: collapse;
+  margin: 2em;
+}
+
+td.radius
+{
+  text-align: center;
+}
+
+td.angle
+{
+  text-align: right;
+}
+
+td.count
+{
+  text-align: center;
+}
+
+td,th
+{
+  padding-right: 1em;
+  padding-left:  1em;
+}
+
+tr.new-ring  
+{
+  border-top-style: solid;
+  border-top-color: blue;
+  border-top-width: thin;
+}
+
+</style>
+<!--
+    <script type="text/javascript" src="svg_lib.js"></script>
+    <script type="text/javascript" src="shaper_origin.js"></script>
+-->
+    <script type="text/javascript">
+//<![CDATA[
+
+var UNITS_CHOICES = {
+    'IMPERIAL': 'inches',
+    "METRIC": 'millimeters'
+};
+
+
+function update_units() {
+  console.log('update_units');
+  var buttons = document.querySelectorAll('input[type="radio"],[name="choose-units"]');
+  for (var i = 0; i < buttons.length; i++) {
+    var b = buttons[i];
+    if (b.checked) {
+      var choice = b.value;
+      console.log('update_units ' + choice);
+      document.querySelector('#plate-diameter-units').textContent = UNITS_CHOICES[choice];
+      break;
+    }
+  }
+}
+
+
+function add_dividing_ring(radius='', count='') {
+  var tbody = document.querySelector('#dividing-rings table tbody');
+  var tr = document.createElement('tr');
+  function td(value, key) {
+    var td = document.createElement('td');
+    tr.appendChild(td);
+    if (key) {
+      td.setAttribute('class', key);
+      var input = document.createElement('input');
+      td.appendChild(input);
+      input.setAttribute('type', 'text');
+      input.setAttribute('onchange', 'update_dividing_rings()');
+      input.value = '' + value;
+    } else {
+      td.textContent = '' + value;
+      td.setAttribute('class', 'angle');
+    }
+  }
+  td(radius, 'radius');
+  td(count, 'count');
+  if (typeof count === 'string') {
+    td('');
+  } else {
+    td(360 / count);
+  }
+  tbody.appendChild(tr);
+}
+
+/*
+ISSUE:  tab order   messed up after sort
+*/
+
+
+function update_dividing_rings() {
+  // For each row in the dividing-rings table we extract the radius
+  // and number of holes.  We sort that data by radius and then refill
+  // the table, calculating the "angle delta" while doing so.  We then
+  // make sure we leave a single empty row at the end.
+  var ok = true;
+  var rows = document.querySelectorAll('#dividing-rings table tbody tr');
+  var data = [];
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var rowData = new Map();
+    function doDatum(selector, key) {
+      var cell = row.querySelector(selector);
+      if (cell.value == '')
+        return;
+      var val = parseFloat(cell.value);
+      if (isNaN(val) || val <= 0) {
+        ok = false;
+        cell.setAttribute('class', 'BadInput');
+        return;
+      } else {
+        cell.removeAttribute('class');
+      }
+      rowData.set(key, val);
+    }
+    doDatum('td.radius input', 'radius');
+    doDatum('td.count input', 'count');
+    if (rowData.size > 0)
+      data.push(rowData);
+  }
+  if (!ok) {
+     return;
+  }
+  // The data is good.  Sort it and update.
+  function focus_identifier (input) {
+    return (document.evaluate('string(ancestor::td[1]/@class)',
+                              input, null, XPathResult.STRING_TYPE,
+                              null).stringValue
+            + ';' + input.value);
+  }
+  var focused = focus_identifier(document.activeElement);
+  data.sort(function(a, b) {
+    var aval = a.get('radius');
+    var bval = b.get('radius');
+    if (aval < bval) return -1;
+    if (aval > bval) return 1;
+    return 0;
+  });
+  for (i = 0; i < data.length; i++) {
+    var row = rows[i];        // <tr>
+    var datum = data[i];
+    row.querySelector('td.radius input').value = '' + (datum.get('radius') || '');
+    row.querySelector('td.count input').value = '' +  (datum.get('count') || '');
+  }
+  // Add an empty row so the user can add more.
+  if (data.length >= rows.length) {
+    add_dividing_ring();
+  }
+  // Refocus
+  var inputs = document.querySelector('#dividing-rings table tbody input')
+  for (var i = 0; i < inputs.length; i++) {
+    var input = inputs[i];
+    if (focus_identifier(input) == focused &&
+        input.getAttribute('class') == focused_class) {
+      input.focus();
+    }
+  }
+  // Show
+  update_hole_locations_table(data);
+}
+
+
+function add_hole_location_rows(radius, count) {
+  var tbody = document.querySelector('#hole-locations tbody');
+  for (var hole_number = 0; hole_number < count; hole_number++) {
+    var tr = document.createElement('tr');
+    if (hole_number == 0) {
+      tr.setAttribute('class', 'new-ring');
+    }
+    function td(text, cls) {
+      var elt = document.createElement('td');
+      tr.appendChild(elt);
+      elt.setAttribute('class', cls);
+      elt.textContent = '' + text;
+      return elt;
+    }
+    var angle = hole_number * 360 / count;
+    if (hole_number == 0) {
+      var cell = td(radius, 'radius');
+      cell.setAttribute('rowspan', '' + count);
+      var cell = td(count, 'count');
+      cell.setAttribute('rowspan', '' + count);
+    }
+    td(hole_number, 'count');
+    td(angle, 'angle');
+    var radians = angle * Math.PI / 180;
+    td(radius * Math.cos(radians, 'pos'));
+    td(radius * Math.sin(radians, 'pos'));
+    tbody.appendChild(tr);
+  }
+}
+
+
+function update_hole_locations_table(data) {
+  var tbody = document.querySelector('#hole-locations tbody');
+  // First remove previous rows:
+  while (tbody.firstChild)
+    tbody.firstChild.remove();
+  // Now add rows fr the new data
+  data.forEach(function(d) {
+    add_hole_location_rows(d.get('radius'), d.get('count'));
+  });
+}
+
+
+class Geometry {
+  constructor(/* application specific parameters */) {
+    // SET UP DESIGN PARAMETERS, ETC.
+  }
+
+    
+  svgWidth() {
+    // Return the value for the width attribute of the SVG element.
+  }
+
+    
+  svgHeight() {
+    // Return the value for the height attribute of the SVG element.
+  }
+
+    
+  updateSVG(svg_elt) {
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    // DRAW INTO svg_elt HERE.
+  }
+
+};
+
+
+function contentLoaded() {
+  console.log('contentLoaded');
+  add_dividing_ring();
+  update_units()
+    /*
+  setSVGNamespaces();
+  var g = new Geometry(...);
+  g.updateSVG(document.getElementById('SVG_ELEMENT'));
+  showSVG(document.getElementById('SVG_ELEMENT'),
+          document.getElementById('CODE_ELEMENT'));
+    */
+}
+
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
+
+//]]>
+
+    </script>
+  </head>
+  <body>
+
+    <h1>Layout for Dividing Plate</h1>
+
+    <p>
+      In this
+      <a href="Mr. Pete's video https://youtu.be/GkEiFHIxVdI">
+        YouTube video</a>,
+      Lyle Peterson shows how to make a dividing plate using the DRO
+      on a milling machine.  If you're at all interested in learning
+      about machining, his YouTube channel and instructional videos
+      are an invaluable educational resource.
+    </p>
+
+    <p>
+      He used a table from Machinery's Handbook to determine the
+      coordinates for drilling and did not go iinto the math.  The
+      math is simple for anyone who has learned trigonometry.  Rather
+      than posting a rescription of how to do the math, I figured it
+      wouldn't be much more work for me, and would be more helpful to
+      others, if I just implemented a web page that does the
+      calculations.
+    </p>
+
+    <form>
+      <div id="choose-units">
+        Do you prefer your meansurements in imperial or metric?
+        <div>
+          <input type="radio" name="choose-units" value="IMPERIAL"
+                 oninput="update_units()"
+                 checked=""/>
+          <label>Imperial</label>
+        </div>
+        <div>
+          <input type="radio" id="overall_diameter" name="choose-units" value="METRIC"
+                 oninput="update_units()" />
+          <label>Metric</label>
+        </div>
+        <div id="plate-diameter">
+          Overall diameter of the dividing plate:
+          <input type="text" size="8" placeholder="5"/>
+          <span id="plate-diameter-units">UNITS</span>
+        </div>
+      </div>
+      <div id="dividing-rings">
+        <p>
+          For each ring of dividing holes, enter the radius of that
+          ring and the number of dividions in the table below.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>radius</th>
+              <th>number of holes</th>
+              <th>angle delta</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      
+    </form>
+
+    <div id="hole-locations">
+      <p>
+        This table gives the X and Y coordinates of each hole of each
+        dividing ring, relative to the center of the dividing plate.
+      </p>
+      <table>
+        <thead>
+          <th>radius</th>
+          <th>count</th>
+          <th>hole number</th>
+          <th>angle</th>
+          <th>X</th>
+          <th>Y</th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    <pre id="CODE_ELEMENT"> 
+    </pre>
+    <svg id="SVG_ELEMENT"></svg>
+
+  </body>
+</html>
