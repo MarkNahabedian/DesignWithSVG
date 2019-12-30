@@ -65,7 +65,10 @@ function update_units() {
     if (b.checked) {
       var choice = b.value;
       console.log('update_units ' + choice);
-      document.querySelector('#plate-diameter-units').textContent = UNITS_CHOICES[choice];
+      var spans = document.querySelectorAll('span.fill-in-units');
+      for (var i = 0; i < spans.length; i++) {
+        spans[i].textContent = UNITS_CHOICES[choice];
+      }
       break;
     }
   }
@@ -304,7 +307,12 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
         <div id="plate-diameter">
           Overall diameter of the dividing plate:
           <input type="text" size="8" placeholder="5"/>
-          <span id="plate-diameter-units">UNITS</span>
+          <span class="fill-in-units">UNITS</span>
+        </div>
+        <div id="center-hub-diameter">
+          Diameter of the "hub" hole at the center of the plate:
+          <input type="text" size="8" placeholder="5"/>
+          <span class="fill-in-units">UNITS</span>          
         </div>
       </div>
       <div id="dividing-rings">
