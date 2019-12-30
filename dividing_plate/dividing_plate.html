@@ -44,16 +44,27 @@ tr.new-ring
 }
 
 </style>
-<!--
-    <script type="text/javascript" src="svg_lib.js"></script>
-    <script type="text/javascript" src="shaper_origin.js"></script>
--->
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
+// These are set by various "update" functions:
+var selected_units;
+var plate_diameter;
+var center_hub_diameter;
+var dividing_ring_data;
+
+
 var UNITS_CHOICES = {
-    'IMPERIAL': 'inches',
-    "METRIC": 'millimeters'
+    'IMPERIAL': {
+                  'pretty': 'inches',
+                  'svg': 'in'
+                },
+    "METRIC":   {
+                  'pretty': 'centimeters',
+                  'svg': 'cm'
+                }
 };
 
 
@@ -64,14 +75,40 @@ function update_units() {
     var b = buttons[i];
     if (b.checked) {
       var choice = b.value;
+      selected_units = choice;
       console.log('update_units ' + choice);
       var spans = document.querySelectorAll('span.fill-in-units');
       for (var i = 0; i < spans.length; i++) {
-        spans[i].textContent = UNITS_CHOICES[choice];
+        spans[i].textContent = UNITS_CHOICES[choice]['pretty'];
       }
       break;
     }
   }
+  update_geometry();
+}
+
+
+function update_plate_diameter(elt) {
+  var val = parseFloat(elt.value);
+  if (isNaN(val) || val <= 0) {
+    cell.setAttribute('class', 'BadInput');
+    return;
+  }
+  elt.removeAttribute('class');  
+  plate_diameter = val;
+  update_geometry();
+}
+
+
+function update_center_hub_diameter(elt) {
+  var val = parseFloat(elt.value);
+  if (isNaN(val) || val <= 0) {
+    cell.setAttribute('class', 'BadInput');
+    return;
+  }
+  elt.removeAttribute('class');  
+  center_hub_diameter = val;
+  update_geometry();
 }
 
 
@@ -177,6 +214,8 @@ function update_dividing_rings() {
   }
   // Show
   update_hole_locations_table(data);
+  dividing_ring_data = data;
+  update_geometry();
 }
 
 
@@ -230,34 +269,66 @@ class Geometry {
 
     
   svgWidth() {
-    // Return the value for the width attribute of the SVG element.
+    return plate_diameter * 1.1;
   }
 
     
   svgHeight() {
-    // Return the value for the height attribute of the SVG element.
+    return plate_diameter * 1.1;
   }
 
     
   updateSVG(svg_elt) {
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(),
+                     UNITS_CHOICES[selected_units]['svg']);
+    // Clear existing SVG:
+    while (svg_elt.firstChild)
+      svg_elt.firstChild.remove();
     // DRAW INTO svg_elt HERE.
+    // Coordinate translation
+    var g = document.createElementNS(svgURI, 'g');
+    g.setAttribute('transform', 'translate(' +
+                   (this.svgWidth() / 2) + ', ' +
+                   (this.svgHeight() / 2) + ')');
+    // Cwnter mark
+    // center hole
+    inside_cut(circle(g, 0, 0, plate_diameter / 2));
+    // outer circumference
+    outside_cut(circle(g, 0, 0, center_hub_diameter / 2));
+    // Dividing rings
+
+    svg_elt.appendChild(g);
   }
 
 };
 
 
+function circle(parent, center_x, center_y, radius) {
+  var c = document.createElementNS(svgURI, 'circle');
+  c.setAttribute('r', '' + radius);
+  c.setAttribute('cx', '' + center_x);
+  c.setAttribute('cy', '' + center_y);
+  parent.appendChild(c);
+  return c;
+}
+
+var geometry;
+
+function update_geometry() {
+  geometry.updateSVG(document.getElementById('SVG_ELEMENT'));
+  var code_elt = document.getElementById('CODE_ELEMENT');
+  while (code_elt.firstChild)
+    code_elt.firstChild.remove();
+  showSVG(document.getElementById('SVG_ELEMENT'),
+          code_elt);
+}
+
 function contentLoaded() {
   console.log('contentLoaded');
   add_dividing_ring();
-  update_units()
-    /*
+  geometry = new Geometry();
   setSVGNamespaces();
-  var g = new Geometry(...);
-  g.updateSVG(document.getElementById('SVG_ELEMENT'));
-  showSVG(document.getElementById('SVG_ELEMENT'),
-          document.getElementById('CODE_ELEMENT'));
-    */
+  update_units();
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
@@ -306,12 +377,14 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
         </div>
         <div id="plate-diameter">
           Overall diameter of the dividing plate:
-          <input type="text" size="8" placeholder="5"/>
+          <input type="text" size="8"
+                 onchange="update_plate_diameter(this)"/>
           <span class="fill-in-units">UNITS</span>
         </div>
         <div id="center-hub-diameter">
           Diameter of the "hub" hole at the center of the plate:
-          <input type="text" size="8" placeholder="5"/>
+          <input type="text" size="8"
+                 onchange="update_center_hub_diameter(this)"/>
           <span class="fill-in-units">UNITS</span>          
         </div>
       </div>
