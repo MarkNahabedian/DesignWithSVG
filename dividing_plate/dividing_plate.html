@@ -53,7 +53,7 @@ tr.new-ring
 var selected_units;
 var plate_diameter;
 var center_hub_diameter;
-var dividing_ring_data;
+var dividing_ring_data = [];
 
 
 var UNITS_CHOICES = {
@@ -287,16 +287,55 @@ class Geometry {
     // DRAW INTO svg_elt HERE.
     // Coordinate translation
     var g = document.createElementNS(svgURI, 'g');
+    if (! geometry.svgWidth())
+      return;
     g.setAttribute('transform', 'translate(' +
                    (this.svgWidth() / 2) + ', ' +
                    (this.svgHeight() / 2) + ')');
-    // Cwnter mark
     // center hole
-    inside_cut(circle(g, 0, 0, plate_diameter / 2));
+    if (plate_diameter)
+      inside_cut(circle(g, 0, 0, (plate_diameter / 2)));
     // outer circumference
-    outside_cut(circle(g, 0, 0, center_hub_diameter / 2));
+    if (center_hub_diameter)
+      outside_cut(circle(g, 0, 0, (center_hub_diameter / 2)));
+    // Cwnter mark
+    guide_line(path(g, [
+      ['M', 0, 0],
+      ['h', center_hub_diameter/4],
+      ['M', 0, 0],
+      ['h', -center_hub_diameter/4],
+      ['M', 0, 0],
+      ['v', center_hub_diameter/4],
+      ['M', 0, 0],
+      ['v', -center_hub_diameter/4]
+    ]));
     // Dividing rings
-
+    var rings_group = document.createElementNS(svgURI, 'g');
+    g.appendChild(rings_group);
+    var tick = 0.2 * (plate_diameter - center_hub_diameter) / 2;
+    for (var i = 1; i < dividing_ring_data.length; i++) {
+      var delta = (dividing_ring_data[i].get('radius') -
+                   dividing_ring_data[i-1].get('radius')) / 4;
+      if (delta < tick)
+        tick = delta;
+    }
+    for (var i = 0; i < dividing_ring_data.length; i++) {
+      var ring = dividing_ring_data[i];
+      var rg = document.createElementNS(svgURI, 'g');
+      rings_group.appendChild(rg);
+      var radius = ring.get('radius');
+      guide_line(circle(rg, 0, 0, radius));
+      var count = ring.get('count');
+      var angle_delta = 2 * Math.PI / count;
+      for (var angle = 0; angle < 2 * Math.PI; angle += angle_delta) {
+        guide_line(path(rg, [
+          ['M', (radius - tick) * Math.cos(angle),
+                (radius - tick) * Math.sin(angle)],
+          ['L', (radius + tick) * Math.cos(angle),
+                (radius + tick) * Math.sin(angle)],
+        ]));
+      }
+    }
     svg_elt.appendChild(g);
   }
 
