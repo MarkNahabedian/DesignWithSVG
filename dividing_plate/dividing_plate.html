@@ -36,6 +36,11 @@ td,th
   padding-left:  1em;
 }
 
+th.formula
+{
+  font-family: cursive;
+}
+
 tr.new-ring  
 {
   border-top-style: solid;
@@ -455,12 +460,22 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
       </p>
       <table>
         <thead>
-          <th>radius</th>
-          <th>count</th>
-          <th>hole number</th>
-          <th>angle</th>
-          <th>X</th>
-          <th>Y</th>
+          <tr>
+            <th>radius</th>
+            <th>count</th>
+            <th>hole number</th>
+            <th>angle</th>
+            <th>X</th>
+            <th>Y</th>
+          </tr>
+          <tr>
+            <th class="formula">r</th>
+            <th class="formula"></th>
+            <th class="formula"></th>
+            <th class="formula">A</th>
+            <th class="formula">r cos A</th>
+            <th class="formula">r sin A</th>
+          </tr>
         </thead>
         <tbody>
         </tbody>
@@ -476,7 +491,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
     <div>
       <p>
         This is the SVG code for the above drawing.  You can copy it
-        from here to use as the basis for cutting the dividiing plate on
+        from here to use as the basis for cutting the dividing plate on
         Shaper Origin.
       </p>
       <pre id="CODE_ELEMENT"></pre>
