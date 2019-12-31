@@ -419,19 +419,27 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
                  oninput="update_units()" />
           <label>Metric</label>
         </div>
-        <div id="plate-diameter">
-          Overall diameter of the dividing plate:
-          <input type="text" size="8"
-                 onchange="update_plate_diameter(this)"/>
-          <span class="fill-in-units">UNITS</span>
-        </div>
-        <div id="center-hub-diameter">
-          Diameter of the "hub" hole at the center of the plate:
-          <input type="text" size="8"
-                 onchange="update_center_hub_diameter(this)"/>
-          <span class="fill-in-units">UNITS</span>          
-        </div>
       </div>
+      <div id="plate-diameter">
+        Overall diameter of the dividing plate:
+        <input type="text" size="8"
+               onchange="update_plate_diameter(this)"/>
+        <span class="fill-in-units">UNITS</span>
+      </div>
+      <div id="center-hub-diameter">
+        Diameter of the "hub" hole at the center of the plate:
+        <input type="text" size="8"
+               onchange="update_center_hub_diameter(this)"/>
+        <span class="fill-in-units">UNITS</span>          
+      </div>
+      <p>
+        Note that the above measurements call for the <b>diamater</b>
+        because that lends itself to easy direct measurement.  Below,
+        the dividing circles are specified by <b>radius</b> because
+        distance from the center of the plate seemed to me a more
+        natural way to think about them as concentricity is important
+        and no direct measurement is involved.
+      <p>
       <div id="dividing-rings">
         <p>
           For each circle of dividing holes, enter the radius of that
