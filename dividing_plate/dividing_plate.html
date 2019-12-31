@@ -203,6 +203,7 @@ function update_dividing_rings() {
     var datum = data[i];
     row.querySelector('td.radius input').value = '' + (datum.get('radius') || '');
     row.querySelector('td.count input').value = '' +  (datum.get('count') || '');
+    row.querySelector('td.angle').textContent = '' +  (360 / datum.get('count') || '');
   }
   // Add an empty row so the user can add more.
   if (data.length >= rows.length) {
