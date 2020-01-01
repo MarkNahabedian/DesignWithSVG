@@ -64,13 +64,20 @@ var dividing_ring_data = [];
 var UNITS_CHOICES = {
     'IMPERIAL': {
                   'pretty': 'inches',
-                  'svg': 'in'
+                  'svg': 'in',
+                  'round': 5
                 },
     "METRIC":   {
                   'pretty': 'centimeters',
-                  'svg': 'cm'
+                  'svg': 'cm',
+                  'round': 3
                 }
 };
+
+
+function fround(f) {
+  return f.toFixed(UNITS_CHOICES[selected_units]['round']);
+}
 
 
 function update_units() {
@@ -249,8 +256,8 @@ function add_hole_location_rows(radius, count) {
     td(hole_number, 'count');
     td(angle, 'angle');
     var radians = angle * Math.PI / 180;
-    td(radius * Math.cos(radians, 'pos'));
-    td(radius * Math.sin(radians, 'pos'));
+    td(fround(radius * Math.cos(radians, 'pos')));
+    td(fround(radius * Math.sin(radians, 'pos')));
     tbody.appendChild(tr);
   }
 }
