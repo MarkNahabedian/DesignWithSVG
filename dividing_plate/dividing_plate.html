@@ -59,6 +59,7 @@ var selected_units;
 var plate_diameter;
 var center_hub_diameter;
 var dividing_ring_data = [];
+var index_hole_diameter;
 
 
 var UNITS_CHOICES = {
@@ -121,6 +122,18 @@ function update_center_hub_diameter(elt) {
   }
   elt.removeAttribute('class');  
   center_hub_diameter = val;
+  update_geometry();
+}
+
+
+function update_index_hole_diameter(elt) {
+  var val = parseFloat(elt.value);
+  if (isNaN(val) || val <= 0) {
+    cell.setAttribute('class', 'BadInput');
+    return;
+  }
+  elt.removeAttribute('class');  
+  index_hole_diameter = val;
   update_geometry();
 }
 
@@ -308,10 +321,10 @@ class Geometry {
                    (this.svgHeight() / 2) + ')');
     // center hole
     if (plate_diameter)
-      inside_cut(circle(g, 0, 0, (plate_diameter / 2)));
+      outside_cut(circle(g, 0, 0, (plate_diameter / 2)));
     // outer circumference
     if (center_hub_diameter)
-      outside_cut(circle(g, 0, 0, (center_hub_diameter / 2)));
+      inside_cut(circle(g, 0, 0, (center_hub_diameter / 2)));
     // Cwnter mark
     guide_line(path(g, [
       ['M', 0, 0],
@@ -338,10 +351,15 @@ class Geometry {
       var rg = document.createElementNS(svgURI, 'g');
       rings_group.appendChild(rg);
       var radius = ring.get('radius');
-      guide_line(circle(rg, 0, 0, radius));
       var count = ring.get('count');
       var angle_delta = 2 * Math.PI / count;
       for (var angle = 0; angle < 2 * Math.PI; angle += angle_delta) {
+        if (index_hole_diameter) {
+          inside_cut(circle(rg,
+                            radius * Math.cos(angle),
+                            radius * Math.sin(angle),
+                            index_hole_diameter / 2));
+        }
         guide_line(path(rg, [
           ['M', (radius - tick) * Math.cos(angle),
                 (radius - tick) * Math.sin(angle)],
@@ -349,6 +367,7 @@ class Geometry {
                 (radius + tick) * Math.sin(angle)],
         ]));
       }
+      guide_line(circle(rg, 0, 0, radius));
     }
     svg_elt.appendChild(g);
   }
@@ -440,6 +459,12 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
         <input type="text" size="8"
                onchange="update_center_hub_diameter(this)"/>
         <span class="fill-in-units">UNITS</span>          
+      </div>
+      <div id="index_hole_diameter">
+        Diameter of each index hole:
+        <input type="text" size="8"
+               onchange="update_index_hole_diameter(this)"/>
+        <span class="fill-in-units">UNITS</span>                
       </div>
       <p>
         Note that the above measurements call for the <b>diamater</b>
