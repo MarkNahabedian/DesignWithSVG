@@ -42,6 +42,9 @@ var MAX_STOCK_THICKNESS = 2;
 var STOP_ADJUSTMENT_SCREW_DIAMETER = 0.25;
 var END_STOP_CLAMP_SCREW_DIAMETER = 0.375;   // ***** To be determined
 
+var MORTISE_CENTERING_PIVOT_HOLE_DIAMETER = 0.25;
+var MORTISE_CENTERING_PIVOT_DISTANCE = 3.5;
+
 // There will be a second fence that can be set so that the position
 // of the main fence can be set relative to it.
 // We need to ensure that the knobs of the two fences don't interfere
@@ -211,6 +214,13 @@ class SubBaseGeometry {
         stop_pin_hole.setAttribute('cy', '' + (back_B + STOP_PIN_INSET));
         inside_cut(stop_pin_hole);
         g.appendChild(stop_pin_hole);
+        // Pivot holes for centering a mortise
+        g.appendChild(inside_cut(hole(
+            [MORTISE_CENTERING_PIVOT_DISTANCE, 0],
+            MORTISE_CENTERING_PIVOT_HOLE_DIAMETER)));
+        g.appendChild(inside_cut(hole(
+            [- MORTISE_CENTERING_PIVOT_DISTANCE, 0],
+            MORTISE_CENTERING_PIVOT_HOLE_DIAMETER)));
         // Add some more guide lines just to get a sense of measurement.
         var spacing = GUIDE_GRID_SPACING;
         var g1 = document.createElementNS(svgURI, "g");
@@ -359,7 +369,7 @@ class FenceGeometry {
         svg_elt.appendChild(g);
         // Holes for the positioning hardware
         var geo = this;
-        var hole = function(x) {
+        var fence_hole = function(x) {
             var y = geo.fence_height_B / 2;
             var hole = document.createElementNS(svgURI, 'circle');
             hole.setAttribute('cx',   '' + x);
@@ -374,14 +384,23 @@ class FenceGeometry {
             guide_line(clearance);
             g.appendChild(clearance);
         };
-        hole(this.sbg.slot_center_A);
-        hole(- this.sbg.slot_center_A);
+        fence_hole(this.sbg.slot_center_A);
+        fence_hole(- this.sbg.slot_center_A);
         for (var y = GUIDE_GRID_SPACING; y < this.fence_height_B; y += GUIDE_GRID_SPACING) {
             guide_line(path(g, [
                 ['M', - this.sbg.half_width_A, y],
                 ['H', this.sbg.half_width_A]
             ]));
         }
+        // Pivot holes for centering a mortise
+        g.appendChild(inside_cut(hole(
+            [MORTISE_CENTERING_PIVOT_DISTANCE,
+             geo.fence_height_B / 2],
+            MORTISE_CENTERING_PIVOT_HOLE_DIAMETER)));
+        g.appendChild(inside_cut(hole(
+            [- MORTISE_CENTERING_PIVOT_DISTANCE,
+             geo.fence_height_B / 2],
+            MORTISE_CENTERING_PIVOT_HOLE_DIAMETER)));
     }
 };
 
