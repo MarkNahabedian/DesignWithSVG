@@ -1,4 +1,4 @@
-// Base plate measurements toaccomodate router guide bushings.
+// Base plate measurements to accomodate router guide bushings.
 
 // Measured off of Rockler Woodworking "11 Piece Template Guide Kit".
 
