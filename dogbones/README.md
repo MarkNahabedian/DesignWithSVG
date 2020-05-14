@@ -33,7 +33,7 @@ A new SVG file is then written out.  For the example above, that file
 would be named <tt>my-design-dogboned.svg</tt>.
 
 There are additional commandline arguments that can be used to make
-each dogbone wider and deeper than those sugfgested by the cutter
+each dogbone wider and deeper than those suggested by the cutter
 diameter.  Run
 
 <pre>
