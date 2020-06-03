@@ -143,7 +143,11 @@ class SubBaseGeometry {
         // Center hole
         var ch = document.createElementNS(svgURI, 'g');
         g.appendChild(ch);
-        ch.appendChild(inside_cut(hole([0, 0], BASE_PLATE_HOLE_DIAMETER)));
+        var center_hole = hole([0, 0], BASE_PLATE_HOLE_DIAMETER);
+        var chtitle = document.createElementNS(svgURI, 'title');
+        center_hole.appendChild(chtitle);
+        ch.appendChild(inside_cut(center_hole));
+        chtitle.textContent = "Center hole sized to fit guide bushings";
         // dw6184 router base accomodations:
         var bg4 = document.createElementNS(svgURI, 'g');
         g.appendChild(bg4);
@@ -208,6 +212,10 @@ class SubBaseGeometry {
         // We make a hole for a stop pin that can help with makiing
         // stopped grooves.
         var stop_pin_hole = document.createElementNS(svgURI, 'circle');
+        var sph_title = document.createElementNS(svgURI, 'title');
+        stop_pin_hole.appendChild(sph_title);
+        sph_title.textContent = "Hole for " + STOP_PIN_DIAMETER +
+        " dowel to serve as a stop pin.";
         stop_pin_hole.setAttribute('id', 'stop_pin_hole');
         stop_pin_hole.setAttribute('r', '' + STOP_PIN_DIAMETER/2);
         stop_pin_hole.setAttribute('cx', '' + 0);
@@ -663,7 +671,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <p>
       We assume the fence has a notch cut into it that is big enoughto
-      clear a 1/5 inch cutter.
+      clear a 1/2 inch diameter cutter.
     </p>
 
     <h2>Dimensions</h2>
