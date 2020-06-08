@@ -3,7 +3,7 @@
 
 var EXPORTED_SYMBOLS = [
     'svgURI', 'xlinkURI',
-    'setSVGNamespaces', 'setupSVGViewport', 'path', 'showSVG'
+  'setSVGNamespaces', 'setupSVGViewport', 'svg_line','path', 'showSVG'
 ];
 
 svgURI = 'http://www.w3.org/2000/svg';
@@ -29,6 +29,16 @@ function setupSVGViewport(svgElt, x, y, width, height, units) {
   svgElt.setAttribute('width',   '' + width + units);
   svgElt.setAttribute('height',  '' + height + units);
   svgElt.setAttribute('viewBox', '' + x + ' ' + y + ' ' + width + ' ' + height);
+}
+
+// svg_line creates an SVG line element with the specified endpoints.
+function svg_line(x1, y1, x2, y2) {
+  var line = document.createElementNS(svgURI, "line");
+  line.setAttribute("x1", x1);
+  line.setAttribute("y1", y1);
+  line.setAttribute("x2", x2);
+  line.setAttribute("y2", y2);
+  return line;
 }
 
 // path adds an svg path element to parent and sets that path's d

@@ -127,11 +127,13 @@ class SubBaseGeometry {
     // dw6184 router base accomodations:
     var bg4 = document.getElementById("dw6184");
     dw6184_base_perimeter(bg4);
-    mounting_holes(bg4, dw6184_mounting_hole_center);
+    mounting_holes(bg4, dw6184_mounting_hole_center,
+                  "Mounting hole for dw6184 fixed base.");
     // dw6182 router base accomodations:
     var bg2 = document.getElementById("dw6182");
     dw6182_base_extent(bg2);
-    mounting_holes(bg2, dw6182_mounting_hole_center);
+    mounting_holes(bg2, dw6182_mounting_hole_center,
+                  "Mounting hole for dw6182 plunge base.");
     // Slots:
     var geo = this;
     var draw_slot = function(direction) {
@@ -148,6 +150,7 @@ class SubBaseGeometry {
         ['V', geo.back_edge_B + geo.adjuster_clearance +  SCREW_CLEARANCE / 2],
         ['h', direction * geo.slot_width_A]
       ]);
+      tooltip(slot, "Fence adjustment slot.");
       inside_cut(slot);
       guide_line(path(sg, [
         ['M', direction * (slot_outside_edge_A + geo.adjuster_clearance),
@@ -250,18 +253,18 @@ function hole(center, diameter, circle) {
   return circle;
 }
 
-function mounting_hole(xml_parent, center) {
+function mounting_hole(xml_parent, center, tooltip_text) {
   xml_parent.appendChild(
     pocket_cut(hole(center, MH_COUNTERSINK_DIAMETER)));
   xml_parent.appendChild(
-    inside_cut(hole(center, MH_DIAMETER)));
+    tooltip(inside_cut(hole(center, MH_DIAMETER)), tooltip_text));
 }
 
-function mounting_holes(xml_parent, center_function) {
-  mounting_hole(xml_parent, center_function(-1, -1));
-  mounting_hole(xml_parent, center_function(-1, 1));
-  mounting_hole(xml_parent, center_function(1, 1));
-  mounting_hole(xml_parent, center_function(1, -1));
+function mounting_holes(xml_parent, center_function, tooltip_text) {
+  mounting_hole(xml_parent, center_function(-1, -1), tooltip_text);
+  mounting_hole(xml_parent, center_function(-1, 1)), tooltip_text;
+  mounting_hole(xml_parent, center_function(1, 1), tooltip_text);
+  mounting_hole(xml_parent, center_function(1, -1), tooltip_text);
 }
 
 function draw_grid(group, spacing, x1, x2, y1, y2) {
@@ -375,10 +378,19 @@ class FenceGeometry {
     fence_hole(this.sbg.slot_center_A);
     fence_hole(- this.sbg.slot_center_A);
     for (var y = GUIDE_GRID_SPACING; y < this.fence_height_B; y += GUIDE_GRID_SPACING) {
-      guide_line(path(g, [
-        ['M', - this.sbg.half_width_A, y],
-        ['H', this.sbg.half_width_A]
-      ]));
+      g.appendChild(
+        tooltip(
+          guide_line(
+            svg_line(- this.sbg.half_width_A, y,
+                     this.sbg.half_width_A, y)
+            /*
+              path(g, [
+              ['M', - this.sbg.half_width_A, y],
+              ['H', this.sbg.half_width_A]
+              ])
+            */
+          ),
+          "Guideline grid, " + GUIDE_GRID_SPACING + " inch spacing."));
     }
     // Pivot holes for centering a mortise
     g.appendChild(inside_cut(hole(
