@@ -32,6 +32,8 @@ using Shaper Origin or other engraving/etching device.
 cutters can not cut internal corners) to mortises and tenons in an
 existing SVG design.
 
+<b>dividing_plate<b> can be used to design a rotary table dividing plate.
+
 The remaining utilities are works in progress.  They are not yet
 working to my satisfaction.
 
