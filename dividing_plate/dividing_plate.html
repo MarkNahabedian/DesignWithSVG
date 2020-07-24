@@ -9,6 +9,11 @@
   background-color: Orange;
 }
 
+form.div
+{
+    margin-bottom: 2ex;
+}
+
 table
 {
   border-collapse: collapse;
@@ -105,7 +110,7 @@ function update_units() {
 function update_plate_diameter(elt) {
   var val = parseFloat(elt.value);
   if (isNaN(val) || val <= 0) {
-    cell.setAttribute('class', 'BadInput');
+    elt.setAttribute('class', 'BadInput');
     return;
   }
   elt.removeAttribute('class');  
@@ -117,7 +122,7 @@ function update_plate_diameter(elt) {
 function update_center_hub_diameter(elt) {
   var val = parseFloat(elt.value);
   if (isNaN(val) || val <= 0) {
-    cell.setAttribute('class', 'BadInput');
+    elt.setAttribute('class', 'BadInput');
     return;
   }
   elt.removeAttribute('class');  
@@ -128,8 +133,9 @@ function update_center_hub_diameter(elt) {
 
 function update_index_hole_diameter(elt) {
   var val = parseFloat(elt.value);
-  if (isNaN(val) || val <= 0) {
-    cell.setAttribute('class', 'BadInput');
+  // We allow 0 here to mark with a caret or arrow rather than a hole.
+  if (isNaN(val) || val < 0) {
+    elt.setAttribute('class', 'BadInput');
     return;
   }
   elt.removeAttribute('class');  
@@ -354,18 +360,42 @@ class Geometry {
       var count = ring.get('count');
       var angle_delta = 2 * Math.PI / count;
       for (var angle = 0; angle < 2 * Math.PI; angle += angle_delta) {
-        if (index_hole_diameter) {
-          inside_cut(circle(rg,
-                            radius * Math.cos(angle),
-                            radius * Math.sin(angle),
-                            index_hole_diameter / 2));
+        var dx = Math.cos(angle);
+        var dy = Math.sin(angle);
+        var hole_x = radius * dx;
+        var hole_y = radius * dy;
+        if (index_hole_diameter == 0) {
+          // Sam at Shaper Support suggested using an angled path to
+          // mark hole centers.  By "aiming" Shaper Origin behind an
+          // acute angle, using a V bit, and plunging and retracting
+          // without any lateral motion, a center mark can be made for
+          // later drilling.
+          var a1 = angle - Math.PI / 4;
+          var a2 = angle + Math.PI / 4;
+          var caret = 0.1;
+          var cp = on_line_cut(path(rg, [
+              ['M',
+               hole_x + caret * Math.cos(a1),
+               hole_y + caret * Math.sin(a1)],
+              ['L', hole_x, hole_y],
+              ['L',
+               hole_x + caret * Math.cos(a2),
+               hole_y + caret * Math.sin(a2)]
+          ]));
+            cp.setAttribute('stroke-width', '1px');
+            cp.setAttribute("vector-effect", "non-scaling-stroke");
+        } else {
+          if (index_hole_diameter) {
+            inside_cut(circle(rg, hole_x, hole_y,
+                              index_hole_diameter / 2));
+          }
+          guide_line(path(rg, [
+              ['M', (radius - tick) * Math.cos(angle),
+               (radius - tick) * Math.sin(angle)],
+              ['L', (radius + tick) * Math.cos(angle),
+               (radius + tick) * Math.sin(angle)],
+          ]));
         }
-        guide_line(path(rg, [
-          ['M', (radius - tick) * Math.cos(angle),
-                (radius - tick) * Math.sin(angle)],
-          ['L', (radius + tick) * Math.cos(angle),
-                (radius + tick) * Math.sin(angle)],
-        ]));
       }
       guide_line(circle(rg, 0, 0, radius));
     }
@@ -415,7 +445,7 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <p>
       In this
-      <a href="Mr. Pete's video https://youtu.be/GkEiFHIxVdI">
+      <a href="https://youtu.be/GkEiFHIxVdI">
         YouTube video</a>,
       Lyle Peterson shows how to make a dividing plate using the DRO
       on a milling machine.  If you're at all interested in learning
@@ -465,6 +495,12 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
         <input type="text" size="8"
                onchange="update_index_hole_diameter(this)"/>
         <span class="fill-in-units">UNITS</span>                
+        <br />
+        Entering 0 here will create caret marks for center drilling
+        with a V bit rather than a hole cut.  Position Shaper Origin a
+        little beyond the point of the caret and plunch and retract
+        without moving.  Origin will auto-position to the point of
+        the caret.
       </div>
       <p>
         Note that the above measurements call for the <b>diamater</b>
