@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Joining Plates for T-Slot Aluminum Extrusions</title>
+    <link href="styles.css" rel="stylesheet" />
+    <script type="text/javascript" src="../common/svg_lib.js"></script>
+    <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript" src="code.js"></script>
+    <script type="text/javascript">
+      //<![CDATA[
+      document.addEventListener("DOMContentLoaded", contentLoaded, false);
+      //]]>
+    </script>
+  </head>
+
+  <body>
+
+    <h1>Joining Plates for T-Slot Aluminum Extrusions</h1>
+
+    <form>
+      <div id="choose-profile">
+        <p>
+          Choose the profile/size of aluminum extrusion to be joined:
+        </p>
+        <select onchange="update_extrusion(this)"></select>
+      </div>
+      <div id="grid-size">
+        <p>
+          Choose the width and height of the grid which will be used
+          to bound the joining plate.  These should be expressed as an
+          integer multiplier of the extrusion size:
+        </p>
+        <div>
+          <span>
+            Width:
+            <input id="grid-width"
+                   type="number" min="1" max="5" value="2"
+                   onchange="update_grid_width(this)"/>
+            <span id="grid-width-measurement" ></span>
+          </span>
+        </div>
+        <div>
+          <span>
+            Height:
+            <input id="grid-height"
+                   type="number" min="1" max="5" value="2"
+                   onchange="update_grid_height(this)"/>
+            <span id="grid-height-measurement" ></span>
+          </span>
+        </div>
+      </div>
+      <div id="hole-diameter">
+        <select onchange="update_hole(this)"></select>>
+      </div>      
+    </form>
+
+    <div>
+      <svg id="SVG_ELEMENT"></svg>
+    </div>
+    <div>
+      <pre id="CODE_ELEMENT"></pre>
+    </div>
+
+  </body>
+</html>
