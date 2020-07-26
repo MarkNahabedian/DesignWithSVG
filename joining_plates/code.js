@@ -19,6 +19,7 @@ function update_extrusion(elt) {
 
 function update_hole(elt) {
   selected_hole = holes[elt.value];
+  update_geometry();
 }
 
 
@@ -104,55 +105,108 @@ function load_holes() {
 
 
 function contentLoaded() {
-  console.log("contentLoaded");
   load_extrusions();
   load_holes();
+  geometry = new Geometry();
+  setSVGNamespaces();
 }
 
 
+function to_inches(val) {
+  switch (selected_extrusion.units) {
+    case "inch":
+      return val;
+      break;
+    case "mm":
+      return val / 25.4;
+      break;
+    default:
+      return val;
+  }
+}
+
+
+function hole(centerX, centerY, diameter) {
+  circle = document.createElementNS(svgURI, 'circle');
+  circle.setAttribute('cx',   '' + centerX);
+  circle.setAttribute('cy',   '' + centerY);
+  circle.setAttribute('r',   '' + (diameter / 2));
+  return circle;
+}
+
+
+function toggle_hole(i, j) {
+  console.log("toggle_hole", i, j);
+  geometry.drill_these[i][j] = ! geometry.drill_these[i][j];
+  update_geometry();
+}
+
+
+var geometry;
+
 function update_geometry() {
-  // geometry.updateSVG(document.getElementById('SVG_ELEMENT'));
-  // var code_elt = document.getElementById('CODE_ELEMENT');
-  // while (code_elt.firstChild)
-  //   code_elt.firstChild.remove();
-  // showSVG(document.getElementById('SVG_ELEMENT'),
-  //         code_elt);
+  geometry.updateSVG(document.getElementById('SVG_ELEMENT'));
+  var code_elt = document.getElementById('CODE_ELEMENT');
+  while (code_elt.firstChild)
+    code_elt.firstChild.remove();
+  showSVG(document.getElementById('SVG_ELEMENT'),
+          code_elt);
 }
 
 
 class Geometry {
-  constructor(/* application specific parameters */) {
-    // SET UP DESIGN PARAMETERS, ETC.
+  constructor() {
+    this.drill_these = Array(10);
+    for (var i = 0; i < 10; i++) {
+      this.drill_these[i] = Array(10);
+      for(var j = 0; j < 10; j++) {
+        this.drill_these[i][j] = false;
+      }
+    }
   }
-
     
   svgWidth() {
-    return plate_diameter * 1.1;
+    return to_inches(grid_width * selected_extrusion.measurement) + 0.5;
   }
-
     
   svgHeight() {
-    return plate_diameter * 1.1;
+    return to_inches(grid_height * selected_extrusion.measurement) + 0.5;
   }
-
     
   updateSVG(svg_elt) {
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(),
-                     UNITS_CHOICES[selected_units]['svg']);
+    if (!selected_extrusion)
+      return;
+    if (!selected_hole)
+      return;
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), "in");
     // Clear existing SVG:
     while (svg_elt.firstChild)
       svg_elt.firstChild.remove();
-    // DRAW INTO svg_elt HERE.
+    // DRAW iNTO svg_elt HERE.
     // Coordinate translation
     var g = document.createElementNS(svgURI, 'g');
-    if (! geometry.svgWidth())
-      return;
-    g.setAttribute('transform', 'translate(' +
-                   (this.svgWidth() / 2) + ', ' +
-                   (this.svgHeight() / 2) + ')');
+    g.setAttribute('transform', 'translate(0.5, 0.5)');
 
 
-
+    // Locate the holes:
+    for (var i = 0; i < grid_width; i++) {
+      var x = (0.5 + i) * selected_extrusion.measurement;
+      for(var j = 0; j < grid_height; j++) {
+        var y = (0.5 + j) * selected_extrusion.measurement;
+        var h = hole(x, y, selected_hole.diameter);
+        h.setAttribute("onclick", "toggle_hole(" + i + ", " + j + ")");
+        if (this.drill_these[i][j]) {
+          inside_cut(h);
+        } else {
+          // guide_line(h);
+          h.setAttribute('fill','#0068FF');
+          h.setAttribute('stroke', '#0068FF');  // blue
+          h.setAttribute('stroke-width', '.01');
+          h.setAttribute('opacity', '1.0');
+        }
+        g.appendChild(h);
+      }
+    }
     svg_elt.appendChild(g);
   }
 
