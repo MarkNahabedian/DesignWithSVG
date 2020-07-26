@@ -240,9 +240,6 @@ class SubBaseGeometry {
 };
 
 
-// mounting_hole creates an SVG circle element for a hole centered at
-// center (a two wlwmwnt array of x, y) with the specified diameter.
-// The hole is returned.
 function hole(center, diameter, circle) {
   if (!circle) {
     circle = document.createElementNS(svgURI, 'circle');
@@ -253,6 +250,9 @@ function hole(center, diameter, circle) {
   return circle;
 }
 
+// mounting_hole creates an SVG circle element for a hole centered at
+// center (a two element array of x, y) with the specified diameter.
+// The hole is returned.
 function mounting_hole(xml_parent, center, tooltip_text) {
   xml_parent.appendChild(
     pocket_cut(hole(center, MH_COUNTERSINK_DIAMETER)));
