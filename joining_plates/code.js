@@ -123,14 +123,28 @@ var SVG_UNITS = {
   "mm": "mm"
 };
 
+var UNIT_CONVERSION = {
+  "inch-inch": 1,
+  "mm-mm": 1,
+  "inch-mm": 25.4,
+  "mm-inch": 1 / 25.4
+};
 
-function hole(centerX, centerY) {
+function convert(from, to) {
+  return UNIT_CONVERSION[from + "-" + to];
+}
+
+
+function hole(centerX, centerY, scale) {
   circle = document.createElementNS(svgURI, 'circle');
   circle.setAttribute('cx',   '' + centerX);
   circle.setAttribute('cy',   '' + centerY);
+  // The SVG document uses selected_extrusion.units for its units.
+  // This might not match selected_hole.units.  Convert.
   circle.setAttribute('r',   '' +
-                      (selected_hole.diameter / 2) // +
-                     // SVG_UNITS[selected_hole.units]
+                      convert(selected_hole.units,
+                              selected_extrusion.units) *
+                      (selected_hole.diameter / 2) / scale
                      );
   return circle;
 }
@@ -193,7 +207,7 @@ class Geometry {
     // extrusion measurement.
     {
       let offset = this.margin + selected_extrusion.measurement / 2;
-      let scale = selected_extrusion.measurement;
+      var scale = selected_extrusion.measurement;
       g.setAttribute('transform',
                      "translate(" + offset + ", " + offset + ")" +
                     " scale(" + scale + ")");
@@ -208,7 +222,7 @@ class Geometry {
         // extrusion type.  This would mess up the size of the hole to
         // be drilled, but hole() adds an absolute units designator to
         // the radius.
-        var h = hole(x, y);
+        var h = hole(x, y, scale);
         h.setAttribute("onclick", "toggle_hole(" + x + ", " + y + ")");
         if (this.drill_these[x][y]) {
           inside_cut(h);
