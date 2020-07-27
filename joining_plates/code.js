@@ -124,20 +124,6 @@ var SVG_UNITS = {
 };
 
 
-function to_inches(val) {
-  switch (selected_extrusion.units) {
-    case "inch":
-      return val;
-      break;
-    case "mm":
-      return val / 25.4;
-      break;
-    default:
-      return val;
-  }
-}
-
-
 function hole(centerX, centerY, diameter) {
   circle = document.createElementNS(svgURI, 'circle');
   circle.setAttribute('cx',   '' + centerX);
