@@ -1,32 +1,32 @@
 [
-    {
-        "name": "1/4  (coarse 20, or fine 28), close fit",
-        "diameter": 0.2570,
-        "units": "inch"
-    },
-    {
-        "name": "1/4 (coarse 20, or fine 28), loose fit",
-        "diameter":  0.2660,
-        "units": "inch"
-    },
-    {
-        "name": "M6 (close fit)",
-        "diameter": 6.4,
-        "units": "mm"
-    },
-    {
-        "name": "M6 (loose fit)",
-        "diameter": 7,
-        "units": "mm"
-    },
-    {
-        "name": "M8 (close fit)",
-        "diameter": 8.4,
-        "units": "mm"
-    },
-    {
-        "name": "M8 (loose fit)",
-        "diameter": 10,
-        "units": "mm"
-    }
+  {
+    "name": "1/4  (coarse 20, or fine 28), close fit",
+    "diameter": 0.2570,
+    "units": "inch"
+  },
+  {
+    "name": "1/4 (coarse 20, or fine 28), loose fit",
+    "diameter":  0.2660,
+    "units": "inch"
+  },
+  {
+    "name": "M6 (close fit)",
+    "diameter": 6.4,
+    "units": "mm"
+  },
+  {
+    "name": "M6 (loose fit)",
+    "diameter": 7,
+    "units": "mm"
+  },
+  {
+    "name": "M8 (close fit)",
+    "diameter": 8.4,
+    "units": "mm"
+  },
+  {
+    "name": "M8 (loose fit)",
+    "diameter": 10,
+    "units": "mm"
+  }
 ]

@@ -1,37 +1,38 @@
 [
   {
-      "name": "10 series",
-      "units": "inch",
-      "measurement": 1
+    "name": "10 series",
+    "units": "inch",
+    "measurement": 1
   },
   {
-      "name": "15 series",
-      "units": "inch",
-      "measurement": 1.5
+    "name": "15 series",
+    "units": "inch",
+    "svg_unit": "in",
+    "measurement": 1.5
   },
   {
-      "name": "20 series",
-      "units": "mm",
-      "measurement": 20
+    "name": "20 series",
+    "units": "mm",
+    "measurement": 20
   },
   {
-      "name": "25 series",
-      "units": "mm",
-      "measurement": 25
+    "name": "25 series",
+    "units": "mm",
+    "measurement": 25
   },
   {
-      "name": "30 series",
-      "units": "mm",
-      "measurement": 30
+    "name": "30 series",
+    "units": "mm",
+    "measurement": 30
   },
   {
-      "name": "40 series",
-      "units": "mm",
-      "measurement": 40
+    "name": "40 series",
+    "units": "mm",
+    "measurement": 40
   },
   {
-      "name": "45 series",
-      "units": "mm",
-      "measurement": 45
+    "name": "45 series",
+    "units": "mm",
+    "measurement": 45
   }
 ]
