@@ -116,6 +116,14 @@ function contentLoaded() {
 
 ////////////////////////////////////////////////////////////
 
+// Map from pretty unit names as appear in our data file to the units
+// used by SVG
+var SVG_UNITS = {
+  "inch": "in",
+  "mm": "mm"
+};
+
+
 function to_inches(val) {
   switch (selected_extrusion.units) {
     case "inch":
@@ -162,6 +170,7 @@ function update_geometry() {
 
 class Geometry {
   constructor() {
+    this.margin = 0.25;
     this.drill_these = Array(10);
     for (var i = 0; i < 10; i++) {
       this.drill_these[i] = Array(10);
@@ -172,11 +181,11 @@ class Geometry {
   }
     
   svgWidth() {
-    return to_inches(grid_width * selected_extrusion.measurement) + 0.5;
+    return grid_width * selected_extrusion.measurement + 2 * this.margin;
   }
     
   svgHeight() {
-    return to_inches(grid_height * selected_extrusion.measurement) + 0.5;
+    return grid_height * selected_extrusion.measurement + 2 * this.margin;
   }
     
   updateSVG(svg_elt) {
@@ -184,7 +193,8 @@ class Geometry {
       return;
     if (!selected_hole)
       return;
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), "in");
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(),
+                     SVG_UNITS[selected_extrusion.units]);
     // Clear existing SVG:
     while (svg_elt.firstChild)
       svg_elt.firstChild.remove();
