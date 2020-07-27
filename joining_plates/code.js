@@ -169,6 +169,7 @@ function update_geometry() {
           code_elt);
 }
 
+var PATH_SEGMENTS;
 
 class Geometry {
   constructor() {
@@ -213,7 +214,18 @@ class Geometry {
                     " scale(" + scale + ")");
     }
     // Perimeter:
-
+    {
+      let path_segments = (simplify_segments(
+        make_segments(this.drill_these)));
+      PATH_SEGMENTS = path_segments;
+      if (path_segments.length > 0) {
+        let d = segments_to_path(path_segments, 0.1);
+        var p = document.createElementNS(svgURI, 'path');
+        p.setAttribute("d", d);
+        outside_cut(p);
+        g.appendChild(p);
+      }
+    }
     // Locate the holes:
     for (var x = 0; x < grid_width; x++) {
       for(var y = 0; y < grid_height; y++) {
@@ -240,6 +252,132 @@ class Geometry {
   }
 
 };
+
+
+////////////////////////////////////////////////////////////
+
+// Segment helps us identify the path surrounding the holes to be drilled.
+class Segment {
+  constructor(x1, y1, x2, y2, inward) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.inward = inward;
+  }
+
+  horizontal() {
+    return this.y1 == this.y2;
+  }
+
+  vertical() {
+    return this.x1 == this.x2;
+  }
+
+  joins(other) {
+    return this.x2 == other.x1 && this.y2 == other.y1;
+  }
+
+  opposes(other) {
+    return this.joins(other) && other.joins(this);
+  }
+  
+  path(inset) {
+    var p = [];
+    if (this.horizontal()) {
+      p.push(this.x1 + inset * Math.sign(this.x2 - this.x1));
+      p.push(this.y1 + inset * this.inward);      
+      p.push(this.x2 + inset * Math.sign(this.x1 - this.x2));
+      p.push(this.y2 + inset * this.inward);
+    } else if (this.vertical()) {
+      p.push(this.x1 + inset * this.inward);      
+      p.push(this.y1 + inset * Math.sign(this.y2 - this.y1));
+      p.push(this.x2 + inset * this.inward);
+      p.push(this.y2 + inset * Math.sign(this.y1 - this.y2));
+    }
+    return p;
+  }
+
+};
+
+
+function make_segments(a) {
+  var result = [];
+  for (let x = 0; x < a.length; x++) {
+    for(let y = 0; y < a[0].length; y++) {
+      if (a[x][y]) {
+        let x1 = x - 0.5;
+        let y1 = y - 0.5;
+        let x2 = x + 0.5;
+        let y2 = y + 0.5;
+        let points = [
+          [x1, y1],
+          [x2, y1],
+          [x2, y2],
+          [x1, y2]
+        ];
+        for (let i = 0; i < points.length; i++) {
+          let p1 = points[i];
+          let p2 = points[(i + 1) % points.length];
+          let seg = new Segment(p1[0], p1[1], p2[0], p2[1],
+                                (p1[1] - p2[1]) +
+                                (p2[0] - p1[0]));
+          result.push(seg);
+        }
+      }
+    }
+  }
+  return result;
+};
+
+function simplify_segments(segments) {
+  var unopposed = [];
+  // Remove segments that oppose each other:
+  while (segments.length > 0) {
+    var seg = segments.pop();
+    for (s of segments) {
+      if (seg.opposes(s)) {
+        segments = segments.filter(function (s1) { return s != s1; })
+        seg = null;
+        break;
+      }
+    }
+    if (seg != null) {
+      unopposed.push(seg);
+    }
+  }
+  // Now order unopposed segments end to end.
+  if (unopposed.length == 0)
+    return unopposed;
+  var path = [];
+  var last = unopposed.shift();
+  path.push(last);
+  while (unopposed.length > 0) {
+    var remaining = [];
+    while (unopposed.length > 0) {
+      var seg = unopposed.shift();
+      if (last.joins(seg)) {
+        path.push(seg);
+        last = seg;
+      } else {
+        remaining.push(seg);
+      }
+    }
+    unopposed = remaining;
+  }
+  return path;
+}
+
+function segments_to_path(segments, inset) {
+  var p = ["M"];
+  for (let seg of segments) {
+    for (let step of seg.path(inset)) {
+      p.push(step);
+    }
+  }
+  p.push("z");
+  return p.join(" ");
+}
 
 
 ////////////////////////////////////////////////////////////
