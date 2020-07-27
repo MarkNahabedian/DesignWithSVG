@@ -124,17 +124,19 @@ var SVG_UNITS = {
 };
 
 
-function hole(centerX, centerY, diameter) {
+function hole(centerX, centerY) {
   circle = document.createElementNS(svgURI, 'circle');
   circle.setAttribute('cx',   '' + centerX);
   circle.setAttribute('cy',   '' + centerY);
-  circle.setAttribute('r',   '' + (diameter / 2));
+  circle.setAttribute('r',   '' +
+                      (selected_hole.diameter / 2) // +
+                     // SVG_UNITS[selected_hole.units]
+                     );
   return circle;
 }
 
 
 function toggle_hole(i, j) {
-  console.log("toggle_hole", i, j);
   geometry.drill_these[i][j] = ! geometry.drill_these[i][j];
   update_geometry();
 }
@@ -184,20 +186,31 @@ class Geometry {
     // Clear existing SVG:
     while (svg_elt.firstChild)
       svg_elt.firstChild.remove();
-    // DRAW iNTO svg_elt HERE.
     // Coordinate translation
     var g = document.createElementNS(svgURI, 'g');
-    g.setAttribute('transform', 'translate(0.5, 0.5)');
-
+    // Establish a coordinate system based on grid units with hole
+    // positions having integer coordinates-- independent of selected
+    // extrusion measurement.
+    {
+      let offset = this.margin + selected_extrusion.measurement / 2;
+      let scale = selected_extrusion.measurement;
+      g.setAttribute('transform',
+                     "translate(" + offset + ", " + offset + ")" +
+                    " scale(" + scale + ")");
+    }
+    // Perimeter:
 
     // Locate the holes:
-    for (var i = 0; i < grid_width; i++) {
-      var x = (0.5 + i) * selected_extrusion.measurement;
-      for(var j = 0; j < grid_height; j++) {
-        var y = (0.5 + j) * selected_extrusion.measurement;
-        var h = hole(x, y, selected_hole.diameter);
-        h.setAttribute("onclick", "toggle_hole(" + i + ", " + j + ")");
-        if (this.drill_these[i][j]) {
+    for (var x = 0; x < grid_width; x++) {
+      for(var y = 0; y < grid_height; y++) {
+        // For convenience, we scaled the local coordinate system so
+        // that a unit coordinate matched the width of the selected
+        // extrusion type.  This would mess up the size of the hole to
+        // be drilled, but hole() adds an absolute units designator to
+        // the radius.
+        var h = hole(x, y);
+        h.setAttribute("onclick", "toggle_hole(" + x + ", " + y + ")");
+        if (this.drill_these[x][y]) {
           inside_cut(h);
         } else {
           // guide_line(h);
