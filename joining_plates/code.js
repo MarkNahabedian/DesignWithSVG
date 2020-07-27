@@ -1,9 +1,11 @@
 
-
+////////////////////////////////////////////////////////////
 // These are initialized by loading json files
 var extrusions = [];      // Initialized by load_extrusions.
 var holes = [];           // Initialized by load_holes.
 
+
+////////////////////////////////////////////////////////////
 // These are set by various "update" functions:
 var selected_extrusion;      // element of extrusions.
 var selected_hole;           // element of holes.
@@ -112,6 +114,8 @@ function contentLoaded() {
 }
 
 
+////////////////////////////////////////////////////////////
+
 function to_inches(val) {
   switch (selected_extrusion.units) {
     case "inch":
@@ -141,6 +145,8 @@ function toggle_hole(i, j) {
   update_geometry();
 }
 
+
+////////////////////////////////////////////////////////////
 
 var geometry;
 
@@ -212,3 +218,6 @@ class Geometry {
 
 };
 
+
+////////////////////////////////////////////////////////////
+document.addEventListener("DOMContentLoaded", contentLoaded, false);
