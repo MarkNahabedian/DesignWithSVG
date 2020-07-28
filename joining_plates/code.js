@@ -353,23 +353,34 @@ function simplify_segments(segments) {
     }
   }
   // Now order unopposed segments end to end.
-  if (unopposed.length == 0)
+  //
+  // We need to be able to cope with disjoint Segment paths, not
+  // because the resukt would be useful, but so we don't crash if the
+  // situation occurs while the user is choosinh holes.
+  let segment_count = unopposed.length;
+  if (segment_count == 0)
     return unopposed;
   var path = [];
-  var last = unopposed.shift();
-  path.push(last);
-  while (unopposed.length > 0) {
-    var remaining = [];
-    while (unopposed.length > 0) {
-      var seg = unopposed.shift();
-      if (last.joins(seg)) {
-        path.push(seg);
-        last = seg;
-      } else {
-        remaining.push(seg);
+  while(path.length < segment_count) {
+    var last = unopposed.shift();
+    path.push(last);
+    let any;
+    do {
+      any = false;
+      var remaining = [];
+      // Find a Segment that joins with last.
+      while (unopposed.length > 0) {
+        var seg = unopposed.shift();
+        if (last.joins(seg)) {
+          path.push(seg);
+          last = seg;
+          any = true;
+        } else {
+          remaining.push(seg);
+        }
       }
-    }
-    unopposed = remaining;
+      unopposed = remaining;
+    } while(any);
   }
   return path;
 }
