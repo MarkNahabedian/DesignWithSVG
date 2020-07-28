@@ -135,6 +135,12 @@ function convert(from, to) {
 }
 
 
+function modref(arr, index) {
+  let l = arr.length;
+  return arr[((index % l) + l) % l];
+}
+
+
 function hole(centerX, centerY, scale) {
   circle = document.createElementNS(svgURI, 'circle');
   circle.setAttribute('cx',   '' + centerX);
@@ -318,7 +324,7 @@ function make_segments(a) {
         ];
         for (let i = 0; i < points.length; i++) {
           let p1 = points[i];
-          let p2 = points[(i + 1) % points.length];
+          let p2 = modref(points, i + 1);
           let seg = new Segment(p1[0], p1[1], p2[0], p2[1],
                                 (p1[1] - p2[1]) +
                                 (p2[0] - p1[0]));
