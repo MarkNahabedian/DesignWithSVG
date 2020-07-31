@@ -1,5 +1,19 @@
 
 ////////////////////////////////////////////////////////////
+
+var TEST= true;
+
+function fix_float(x) {
+  return Math.round(x * 100000) / 100000;
+}
+
+function pointEqual(p1, p2) {
+  return ( fix_float(p1[0]) == fix_float(p2[0]) &&
+           fix_float(p1[1]) == fix_float(p2[1]) );
+}
+
+
+////////////////////////////////////////////////////////////
 // These are initialized by loading json files
 var extrusions = [];      // Initialized by load_extrusions.
 var holes = [];           // Initialized by load_holes.
@@ -175,7 +189,6 @@ function update_geometry() {
           code_elt);
 }
 
-var PATH_SEGMENTS;
 
 class Geometry {
   constructor() {
@@ -221,15 +234,24 @@ class Geometry {
     }
     // Perimeter:
     {
-      let path_segments = (simplify_segments(
-        make_segments(this.drill_these)));
-      PATH_SEGMENTS = path_segments;
-      if (path_segments.length > 0) {
-        let d = segments_to_path(path_segments, 0.1);
-        var p = document.createElementNS(svgURI, 'path');
+      let hg = make_holes_and_groups(this.drill_these);
+      for (let group of hg) {
+        let abstract_path = group.path();
+        let d = path_to_d(abstract_path, 0.1, 0.1);
+        let p = document.createElementNS(svgURI, 'path');
         p.setAttribute("d", d);
         outside_cut(p);
         g.appendChild(p);
+      }
+      // Test corners
+      if (false) {
+        for (let group of hg) {
+          for (let seg of group.segments) {
+            for (let circle of seg.test_corner_points(0.1, 0.1)) {
+              g.appendChild(circle);
+            }
+          }
+        }
       }
     }
     // Locate the holes:
@@ -261,141 +283,409 @@ class Geometry {
 
 
 ////////////////////////////////////////////////////////////
+// Try strarting with holes instead of segments.
 
-// Segment helps us identify the path surrounding the holes to be drilled.
+class Hole {
+  constructor(holeX, holeY) {
+    this.x = holeX;
+    this.y = holeY;
+    this.group = new Group(this);
+  }
+
+  is_at(x, y) {
+    return this.x == x && this.y == y;
+  }
+
+  // neighbors returns true iff two Holes are next to each other.
+  neighbors(other) {
+    if (this.x == other.x) {
+      return ((this.y == other.y + 1) ||
+              (this.y == other.y - 1));
+    }
+    if (this.y == other.y) {
+      return ((this.x == other.x + 1) ||
+              (this.x == other.x - 1));
+    }
+    return false;
+  }
+
+  make_segments() {
+    let segs = [];
+    for (let side of ["N", "E", "S", "W"]) {
+      segs.push(new Segment(this, side));
+    }
+    return segs;
+  }
+
+};
+
+class Group {
+  constructor(hole) {
+    this.holes = [hole];
+    this.segments = null;
+    this._path = null;
+  }
+
+  absorb(other) {
+    if (this == other)
+      return;
+    for (let hole of other.holes) {
+      this.holes.push(hole);
+      hole.group = this;
+    }
+  }
+
+  // path returns an abstract path -- a vector consisting of Segment,
+  // ConvexCorner and ConcaveCorner.
+  path() {
+    if (this._path != null)
+      return this._path;
+    let corners = 0;
+    let segments = this.segments.slice();
+    let last = segments[0];
+    let path = [last];
+    while (path.length - corners < this.segments.length) {
+      for (let i = 0; i < segments.length; i++) {
+        // Search for the segment that follows last:
+        if (segments[i] == null)
+          continue;
+        let seg = segments[i];
+        if (last.joins(seg)) {
+          if (last.convex_corner(seg)) {
+            path.push(new ConvexCorner(last, seg));
+            corners += 1;
+          } else if (last.concave_corner(seg)) {
+            path.push(new ConcaveCorner(last, seg));
+            corners += 1;
+          } else if(last.in_line(seg)) {
+            // Nothing.
+          } else {
+            console.log("ERROR: Segments join but neither in-line nor corner:",
+                        last, seg);
+            return;
+          }
+          segments[i] = null;
+          path.push(seg);
+          last = seg;
+        }
+      }
+    }
+    this._path = path;
+    return this._path;
+  }
+}
+
+if (TEST) {
+  let h1 = new Hole(0, 0);
+  let h2 = new Hole(0, 1);
+  let h3 = new Hole(1,1);
+  console.assert(!h2.neighbors(h2));
+  console.assert(h1.neighbors(h2));
+  console.assert(h2.neighbors(h1));
+  console.assert(h2.neighbors(h3));
+  console.assert(h3.neighbors(h2));
+  console.assert(!h1.neighbors(h3));
+  console.assert(!h3.neighbors(h1));
+}
+
+function path_to_d(path, inset, radius) {
+  let d = [];
+  // Starting point:
+  d.push("M", ...path[0].start(inset, radius));
+  for (let step of path) {
+    let step_d = step.path_step(inset, radius);
+    console.log(step, step_d);
+    d.push(...step_d);
+  }
+  return d.join(" ");
+}
+
+class Side {
+  constructor(name, next, opposite, previous, normal_dx, normal_dy) {
+    this.name = name;
+    this.next = next;
+    this.opposite = opposite;
+    this.previous = previous;
+  // normal_dx and normal_dy are components of the the direction
+  // vector from the Hole to the Segment.  These are unit values
+  // indicating direction, but not distance/magnitude..
+    this.normal_dx = normal_dx;
+    this.normal_dy = normal_dy;
+  }
+
+};
+
+SIDES = {
+  "N": new Side("N", "E", "S", "W", 0, -1),
+  "E": new Side("E", "S", "W", "N", 1, 0),
+  "S": new Side("S", "W", "N", "E", 0, 1),
+  "W": new Side("W", "N", "E", "S", -1, 0),
+};
+
+if (TEST) {
+  for (s in SIDES) {
+    let side = SIDES[s];
+    let opp = SIDES[side.opposite];
+    let next = SIDES[side.next];
+    let prev = SIDES[side.previous];
+    console.assert(side.normal_dx == - opp.normal_dx, s);
+    console.assert(side.normal_dy == - opp.normal_dy, s);
+    console.assert(side.normal_dx == next.normal_dy, s);
+    console.assert(side.normal_dy == - next.normal_dx, s);
+    console.assert(side.normal_dx == - prev.normal_dy, s);
+    console.assert(side.normal_dy == prev.normal_dx, s);
+  }
+};
+
 class Segment {
-  constructor(x1, y1, x2, y2, inward) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
-    this.inward = inward;
+  constructor(hole, side) {
+    this.hole = hole;
+    this._side = side;
   }
 
-  horizontal() {
-    return this.y1 == this.y2;
+  side() {
+    return SIDES[this._side];
   }
 
-  vertical() {
-    return this.x1 == this.x2;
+  other_hole_location() {
+    return [ this.hole.x + this.side().normal_dx,
+             this.hole.y + this.side().normal_dy ];
   }
 
-  joins(other) {
-    return this.x2 == other.x1 && this.y2 == other.y1;
+  // For start and end, inset is the amount that the Segment is to be
+  // shifted toards the segment's Hole to provide a sort of margin
+  // between the edge of the joining plate to be cut out and the edge
+  // of the extrusion it is to be mounted to.
+  //
+  // radius is the amount the straight part of the segment is to be
+  // shortened to turn a corner into a circular arc.
+
+  start(inset=0, radius=0) {
+    let side = this.side();
+    // Midpoint of segment adjusted by inset normal to segment:
+    let x = this.hole.x + (0.5 - inset) * side.normal_dx;
+    let y = this.hole.y + (0.5 - inset) * side.normal_dy;
+    // Now apply inset and radius along length of segment:
+    let prev = SIDES[side.previous];
+    x += (0.5 - inset - radius) * prev.normal_dx;
+    y += (0.5 - inset - radius) * prev.normal_dy;
+    return [fix_float(x), fix_float(y)];
+  }
+
+  end(inset=0, radius=0) {
+    let side = this.side();
+    // Midpoint of segment adjusted by inset normal to segment:
+    let x = this.hole.x + (0.5 - inset) * side.normal_dx;
+    let y = this.hole.y + (0.5 - inset) * side.normal_dy;
+    // Now apply inset and radius axial to segment:
+    let next = SIDES[side.next];
+    x += (0.5 - inset - radius) * next.normal_dx;
+    y += (0.5 - inset - radius) * next.normal_dy;
+    return [fix_float(x), fix_float(y)];
   }
 
   opposes(other) {
-    return this.joins(other) && other.joins(this);
+    let this_side = this.side();
+    let other_side = other.side();
+    return ( this.hole.is_at(...other.other_hole_location()) &&
+             other.hole.is_at(...this.other_hole_location()) &&
+             (this_side.normal_dx == - other_side.normal_dx) &&
+             (this_side.normal_dy == - other_side.normal_dy) );
   }
-  
-  path(inset) {
-    var p = [];
-    if (this.horizontal()) {
-      p.push(this.x1 + inset * Math.sign(this.x2 - this.x1));
-      p.push(this.y1 + inset * this.inward);      
-      p.push(this.x2 + inset * Math.sign(this.x1 - this.x2));
-      p.push(this.y2 + inset * this.inward);
-    } else if (this.vertical()) {
-      p.push(this.x1 + inset * this.inward);      
-      p.push(this.y1 + inset * Math.sign(this.y2 - this.y1));
-      p.push(this.x2 + inset * this.inward);
-      p.push(this.y2 + inset * Math.sign(this.y1 - this.y2));
+
+  joins(other) {
+    return pointEqual(this.end(), other.start());
+  }
+
+  // in_line, concave_corner, and convex_corner are only meaningfor
+  // for pairs of segments for which joins is true.
+
+  in_line(other) {
+    return ( (this._side == other._side) &&
+             (this.hole.neighbors(other.hole)) );
+  }
+
+  convex_corner(other) {
+    if (this.hole != other.hole)
+      return false;
+    return this._side != other.side().opposite;
+  }
+
+  concave_corner(other) {
+    return pointEqual(this.other_hole_location(),
+                      other.other_hole_location());
+  }
+
+  is_corner() { return false; }
+
+  path_step(inset, radius) {
+    // We only need to do any drawing from the corner methods.
+    return [];
+  }
+
+  test_corner_points(inset=0, radius=0) {
+    let elts = [];
+    function point(p) {
+      let circle = document.createElementNS(svgURI, 'circle');
+      circle.setAttribute("cx", p[0]);
+      circle.setAttribute("cy", p[1]);
+      circle.setAttribute("r", 0.1);
+      circle.setAttribute("style",
+                          "stroke: none; fill: green;");
+      elts.push(circle);
     }
-    return p;
+    point(this.start(inset, radius));
+    point(this.end(inset, radius));
+    return elts;
   }
 
 };
 
+class ConvexCorner {
+  constructor(previous_segment, next_segment) {
+    this.prev = previous_segment;
+    this.next = next_segment;
+  }
 
-function make_segments(a) {
-  var result = [];
+  is_corner() { return true; }
+
+  path_step(inset, radius) {
+    let d = [];
+    d.push("L", ...this.prev.end(inset, radius));
+    d.push("A");
+    d.push(radius);             // X radius
+    d.push(radius);             // Y radius
+    d.push(0);                  // ellipse angle
+    d.push(0);                  // large arc flag false
+    d.push(1);                  // Sweep direction
+    d.push(...this.next.start(inset, radius));
+    return d;
+  }
+
+};
+
+class ConcaveCorner {
+  constructor(previous_segment, next_segment) {
+    this.prev = previous_segment;
+    this.next = next_segment;
+  }
+
+  is_corner() { return true; }
+
+  path_step(inset, radius) {
+    let d = [];
+    d.push("L", ...this.prev.end(inset, radius));
+    d.push("A");
+    d.push(radius);             // X radius
+    d.push(radius);             // Y radius
+    d.push(0);                  // ellipse angle
+    d.push(0);                  // large arc flag false
+    d.push(0);                  // Sweep direction
+    d.push(...this.next.start(inset, radius));
+    return d;
+  }
+
+};
+
+if (TEST) {
+  let h1 = new Hole(1, 1);
+  let [h1n, h1e, h1s, h1w] = h1.make_segments();
+  console.assert(h1n.other_hole_location(), [1, 0]);
+  console.assert(h1e.other_hole_location(), [2, 1]);
+  console.assert(h1s.other_hole_location(), [1, 2]);
+  console.assert(h1w.other_hole_location(), [0, 1]);
+  
+  let h2 = new Hole(2, 1);
+  let h2_segments = h2.make_segments();
+  let [h2n, h2e, h2s, h2w] = h2_segments;
+  console.assert(h1e.opposes(h2w));
+  console.assert(!h1w.opposes(h2e));
+  for (let i = 0; i < h2_segments.length; i++) {
+    let s1 = h2_segments[i];
+    let s2 = modref(h2_segments, i + 1);
+    console.assert(pointEqual(s1.end(), s2.start()), s1, "end", s2, "start");
+    console.assert(pointEqual(s1.end(0.1), s2.start(0.1)), s1, s2);
+  }
+  function test_point(p, expect) {
+    console.assert(pointEqual(p, expect), p, expect);
+  }
+  test_point(h2n.start(),         [1.5, 0.5]);
+  test_point(h1e.start(),         [1.5, 0.5]);
+  test_point(h2s.end(),           h1e.end());
+  test_point(h2n.start(0.1),      [1.6, 0.6]);
+  test_point(h1e.start(0.1),      [1.4, 0.6]);
+  test_point(h2n.start(0.1, 0.1), [1.7, 0.6]);
+  test_point(h2n.end(0.1, 0.1),   [2.3, 0.6]);
+  test_point(h1e.start(0.1, 0.1), [1.4, 0.7]);
+  test_point(h1e.end(0.1, 0.1),   [1.4, 1.3]);
+  let h3 = new Hole(1,2);
+  let [h3n, h3e, h3s, h3w] = h3.make_segments();
+  console.assert(h1w.joins(h1n));
+  console.assert(h1w.convex_corner(h1n));
+  console.assert(h1n.joins(h2n));
+  console.assert(h1n.in_line(h2n));
+  console.assert(h2n.joins(h2e));
+  console.assert(h2n.convex_corner(h2e));
+  console.assert(h2e.joins(h2s));
+  console.assert(h2e.convex_corner(h2s));
+  console.assert(h2s.joins(h3e));
+  console.assert(h2s.concave_corner(h3e));
+  console.assert(h3e.joins(h3s));
+  console.assert(h3s.joins(h3w));
+  console.assert(h3w.joins(h1w));
+  console.assert(h3w.in_line(h1w));
+}
+
+function make_holes_and_groups(a) {
+  var holes = [];
   for (let x = 0; x < a.length; x++) {
     for(let y = 0; y < a[0].length; y++) {
       if (a[x][y]) {
-        let x1 = x - 0.5;
-        let y1 = y - 0.5;
-        let x2 = x + 0.5;
-        let y2 = y + 0.5;
-        let points = [
-          [x1, y1],
-          [x2, y1],
-          [x2, y2],
-          [x1, y2]
-        ];
-        for (let i = 0; i < points.length; i++) {
-          let p1 = points[i];
-          let p2 = modref(points, i + 1);
-          let seg = new Segment(p1[0], p1[1], p2[0], p2[1],
-                                (p1[1] - p2[1]) +
-                                (p2[0] - p1[0]));
-          result.push(seg);
+        holes.push(new Hole(x, y));
+      }
+    }
+  }
+  // Group neighboring Holes:
+  for (let i = 0; i < holes.length; i++) {
+    for (let j = i + 1; j < holes.length; j++) {
+      if (holes[i].neighbors(holes[j])) {
+        holes[i].group.absorb(holes[j].group)
+      }
+    }
+  }
+  // Collect Groups, make non-opposing sSegments:
+  let groups = [];
+  for (let hole of holes) {
+    if (hole.group.segments == null) {
+      // We've not encountered this group yet.
+      let g = hole.group;
+      groups.push(g);
+      g.segments = [];
+      for (gh of g.holes) {
+        for (side in SIDES) {
+          let ns = new Segment(gh, side);
+          // If ns is in opposition to an already collected segment s,
+          // remove s and do not include ns.
+          for (s of g.segments) {
+            if (s.opposes(ns)) {
+              g.segments =
+                g.segments.filter(function (s1) { return s != s1; });
+              ns = null;
+              break;
+            }
+          }
+          if (ns != null) {
+            g.segments.push(ns);
+          }
         }
       }
     }
   }
-  return result;
-};
-
-function simplify_segments(segments) {
-  var unopposed = [];
-  // Remove segments that oppose each other:
-  while (segments.length > 0) {
-    var seg = segments.pop();
-    for (s of segments) {
-      if (seg.opposes(s)) {
-        segments = segments.filter(function (s1) { return s != s1; })
-        seg = null;
-        break;
-      }
-    }
-    if (seg != null) {
-      unopposed.push(seg);
-    }
-  }
-  // Now order unopposed segments end to end.
-  //
-  // We need to be able to cope with disjoint Segment paths, not
-  // because the resukt would be useful, but so we don't crash if the
-  // situation occurs while the user is choosinh holes.
-  let segment_count = unopposed.length;
-  if (segment_count == 0)
-    return unopposed;
-  var path = [];
-  while(path.length < segment_count) {
-    var last = unopposed.shift();
-    path.push(last);
-    let any;
-    do {
-      any = false;
-      var remaining = [];
-      // Find a Segment that joins with last.
-      while (unopposed.length > 0) {
-        var seg = unopposed.shift();
-        if (last.joins(seg)) {
-          path.push(seg);
-          last = seg;
-          any = true;
-        } else {
-          remaining.push(seg);
-        }
-      }
-      unopposed = remaining;
-    } while(any);
-  }
-  return path;
+  GROUPS = groups;
+  return groups;
 }
 
-function segments_to_path(segments, inset) {
-  var p = ["M"];
-  for (let seg of segments) {
-    for (let step of seg.path(inset)) {
-      p.push(step);
-    }
-  }
-  p.push("z");
-  return p.join(" ");
-}
-
+var GROUPS;
 
 ////////////////////////////////////////////////////////////
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
