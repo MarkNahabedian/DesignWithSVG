@@ -12,6 +12,11 @@
 
     <h1>Joining Plates for T-Slot Aluminum Extrusions</h1>
 
+    <p>
+      This page is a tool for designing flat plates for joining T slot
+      aluminum extrusions.
+    </p>
+
     <form>
       <div id="choose-profile">
         <p>
@@ -19,11 +24,16 @@
         </p>
         <select onchange="update_extrusion(this)"></select>
       </div>
+      <p>
+        The selected profile determines the unit size of an abstract
+        grid where holes can be placed.
+      </p>
       <div id="grid-size">
         <p>
-          Choose the width and height of the grid which will be used
-          to bound the joining plate.  These should be expressed as an
-          integer multiplier of the extrusion size:
+          Choose the width and height of this grid.  These are upper
+          bounds on the size of the joining plate to be made and
+          should be expressed as an integer multiplier of the
+          extrusion size.
         </p>
         <div>
           <span>
@@ -45,15 +55,31 @@
         </div>
       </div>
       <div id="hole-diameter">
+        <p>
+          Select the size of the holes to be drilled based on the size
+          of the bolts you will use.
+        </p>
         <select onchange="update_hole(this)"></select>
       </div>      
     </form>
+
+    <p>
+      The blue dots below are possible locations for holes based on
+      the grid defined above.  Clicking on a blue dot toggles it to be
+      a hole.  Clicking on a hole toggles it back to not being
+      drilled.  A cut path is drawn to surround all of the holes.
+    </p>
 
     <div>
       <svg id="SVG_ELEMENT"></svg>
     </div>
     <div>
       
+      <p>
+        Below the the SVG code for cutting the joining plate on Shaper
+        Origin.
+      </p>
+
       <pre id="CODE_ELEMENT"></pre>
     </div>
 
