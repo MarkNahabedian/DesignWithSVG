@@ -32,7 +32,7 @@ using Shaper Origin or other engraving/etching device.
 cutters can not cut internal corners) to mortises and tenons in an
 existing SVG design.
 
-<b>dividing_plate<b> can be used to design a rotary table dividing plate.
+<b>dividing_plate</b> can be used to design a rotary table dividing plate.
 <a href="https://marknahabedian.github.io/DesignWithSVG/dividing_plate/dividing_plate.html">Try it.</a>.
 
 <b>joiining_plates</b> is a tool for designing bolt-on plates for
