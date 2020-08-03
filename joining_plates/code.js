@@ -12,6 +12,13 @@ function pointEqual(p1, p2) {
            fix_float(p1[1]) == fix_float(p2[1]) );
 }
 
+function distance(point1, point2) {
+  let [x1, y1] = point1;
+  let [x2, y2] = point2;
+  function square(a) { return a * a; }
+  return Math.sqrt(square(x2 - x1) + square(y2 - y1));
+}
+
 
 ////////////////////////////////////////////////////////////
 // These are initialized by loading json files
@@ -557,15 +564,18 @@ class ConcaveCorner {
   is_corner() { return true; }
 
   path_step(inset, radius) {
+    let from = this.prev.end(inset);
+    let to = this.next.start(inset);
+    let r = distance(from, to);
     let d = [];
-    d.push("L", ...this.prev.end(inset, radius));
+    d.push("L", ...from);
     d.push("A");
-    d.push(radius);             // X radius
-    d.push(radius);             // Y radius
+    d.push(r);                  // X radius
+    d.push(r);                  // Y radius
     d.push(0);                  // ellipse angle
     d.push(0);                  // large arc flag false
     d.push(0);                  // Sweep direction
-    d.push(...this.next.start(inset, radius));
+    d.push(...to);
     return d;
   }
 
