@@ -234,8 +234,8 @@ class Geometry {
     }
     // Perimeter:
     {
-      let hg = make_holes_and_groups(this.drill_these);
-      for (let group of hg) {
+      let groups = make_holes_and_groups(this.drill_these);
+      for (let group of groups) {
         let abstract_path = group.path();
         let d = path_to_d(abstract_path, 0.1, 0.1);
         let p = document.createElementNS(svgURI, 'path');
@@ -245,7 +245,7 @@ class Geometry {
       }
       // Test corners
       if (false) {
-        for (let group of hg) {
+        for (let group of groups) {
           for (let seg of group.segments) {
             for (let circle of seg.test_corner_points(0.1, 0.1)) {
               g.appendChild(circle);
@@ -338,36 +338,21 @@ class Group {
   // path returns an abstract path -- a vector consisting of Segment,
   // ConvexCorner and ConcaveCorner.
   path() {
+    // this.segments has already been ordered end to end.
     if (this._path != null)
       return this._path;
-    let corners = 0;
-    let segments = this.segments.slice();
-    let last = segments[0];
-    let path = [last];
-    while (path.length - corners < this.segments.length) {
-      for (let i = 0; i < segments.length; i++) {
-        // Search for the segment that follows last:
-        if (segments[i] == null)
-          continue;
-        let seg = segments[i];
-        if (last.joins(seg)) {
-          if (last.convex_corner(seg)) {
-            path.push(new ConvexCorner(last, seg));
-            corners += 1;
-          } else if (last.concave_corner(seg)) {
-            path.push(new ConcaveCorner(last, seg));
-            corners += 1;
-          } else if(last.in_line(seg)) {
-            // Nothing.
-          } else {
-            console.log("ERROR: Segments join but neither in-line nor corner:",
-                        last, seg);
-            return;
-          }
-          segments[i] = null;
-          path.push(seg);
-          last = seg;
-        }
+    let path = [];
+    for (let i = 0; i < this.segments.length; i++) {
+      let seg = this.segments[i];
+      let next = modref(this.segments, i + 1);
+      path.push(seg);
+      if (seg.convex_corner(next)) {
+        path.push(new ConvexCorner(seg, next));
+      } else if (seg.concave_corner(next)) {
+        path.push(new ConcaveCorner(seg, next));
+      } else if(!seg.in_line(next)) {
+        throw ["ERROR: segments join but neither in-line nor corner:",
+               seg, next];
       }
     }
     this._path = path;
@@ -394,7 +379,6 @@ function path_to_d(path, inset, radius) {
   d.push("M", ...path[0].start(inset, radius));
   for (let step of path) {
     let step_d = step.path_step(inset, radius);
-    console.log(step, step_d);
     d.push(...step_d);
   }
   return d.join(" ");
@@ -636,6 +620,31 @@ if (TEST) {
   console.assert(h3w.in_line(h1w));
 }
 
+// Reorder the Segments so that for two successive Segments the second
+// one starts where the first one ends.
+function order_segments(segs) {
+  let segments = segs.slice();
+  let ordered = [];
+  let last = segments[0];
+  ordered.push(last);
+  let any = true;
+  while (any) {
+    any = false
+    for (let i = 0; i < segments.length; i++) {
+      let seg = segments[i];
+      if (seg == null)
+        continue;
+      if (last.joins(seg)) {
+        ordered.push(seg);
+        last = seg;
+        segments[i] = null;
+        any = true;
+      }
+    }
+  }
+  return ordered;
+}
+
 function make_holes_and_groups(a) {
   var holes = [];
   for (let x = 0; x < a.length; x++) {
@@ -653,33 +662,41 @@ function make_holes_and_groups(a) {
       }
     }
   }
-  // Collect Groups, make non-opposing sSegments:
+  // Adjacent Holes have now been grouped together.  Collect Groups,
+  // Collect bounding Segments.
+  //
+  // A Segment is part of the perimeter of a joining plate iff there
+  // is not a hole on the other side of the segment.
   let groups = [];
   for (let hole of holes) {
     if (hole.group.segments == null) {
       // We've not encountered this group yet.
       let g = hole.group;
+      g.segments = []
       groups.push(g);
-      g.segments = [];
-      for (gh of g.holes) {
-        for (side in SIDES) {
-          let ns = new Segment(gh, side);
-          // If ns is in opposition to an already collected segment s,
-          // remove s and do not include ns.
-          for (s of g.segments) {
-            if (s.opposes(ns)) {
-              g.segments =
-                g.segments.filter(function (s1) { return s != s1; });
-              ns = null;
-              break;
-            }
-          }
-          if (ns != null) {
-            g.segments.push(ns);
+      function ok_to_keep(seg) {
+        // A Segment is not an edge if there's another hole on the
+        // other side, or if the other side is outside of the grid.
+        let [other_x, other_y] = seg.other_hole_location();
+        if (other_x < 0) return true;
+        if (other_y < 0) return true;
+        if (other_x >= a.length) return true;
+        if (other_y >= a[0].length) return true;
+        return !a[other_x][other_y];
+      }
+      for (let gh of g.holes) {
+        for (let seg of gh.make_segments()) {
+          // Keep the segment if the array reference returns false or
+          // undefined.
+          if (ok_to_keep(seg)) {
+            g.segments.push(seg);
           }
         }
       }
     }
+  }
+  for (let g of groups) {
+    g.segments = order_segments(g.segments);
   }
   GROUPS = groups;
   return groups;
