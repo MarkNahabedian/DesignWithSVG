@@ -5,6 +5,7 @@
     <link href="styles.css" rel="stylesheet" />
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript" src="../common/clipboard.js"></script>
     <script type="text/javascript" src="code.js"></script>
   </head>
 
@@ -73,13 +74,17 @@
     <div>
       <svg id="SVG_ELEMENT"></svg>
     </div>
-    <div>
-      
-      <p>
-        Below the the SVG code for cutting the joining plate on Shaper
-        Origin.
-      </p>
 
+    <p>
+      Below the the SVG code for cutting the joining plate on Shaper
+      Origin.
+    </p>
+
+    <div>
+      <button type="button"
+              onclick="text_content_to_clipboard(document.getElementById('CODE_ELEMENT'))">
+        Copy SVG to clipboard
+      </button>
       <pre id="CODE_ELEMENT"></pre>
     </div>
 
