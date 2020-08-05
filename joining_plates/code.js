@@ -275,8 +275,8 @@ class Geometry {
           inside_cut(h);
         } else {
           // guide_line(h);
-          h.setAttribute('fill','#0068FF');
-          h.setAttribute('stroke', '#0068FF');  // blue
+          h.setAttribute('fill','blue');
+          h.setAttribute('stroke', 'blue');
           h.setAttribute('stroke-width', '.01');
           h.setAttribute('opacity', '1.0');
         }

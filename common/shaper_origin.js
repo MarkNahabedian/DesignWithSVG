@@ -13,8 +13,8 @@ function inside_cut(shape) {
   if (DEBUG_PATHS) {
     shape.setAttribute('class', 'debug-shapes');
   } else {
-    shape.setAttribute('fill', '#fff');    // white
-    shape.setAttribute('stroke', '#000');  // black
+    shape.setAttribute('fill', 'white');
+    shape.setAttribute('stroke', 'black');
     shape.setAttribute('stroke-width', '.01');
     shape.setAttribute('opacity', '1.0');
   }
@@ -25,8 +25,8 @@ function outside_cut(shape) {
   if (DEBUG_PATHS) {
     shape.setAttribute('class', 'debug-shapes');
   } else {
-    shape.setAttribute('fill', '#000');    // black
-    shape.setAttribute('stroke', '#000');  // black
+    shape.setAttribute('fill', 'black');
+    shape.setAttribute('stroke', 'black');
     shape.setAttribute('stroke-width', '.01');
     shape.setAttribute('opacity', '1.0');
   }
@@ -38,7 +38,7 @@ function on_line_cut(shape) {
     shape.setAttribute('class', 'debug-shapes');
   } else {
     shape.setAttribute('fill', 'none');
-    shape.setAttribute('stroke', '#7F7F7F');  // gray
+    shape.setAttribute('stroke', 'gray');
     shape.setAttribute('opacity', '1.0');
   }
   return shape;
@@ -48,7 +48,7 @@ function pocket_cut(shape) {
   if (DEBUG_PATHS) {
     shape.setAttribute('class', 'debug-shapes');
   } else {
-      shape.setAttribute('fill', '#7F7F7F');    // gray
+    shape.setAttribute('fill', 'gray');
     shape.setAttribute('stroke', 'none');
     shape.setAttribute('opacity', '1.0');
   }
@@ -60,9 +60,10 @@ function guide_line(shape) {
     shape.setAttribute('class', 'debug-shapes');
   } else {
     shape.setAttribute('fill', 'none');
-    shape.setAttribute('stroke', '#0068FF');  // blue
+    shape.setAttribute('stroke', 'blue');
     shape.setAttribute('stroke-width', '.01');
     shape.setAttribute('opacity', '1.0');
   }
   return shape;
 }
+
