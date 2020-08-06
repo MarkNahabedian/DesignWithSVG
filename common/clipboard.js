@@ -10,3 +10,8 @@ function text_content_to_clipboard(elt) {
       window.alert("*** FAILED TO COPY ***");
     });
 }
+
+function click_to_copy(pre_id) {
+  text_content_to_clipboard(document.getElementById(pre_id))
+}
+

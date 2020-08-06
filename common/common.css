@@ -8,3 +8,8 @@
   border-style: solid;
   border-radius: 8px;
 }
+
+.copy-button:hover {
+  background-color: yellow;
+}
+

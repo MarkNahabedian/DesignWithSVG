@@ -8,8 +8,10 @@
              font-weight: heavier;
 }
     </style>
+    <link href="../common/common.css" rel="stylesheet" />
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript" src="../common/clipboard.js"></script>
     <script type="text/javascript" src="dw6184_fixed_base.js"></script>
     <script type="text/javascript" src="dw6182_plunge_base.js"></script>
     <script type="text/javascript" src="guide_bushing.js"></script>
@@ -59,8 +61,15 @@
           than the diameter of the center hole itself.
         </li>
       </ul>
+
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('SUBBASE_CODE_ELEMENT')">
+        Copy SVG to clipboard
+      </button>
       <pre id="SUBBASE_CODE_ELEMENT"> 
       </pre>
+
       <svg id="SUBBASE_SVG_ELEMENT">
         <g id="subbase">
           <g id="perimeter"></g>
@@ -88,6 +97,11 @@
 
     <h2>Fence</h2>
     <div>
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('FENCE_CODE_ELEMENT')">
+        Copy SVG to clipboard
+      </button>
       <pre id="FENCE_CODE_ELEMENT"> 
       </pre>
       <svg id="FENCE_SVG_ELEMENT"></svg>
@@ -100,6 +114,11 @@
       Origin provides on-tool mirroring.
     </p>
     <div>
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('END_STOP_UPRIGHT_CODE_ELEMENT')">
+        Copy SVG to clipboard
+      </button>
       <pre id="END_STOP_UPRIGHT_CODE_ELEMENT"> 
       </pre>
       <svg id="END_STOP_UPRIGHT_SVG_ELEMENT"></svg>
@@ -111,11 +130,15 @@
       to have the hole drilled through it.
     </p>
     <div>
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('END_STOP_JAW_CODE_ELEMENT')">
+        Copy SVG to clipboard
+      </button>
       <pre id="END_STOP_JAW_CODE_ELEMENT"> 
       </pre>
       <svg id="END_STOP_JAW_SVG_ELEMENT"></svg>
     </div>
-
 
   </body>
 </html>
