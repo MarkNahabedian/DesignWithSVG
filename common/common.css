@@ -1,0 +1,10 @@
+
+.copy-button {
+  background-color: white;
+  font-weight: bold;
+  color: black;
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 8px;
+}
