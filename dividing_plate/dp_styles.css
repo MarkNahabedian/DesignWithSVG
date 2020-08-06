@@ -1,0 +1,50 @@
+
+.BadInput
+{
+  background-color: Orange;
+}
+
+form.div
+{
+    margin-bottom: 2ex;
+}
+
+table
+{
+  border-collapse: collapse;
+  margin: 2em;
+}
+
+td.radius
+{
+  text-align: center;
+}
+
+td.angle
+{
+  text-align: right;
+}
+
+td.count
+{
+  text-align: center;
+}
+
+td,th
+{
+  padding-right: 1em;
+  padding-left:  1em;
+}
+
+th.formula
+{
+  font-family: cursive;
+}
+
+tr.new-ring  
+{
+  border-top-style: solid;
+  border-top-color: blue;
+  border-top-width: thin;
+}
+
