@@ -1,7 +1,7 @@
 // Javascript library for rendering text as vector graphics using
 // Hershey fonts.
 
-var EXPORTED_SYMBOLS = [ 'renderText' ];
+var EXPORTED_SYMBOLS = [ 'renderText', "parseKerning" ];
 
 // renderText adds a path element to parent for each character in text.
 // font provides the SVG paths for the characters.
@@ -69,3 +69,25 @@ function glyphLookup(font, character) {
   }
   return glyph;
 }
+
+
+// parseKerning parses a string representing the additional X advance
+// between two characters.  The input string consists of one line per
+// pair of characters.  Each line starts with the two characters to
+// adjust the spacing for.  Those are followed by whitespace and a number.
+// This is parsed into a javascript map (associative array) associating
+// two character strings (the character pairs) with a numeric spacing.
+function parseKerning(kerning) {
+  var k = {};
+  var re = /([a-zA-Z0-9]{2}) +([0-9]+(.[0-9]*)?)/;
+  var lines = kerning.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    var m = line.match(re);
+    if (m) {
+      k[m[1]] = Number(m[2]);
+    }
+  }
+  return k;
+}
+
