@@ -23,7 +23,7 @@ class Geometry {
 
     
   updateSVG(svg_elt) {
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth, this.svgHeight, 'in');
+    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     // DRAW INTO svg_elt HERE.
   }
 
