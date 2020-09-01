@@ -80,25 +80,50 @@ class Geometry {
       x = hk.end_x;
       last_y = hk.inch();
     }
-    console.log(this.hex_keys);
     this.gauge_width = x;
     this.gauge_height = this.hex_keys[0].inch();    
+    this.top_text_space = 0.5;
+    this.bottom_text_space = 0.5;
+    // this.extra is within the part.
+    this.extra = 0.25;
+   // this.border_space is outside of the part.
+    this.border_space = 0.2;
   }
 
   svgWidth() {
     // Allow a half inch margin at each end.
-    return this.gauge_width + 1;
+    return this.gauge_width + 2 * (this.extra + this.border_space);
   }
     
   svgHeight() {
     // Allow 1 inch above and below for labeling measurements.
-    return this.gauge_height + 2;
+    return this.gauge_height + this.top_text_space + this.bottom_text_space +
+      2 * (this.extra + this.border_space);
   }
     
   updateSVG(svg_elt) {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     let g = document.createElementNS(svgURI, 'g');
+    // Group translated to allow for border_space:
+    g.setAttribute("transform",
+                   "translate(" +
+                   (this.border_space) +
+                   ", " +
+                   (this.border_space) +
+                   ")")
     svg_elt.appendChild(g);
+    // Outside edge
+    let outer_edge = document.createElementNS(svgURI, 'rect');
+    outer_edge.setAttribute("x", 0);
+    outer_edge.setAttribute("y", 0);
+    outer_edge.setAttribute("width", 2 * this.extra + this.gauge_width);
+    outer_edge.setAttribute("height", 2 * this.extra + this.gauge_height +
+                           this.top_text_space + this.bottom_text_space);
+    outer_edge.setAttribute("rx", this.border_space);
+    outer_edge.setAttribute("ry", this.border_space);
+    outside_cut(outer_edge);
+    g.appendChild(outer_edge);
+    // Gauge path
     let d = [["M", 0, 0]];
     for (let hk of this.hex_keys) {
       d.push(["L", hk.start_x, hk.inch()]);
@@ -106,7 +131,11 @@ class Geometry {
     }
     d.push(["V", 0]);
     d.push(["H", 0]);
-    inside_cut(path(g, d));
+    inside_cut(path(g, d))
+      .setAttribute("transform",
+                    "translate(" +
+                    this.extra + ", " +
+                    (this.extra + this.top_text_space)  + ")");
   }
 
 };
