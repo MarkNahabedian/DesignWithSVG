@@ -4,6 +4,25 @@ var INCH = "inch";
 var MM = "mm";
 
 
+function center(elt) {
+  let bbox = elt.getBBox();
+  return [ bbox.x + bbox.width / 2,
+           bbox.y + bbox.height / 2 ];
+}
+
+
+function as_fraction(x) {
+  let denominator = 1;
+  while (true) {
+    if (x * denominator == round(x * denominator))
+      return (x * denominator, denominator);
+    denominator *= 2;
+    if (denominator > 64)
+      return x;
+  }
+}
+
+
 class Measurement {
   constructor(inscribed_diameter, units) {
     this.size = inscribed_diameter;
@@ -30,6 +49,14 @@ class Measurement {
                            this.units);
 */
     return new Measurement(this.size, this.units);
+  }
+
+  label_text() {
+    if (this.units == INCH) {
+      
+    } else {
+      return "" + this.size;
+    }
   }
 };
 
@@ -103,15 +130,15 @@ class Geometry {
     
   updateSVG(svg_elt) {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-    let g = document.createElementNS(svgURI, 'g');
+    let part = document.createElementNS(svgURI, 'g');
     // Group translated to allow for border_space:
-    g.setAttribute("transform",
-                   "translate(" +
-                   (this.border_space) +
-                   ", " +
-                   (this.border_space) +
-                   ")")
-    svg_elt.appendChild(g);
+    part.setAttribute("transform",
+                      "translate(" +
+                      (this.border_space) +
+                      ", " +
+                      (this.border_space) +
+                      ")")
+    svg_elt.appendChild(part);
     // Outside edge
     let outer_edge = document.createElementNS(svgURI, 'rect');
     outer_edge.setAttribute("x", 0);
@@ -122,7 +149,11 @@ class Geometry {
     outer_edge.setAttribute("rx", this.border_space);
     outer_edge.setAttribute("ry", this.border_space);
     outside_cut(outer_edge);
-    g.appendChild(outer_edge);
+    part.appendChild(outer_edge);
+    let inset_extra = document.createElementNS(svgURI, 'g');
+    inset_extra.setAttribute("transform",
+                             "translate(" + this.extra + ", " + this.extra + ")");
+    part.appendChild(inset_extra);
     // Gauge path
     let d = [["M", 0, 0]];
     for (let hk of this.hex_keys) {
@@ -131,22 +162,97 @@ class Geometry {
     }
     d.push(["V", 0]);
     d.push(["H", 0]);
-    inside_cut(path(g, d))
+    inside_cut(path(inset_extra, d))
       .setAttribute("transform",
-                    "translate(" +
-                    this.extra + ", " +
-                    (this.extra + this.top_text_space)  + ")");
+                    "translate(" + 0 + ", " + this.top_text_space + ")");
+    // Label text
+    let imperial = document.createElementNS(svgURI, 'g');
+    let metric = document.createElementNS(svgURI, 'g');
+    imperial.setAttribute("class", "imperial");
+    metric.setAttribute("class", "metric");
+    imperial.setAttribute("transform",
+                          "translate(0, " + (this.top_text_space / 2) + ")");
+    metric.setAttribute("transform",
+                        "translate(0, " +
+                        (this.top_text_space + this.gauge_height + this.bottom_text_space / 2) +
+                        ")");
+    for (let hk of this.hex_keys) {
+      if (hk.units === INCH) {
+      } else {
+        let txt = renderText(metric, FONT, "" + hk.size, KERNING);
+        on_line_cut(txt);
+        // let c = center(txt);
+        txt.setAttribute(
+          "transform",
+          "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
+            "scale(0.005)" +
+            "rotate(270)"
+        );
+      }
+    }
+    inset_extra.appendChild(imperial);
+    inset_extra.appendChild(metric);
   }
-
 };
 
 
+var GEOMETRY;
+
+var FONT = null;
+var KERNING = null
+
+// load_font_data calls continuation with the font and kerning data
+// once they are loaded.
+function load_font_data(font_name, continuation) {
+  // let base_uri = "../hershey/fonts/";
+  let base_uri = "https://raw.githubusercontent.com/MarkNahabedian/DesignWithSVG/master/hershey/fonts/";
+  let font = fetch(base_uri + font_name + ".json").then(
+    function (response) {
+      if (!response.ok) {
+        console.log(response.statusText);
+        return;
+      }
+      return response.text().then(
+        function (txt) {
+          return JSON.parse(txt);
+        },
+        console.log);
+    },
+    console.log
+  );
+  let kerning = fetch(base_uri + font_name + ".kerning").then(
+    function (response) {
+      if (!response.ok) {
+        console.log(response.statusText);
+        return;
+      }
+      return response.text().then(
+        function (txt) {
+          return parseKerning(txt);
+        },
+        console.log);
+    },
+    console.log
+  );
+  Promise.all([font, kerning]).then(
+    function(values) {
+      continuation(values[0], values[1]);
+    },
+    console.log);
+}
+
 function contentLoaded() {
   setSVGNamespaces();
-  let geometry = new Geometry();
-  geometry.updateSVG(document.getElementById('SVG_ELEMENT'));
-  showSVG(document.getElementById('SVG_ELEMENT'),
-          document.getElementById('CODE_ELEMENT'));
+  GEOMETRY = new Geometry();
+  load_font_data(
+    "Sans_1-stroke",
+    function(font, kerning) {
+      FONT = font;
+      KERNING = kerning;
+      GEOMETRY.updateSVG(document.getElementById('SVG_ELEMENT'));
+      showSVG(document.getElementById('SVG_ELEMENT'),
+              document.getElementById('CODE_ELEMENT'));
+    });
 }
 
 
