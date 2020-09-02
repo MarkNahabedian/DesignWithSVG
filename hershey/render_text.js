@@ -79,7 +79,7 @@ function glyphLookup(font, character) {
 // two character strings (the character pairs) with a numeric spacing.
 function parseKerning(kerning) {
   var k = {};
-  var re = /([a-zA-Z0-9]{2}) +([0-9]+(.[0-9]*)?)/;
+  var re = /([-a-zA-Z0-9!@#$%^&*()_+={}|<>,./]{2}) +([0-9]+(.[0-9]*)?)/;
   var lines = kerning.split('\n');
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
