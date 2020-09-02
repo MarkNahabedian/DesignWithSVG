@@ -14,8 +14,8 @@ function center(elt) {
 function as_fraction(x) {
   let denominator = 1;
   while (true) {
-    if (x * denominator == round(x * denominator))
-      return (x * denominator, denominator);
+    if (x * denominator == Math.round(x * denominator))
+      return [x * denominator, denominator];
     denominator *= 2;
     if (denominator > 64)
       return x;
@@ -53,6 +53,11 @@ class Measurement {
 
   label_text() {
     if (this.units == INCH) {
+      let frac = as_fraction(this.size);
+      if (frac instanceof Array)
+        return frac[0] + "/" + frac[1];
+      else
+        return "" + this.size;
       
     } else {
       return "" + this.size;
@@ -130,6 +135,9 @@ class Geometry {
     
   updateSVG(svg_elt) {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
+    // Clear existing SVG:
+    while (svg_elt.firstChild)
+      svg_elt.firstChild.remove();
     let part = document.createElementNS(svgURI, 'g');
     // Group translated to allow for border_space:
     part.setAttribute("transform",
@@ -170,25 +178,26 @@ class Geometry {
     let metric = document.createElementNS(svgURI, 'g');
     imperial.setAttribute("class", "imperial");
     metric.setAttribute("class", "metric");
-    imperial.setAttribute("transform",
-                          "translate(0, " + (this.top_text_space / 2) + ")");
     metric.setAttribute("transform",
-                        "translate(0, " +
-                        (this.top_text_space + this.gauge_height + this.bottom_text_space / 2) +
-                        ")");
+                        "translate(0, " + (this.top_text_space / 2) + ")");
+    imperial.setAttribute("transform",
+                          "translate(0, " +
+                          (this.top_text_space + this.gauge_height + this.bottom_text_space / 2) +
+                          ")");
     for (let hk of this.hex_keys) {
+      let txt;
       if (hk.units === INCH) {
+        txt = renderText(imperial, FONT, hk.label_text(), KERNING);
       } else {
-        let txt = renderText(metric, FONT, "" + hk.size, KERNING);
-        on_line_cut(txt);
-        // let c = center(txt);
-        txt.setAttribute(
-          "transform",
-          "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
-            "scale(0.005)" +
-            "rotate(270)"
-        );
+        txt = renderText(metric, FONT, hk.label_text(), KERNING);
       }
+      on_line_cut(txt);
+      txt.setAttribute(
+        "transform",
+        "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
+          "scale(0.005)" +
+          "rotate(270)"
+      );
     }
     inset_extra.appendChild(imperial);
     inset_extra.appendChild(metric);
@@ -204,8 +213,8 @@ var KERNING = null
 // load_font_data calls continuation with the font and kerning data
 // once they are loaded.
 function load_font_data(font_name, continuation) {
-  // let base_uri = "../hershey/fonts/";
-  let base_uri = "https://raw.githubusercontent.com/MarkNahabedian/DesignWithSVG/master/hershey/fonts/";
+  let base_uri = "../hershey/fonts/";
+  // let base_uri = "https://raw.githubusercontent.com/MarkNahabedian/DesignWithSVG/master/hershey/fonts/";
   let font = fetch(base_uri + font_name + ".json").then(
     function (response) {
       if (!response.ok) {
