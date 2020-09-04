@@ -3,6 +3,8 @@
     <title>Template HTML file using these libraries</title>
     <script type="text/javascript" src="svg_lib.js"></script>
     <script type="text/javascript" src="shaper_origin.js"></script>
+    <link href="../common/common.css" rel="stylesheet" />
+    <script type="text/javascript" src="../common/clipboard.js"></script>
     <script type="text/javascript">
 //<![CDATA[
 
@@ -48,9 +50,16 @@ document.addEventListener("DOMContentLoaded", contentLoaded, false);
 
     <h1>TITLE</h1>
 
-    <pre id="CODE_ELEMENT"> 
-    </pre>
     <svg id="SVG_ELEMENT"></svg>
+    <div>
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('CODE_ELEMENT')">
+        Copy SVG to clipboard
+      </button>
+      <pre id="CODE_ELEMENT">
+      </pre>
+    </div>
 
   </body>
 </html>
