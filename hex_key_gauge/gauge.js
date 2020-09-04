@@ -201,6 +201,12 @@ class Geometry {
     }
     inset_extra.appendChild(imperial);
     inset_extra.appendChild(metric);
+    // Show size of the completed part:
+    let bb = part.getBBox();
+    document.getElementById("width").textContent =
+      "" + (Math.round(bb.width * 10) / 10);
+    document.getElementById("height").textContent =
+      "" + (Math.round(bb.height * 10) / 10);
   }
 };
 
