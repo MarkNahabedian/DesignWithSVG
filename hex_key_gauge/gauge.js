@@ -114,8 +114,8 @@ class Geometry {
     }
     this.gauge_width = x;
     this.gauge_height = this.hex_keys[0].inch();    
-    this.top_text_space = 0.5;
-    this.bottom_text_space = 0.5;
+    this.top_text_space = 0.25;
+    this.bottom_text_space = 0.25;
     // this.extra is within the part.
     this.extra = 0.25;
    // this.border_space is outside of the part.
@@ -195,7 +195,7 @@ class Geometry {
       txt.setAttribute(
         "transform",
         "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
-          "scale(0.005)" +
+          "scale(0.003)" +
           "rotate(270)"
       );
     }
