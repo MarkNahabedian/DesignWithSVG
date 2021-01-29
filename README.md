@@ -3,7 +3,7 @@ to be cut using a laser cutter or CNC router.
 
 The primary focus of these tools is the Shaper Origin, a hand held CNC
 router that takes SVG files for describing the cutting and engraving
-paths.at
+paths.
 
 A web view of some of these tools is available at
 <a href="https://marknahabedian.github.io/DesignWithSVG/">
@@ -35,7 +35,7 @@ existing SVG design.
 <b>dividing_plate</b> can be used to design a rotary table dividing plate.
 <a href="https://marknahabedian.github.io/DesignWithSVG/dividing_plate/dividing_plate.html">Try it.</a>.
 
-<b>joiining_plates</b> is a tool for designing bolt-on plates for
+<b>joining_plates</b> is a tool for designing bolt-on plates for
 joining T-slot aluminum extrusions.  You can try it
 <a href="https://marknahabedian.github.io/DesignWithSVG/joining_plates/joining_plate.html">here</a>.
 
