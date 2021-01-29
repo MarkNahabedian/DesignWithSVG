@@ -8,6 +8,7 @@
     </style>
     <script type="text/javascript" src="../common/svg_lib.js"></script>
     <script type="text/javascript" src="../common/shaper_origin.js"></script>
+    <script type="text/javascript" src="../common/clipboard.js"></script>
     <script type="text/javascript" src="../hershey/render_text.js"></script>
     <script type="text/javascript" src="../hershey/fonts/fonts.js"></script>
     <script type="text/javascript">
@@ -339,6 +340,13 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
     </script>
   </head>
   <body>
+    <h1>Designn a Name Tag to be Cut on Shaper Origin</h1>
+
+    <p>
+      For details on how to use this page, see the
+      <a href="README.md">README</a> file.
+    </p>
+
     <form>
       <p id="font-selection">
         Select one of these checked in fonts
@@ -376,6 +384,13 @@ document.addEventListener("DOMContentLoaded", formDefaults, false);
     </form>
     <pre id="dimensions"></pre> 
     <svg id="image" xmlns="http://www.w3.org/2000/svg"></svg>
-    <pre id="code"></pre>
+    <div>
+      <button type="button"
+              class="copy-button"
+              onclick="click_to_copy('code')">
+        Copy SVG to clipboard
+      </button>
+      <pre id="code"></pre>
+    </div>
   </body>
 </html>

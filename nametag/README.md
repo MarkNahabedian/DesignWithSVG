@@ -8,11 +8,13 @@ so that one can cut a nametag on Shaper Origin.
 # Usage
 
 nametag.html requires no server side support.  You can run it from a
-"file:" URL.
+"file:" URL or directly from
+<a href="https://marknahabedian.github.io/DesignWithSVG/nametag/nametag.html">Github Pages</a>.
 
 You must first select a Hershey vector font from a file (see
 ../hershey/README.md for more on these font files) using the file
-chooser.
+chooser.  If you run from Github Pages you can just click on one of
+the isted fonts to load it.
 
 Once the font file is chosen, enter the name or short amount of text
 to be rendered.  This utility can only deal with a single line of
@@ -26,7 +28,8 @@ be the outline for cutting the nametag free of the stock.
 
 Both the image and the SVG code that renders it can be found on the
 page.  You can copy the SVG code directly from the serialized section
-of the page to a file for cutting.
+of the page to a file for cutting.  A "Copy SVG to clipboard" button
+is provided for convenience.
 
 After importing and placing the file for cutting on Shaper Origin,
 you'll need to specify the cut types, which should be on-line for all
@@ -41,7 +44,8 @@ amount of space (in the same units as the font is defined in) to be
 added between that pair of glyphs.  Some adjustments for the sans
 seriph single stroke font can be found in
 ../hershey/fonts/Sans_1-stroke.kerning.  The contents of this file can
-be pasted directly into the kerning textarea of the webpage.
+be pasted directly into the kerning textarea of the webpage.  When a
+font is loaded the available kerning data for it is also loaded.
 
 
 # Borders
@@ -61,7 +65,8 @@ surrounds the text in a rectangle with a 0.2 inch margin between the
 most extreme corners of the text and the rectabgle.  That rectabgle
 will have rounded corners with a 0.2 inch radius.  The second line
 adds another 0.2 inch margin around the previous rectangle, this one
-with right angle corners.
+with right angle corners.  The outermost border will be defined with
+an outside rather than an on-line cut.
 
 
 # Example
