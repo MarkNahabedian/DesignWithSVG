@@ -2,7 +2,7 @@
 
 // Extra spacs between the bounding rectangle of a part and the edges
 // of the SVG element.
-var SVG_MARGIN = 0.25;
+var SVG_MARGIN = 0.5;
 
 var GUIDE_GRID_SPACING = 0.5;
 
@@ -18,13 +18,14 @@ var STAR_KNOB_DIAMETER = 1.5;
 // Free fit clearance for 1/4 - 20 machine screw.
 var SCREW_CLEARANCE = 0.2660;
 
-var STOP_PIN_INSET = 0.5;
-var STOP_PIN_DIAMETER = 0.25;
-
 var MAX_STOCK_THICKNESS = 2;
 
-var STOP_ADJUSTMENT_SCREW_DIAMETER = 0.25;
-var END_STOP_CLAMP_SCREW_DIAMETER = 0.375;   // ***** To be determined
+// We add a protrusion at the back edge of the base plate which can be
+// used as a stop for making stopped grooves.  A block can be clamped
+// to the stock such that this protrusion will hit the block at the
+// stopping point.
+var STOP_TAB_WIDTH_A = 1;
+var STOP_TAB_DEPTH_B = 1;
 
 var MORTISE_CENTERING_PIVOT_HOLE_DIAMETER = 0.25;
 var MORTISE_CENTERING_PIVOT_DISTANCE = 3.5;
@@ -59,17 +60,17 @@ class SubBaseGeometry {
     this.adjuster_clearance = Math.max(WASHER_DIAMETER, STAR_KNOB_DIAMETER) / 2;
     console.assert(this.beyond_slot_A > this.adjuster_clearance,
                    'beyond_slot must be greater than adjuster_clearance');
-    this.half_width_A = base_A + 2 * this.adjuster_clearance +
-      this.slot_width_A + this.beyond_slot_A +
-      // extra width
-    0;
+    this.half_width_A = (base_A + 2 * this.adjuster_clearance +
+                         this.slot_width_A + this.beyond_slot_A +
+                         // extra width
+                         BASE_PLATE_THICKNESS);
     this.slot_center_A = this.half_width_A - this.beyond_slot_A -
       this.slot_width_A / 2;
     // Our coordinate system is centered on the router spindle.
     // These offsets translate from spindle centric coordinates to
     // SVG coordinates:
     this.x_translate_A = SVG_MARGIN + this.half_width_A;
-    this.y_translate_B = SVG_MARGIN + Math.abs(this.back_edge_B);
+    this.y_translate_B = SVG_MARGIN + STOP_TAB_DEPTH_B + Math.abs(this.back_edge_B);
   }
   
   svgWidth() {
@@ -79,15 +80,15 @@ class SubBaseGeometry {
   
   svgHeight() {
     // Return the value for the height attribute of the SVG element.
-    return Math.abs(this.front_edge_B - this.back_edge_B) + 2 * SVG_MARGIN;
+    return Math.abs(this.front_edge_B - this.back_edge_B) + STOP_TAB_DEPTH_B + 2 * SVG_MARGIN;
   }
   
   updateSVG(svg_elt) {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     var g = document.getElementById("subbase");
     g.setAttribute('transform', 'translate(' +
-                   (SVG_MARGIN + this.x_translate_A) + ', ' +
-                   (SVG_MARGIN + this.y_translate_B) + ')');
+                   (this.x_translate_A) + ', ' +
+                   (this.y_translate_B) + ')');
     var left_A = - this.half_width_A;
     var right_A = this.half_width_A;
     var front_B = this.front_edge_B;
@@ -95,6 +96,29 @@ class SubBaseGeometry {
     // Perimeter:
     var perimeter = path(document.getElementById("perimeter"), [
       ['M', left_A + ROUNDED_CORNER_RADIUS, back_B],
+
+      // Stop tab
+      ['H', - STOP_TAB_WIDTH_A / 2 - ROUNDED_CORNER_RADIUS],
+      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+       0.0, false, false,
+       ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
+      ['v', - STOP_TAB_DEPTH_B + 2 * ROUNDED_CORNER_RADIUS],
+      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+       0.0, false, true,
+       ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS
+      ],
+      ['H', STOP_TAB_WIDTH_A / 2 - ROUNDED_CORNER_RADIUS],
+      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+       0.0, false, true,
+       ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS
+      ],       
+      ['V', back_B - ROUNDED_CORNER_RADIUS],
+      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
+       0.0, false, false,
+       ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS
+      ],
+      // End stop tab
+
       ['H', right_A - ROUNDED_CORNER_RADIUS],
       // Corner
       ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
@@ -186,15 +210,6 @@ class SubBaseGeometry {
           (- txt.getBBox().width / 2) + ' ' + p1[1] + ')';
       txt.setAttribute('transform', scale + trans);
     }
-    // We make a hole for a stop pin that can help with making
-    // stopped grooves.
-    var stop_pin_hole = document.querySelector("#stop_pin circle");
-    stop_pin_hole.querySelector("title").textContent =
-      "Hole for " + STOP_PIN_DIAMETER + " dowel to serve as a stop pin.";
-    stop_pin_hole.setAttribute('r', '' + STOP_PIN_DIAMETER/2);
-    stop_pin_hole.setAttribute('cx', '' + 0);
-    stop_pin_hole.setAttribute('cy', '' + (back_B + STOP_PIN_INSET));
-    inside_cut(stop_pin_hole);
     // Pivot holes for centering a mortise
     var centering_holes = document.getElementById("centering_holes");
     centering_holes.appendChild(inside_cut(hole(
@@ -222,7 +237,12 @@ class SubBaseGeometry {
         ])),
         "Horizontal lines spaced " + spacing + " inch apart.");
     }
-    for (var x = 0; x < this.half_width_A; x += spacing) {
+    // Vertical center line
+    tooltip(guide_line(path(g1, [
+      ['M', 0, back_B - STOP_TAB_DEPTH_B],
+      ['V', front_B]
+    ])), "center liine");
+    for (var x = spacing; x < this.half_width_A; x += spacing) {
       var txt = "Vertical tick marks, spaced " + spacing + " apart.";
       tooltip(
         guide_line(path(g1, [
@@ -405,196 +425,6 @@ class FenceGeometry {
 };
 
 
-// In oder to make stopped grooves, we have an end stop piece that
-// clamps on to the end of the work and has a protrusion with an
-// adjusting screw that will butt against the stop pin of the base
-// plate.  This end stop has three wooden parts: an upright, a top jaw
-// (the bottom of which sits on the stock), and a bottom "jaw" that
-// just provides s screw hole for the threaded rod that clamps to the
-// bottom of the stock.  The two jaws are glued into dados that are
-// cut in the upright.  Part of the upright hangs out over the path of
-// the base plate so that the base plate can freely pass the upright
-// but the upright can still reach the path of the stop peg.
-class EndStopUprightGeometry {
-  constructor(jaw_geometry) {
-    jaw_geometry.upright = this;
-    this.jaw_geometry = jaw_geometry;     // a EndStompClapJawGeometry
-    this.cutter_diameter = 0.25;
-    this.extra = 0.25;
-    // Origin:
-    // x = 0 is at what would be the back edge of the base plate.
-    // Negative x is into the base plate.
-    // y = 0 is at the top of the stock or the bottom of the base plate.
-    // Increasing y is above the stock.
-    // distance between back of base and front edge of top clamp jaw.
-    this.base_clearance = 0.5;
-    // max_stock_thickness is the thickest piece of stock we might clamp to.
-    this.max_stock_thickness = MAX_STOCK_THICKNESS;
-    this.upright_clamp_width = 2;
-    this.dado_width = this.jaw_geometry.stock_thickness;
-    this.dado_spacing = this.max_stock_thickness;
-    this.screw_extra = STOP_ADJUSTMENT_SCREW_DIAMETER / 2 + this.extra;
-    this.stop_adjust_height = Math.max(BASE_PLATE_THICKNESS, this.dado_width) +
-      ROUNDED_CORNER_RADIUS + this.screw_extra;
-    this.stop_adjust_center_x = 0 - STOP_PIN_INSET;
-    this.front_x = this.stop_adjust_center_x - this.screw_extra;
-    this.back_x = this.base_clearance + this.upright_clamp_width;
-    this.top_y = this.stop_adjust_height + this.screw_extra;
-    this.bottom_y = - this.max_stock_thickness - this.dado_width - this.extra;
-  }
-
-  svgWidth() {
-    return this.back_x - this.front_x + 2 * SVG_MARGIN;;
-  }
-  
-  svgHeight() {
-    return this.top_y - this.bottom_y + 2 * SVG_MARGIN;;
-  }
-  
-  updateSVG(svg_elt) {
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-    var g = document.createElementNS(svgURI, 'g');
-    svg_elt.appendChild(g);
-    g.setAttribute('transform', 'translate(' +
-                   (SVG_MARGIN - this.front_x) + ', ' +
-                   (SVG_MARGIN - this.bottom_y) + ')');
-    var perimeter = path(g, [
-      ['M', this.front_x + this.base_clearance +
-       ROUNDED_CORNER_RADIUS,
-       this.bottom_y],
-      ['H', this.back_x - ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
-      ['V', this.top_y - ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       - ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
-      ['H', this.front_x + ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       - ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
-      ['V', this.stop_adjust_height - this.screw_extra + ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
-      ['H', this.base_clearance - ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, false,
-       ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
-      ['V', this.bottom_y + ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS]
-    ]);
-    outside_cut(perimeter);
-    g.appendChild(perimeter);
-    // Hole for adjustment screw
-    g.appendChild(inside_cut(hole(
-      [this.stop_adjust_center_x, this.stop_adjust_height],
-      0.2100 // Tap hole for 1/4 - 20 machine screw, guess for wood
-    )));
-    // Dados for the clamp jaws
-    pocket_cut(path(g, [
-      ['M', this.base_clearance - this.cutter_diameter, 0],
-      ['H', this.back_x + this.cutter_diameter],
-      ['v', this.dado_width],
-      ['H', this.base_clearance - this.cutter_diameter],
-      ['V', 0]
-    ]));
-    pocket_cut(path(g, [
-      ['M', this.base_clearance - this.cutter_diameter,
-       - this.max_stock_thickness],
-      ['H', this.back_x + this.cutter_diameter],
-      ['v', - this.dado_width],
-      ['H', this.base_clearance - this.cutter_diameter],
-      ['V', - this.max_stock_thickness]
-    ]));
-    // Bounding box guide lines
-    guide_line(path(g, [
-      ['M', this.front_x, this.bottom_y],
-      ['H', this.back_x],
-      ['V', this.top_y],
-      ['H', this.front_x],
-      ['V', this.bottom_y]
-    ]));
-    // Guide line for router base
-    var base = guide_line(path(g, [
-      ['M', -1, 0],
-      ['H', 0],
-      ['V', BASE_PLATE_THICKNESS],
-      ['H', -1]
-    ]));
-    base.setAttribute('fill', base.getAttribute('stroke'));
-    // Grid
-    var grid = document.createElementNS(svgURI, 'g');
-    g.appendChild(grid);
-    draw_grid(grid, GUIDE_GRID_SPACING,
-              this.front_x, this.back_x,
-              this.bottom_y, this.top_y);
-  }
-};
-
-
-class EndStopClampJawGeometry {
-  constructor() {
-    this.upright = null;
-    this.stock_thickness = 0.5;   // ***** measure stock
-    this.dado_depth = this.stock_thickness / 2;
-    this.jaw_reach = 2;
-    this.t_nut_width = 1;         // ***** measure
-    this.clamp_screw_offset = 1;
-    this.total_jaw_length = null;
-    this.clamp_screw_diameter = 0.2660; // Free fit for 1/4 - 20 machine screw
-  }
-  
-  svgWidth() {
-    return this.upright.upright_clamp_width + 2 * SVG_MARGIN;
-  }
-  
-  svgHeight() {
-    this.total_jaw_length = this.dado_depth +
-      this.clamp_screw_offset +
-      this.t_nut_width / 2+ this.upright.extra;
-    return this.total_jaw_length + 2 * SVG_MARGIN;
-  }
-  
-  updateSVG(svg_elt) {
-    setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
-    var g = document.createElementNS(svgURI, 'g');
-    svg_elt.appendChild(g);
-    g.setAttribute('transform', 'translate(' +
-                   (SVG_MARGIN) + ', ' +
-                   (SVG_MARGIN) + ')');
-    var perimeter = path(g, [
-      ['M', 0, 0],
-      ['H',this.upright.upright_clamp_width], 
-      ['V', this.total_jaw_length - ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       - ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS],
-      ['H', 0 + ROUNDED_CORNER_RADIUS],
-      ['a', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
-       0.0, false, true,
-       - ROUNDED_CORNER_RADIUS, - ROUNDED_CORNER_RADIUS],
-      ['V', 0]
-    ]);
-    outside_cut(perimeter);
-    g.appendChild(perimeter);
-    g.appendChild(inside_cut(hole(
-      [this.upright.upright_clamp_width / 2,
-       this.dado_depth + this.clamp_screw_offset],
-      this.clamp_screw_diameter // loose fit clearance
-    )));
-    // Guide line showing insertion into dado
-    guide_line(path(g, [
-      ['M', 0, this.dado_depth],
-      ['H', this.upright.upright_clamp_width]
-    ]));
-  }
-};
-
-
 function tooltip(element, text) {
   var tt = document.createElementNS(svgURI, 'title');
   tt.textContent = text;
@@ -630,19 +460,6 @@ function contentLoaded() {
   fence.updateSVG(document.getElementById('FENCE_SVG_ELEMENT'));
   showSVG(document.getElementById('FENCE_SVG_ELEMENT'),
           document.getElementById('FENCE_CODE_ELEMENT'));
-
-  var end_stop_upright = new EndStopUprightGeometry(
-    new EndStopClampJawGeometry());
-  end_stop_upright.updateSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'));
-  showSVG(document.getElementById('END_STOP_UPRIGHT_SVG_ELEMENT'),
-          document.getElementById('END_STOP_UPRIGHT_CODE_ELEMENT'));
-
-  end_stop_upright.jaw_geometry.updateSVG(document.getElementById(
-    'END_STOP_JAW_SVG_ELEMENT'));
-  showSVG(document.getElementById('END_STOP_JAW_SVG_ELEMENT'),
-          document.getElementById('END_STOP_JAW_CODE_ELEMENT'));
-  show_dimensions(document.getElementById('DIMENSIONS'),
-                  subbase, fence);
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
