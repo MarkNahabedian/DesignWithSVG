@@ -341,7 +341,7 @@ class FenceGeometry {
     setupSVGViewport(svg_elt, 0, 0, this.svgWidth(), this.svgHeight(), 'in');
     var g = document.createElementNS(svgURI, 'g');
     g.setAttribute('transform', 'translate(' +
-                   (SVG_MARGIN + this.sbg.x_translate_A) + ', ' +
+                   (this.sbg.x_translate_A) + ', ' +
                    SVG_MARGIN + ')');
     var left_A = - this.sbg.half_width_A;
     var right_A = this.sbg.half_width_A;
