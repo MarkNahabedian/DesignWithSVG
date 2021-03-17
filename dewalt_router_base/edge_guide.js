@@ -50,6 +50,7 @@ class SubBaseGeometry {
     // Dimensions of metal base expressed as distance from
     // spindle center.  We take the larger of the dw6182 and
     // dw6184 dimensions.
+    this.part_id = "SUBBASE";
     var base_A = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_WIDTH / 2);
     var base_B = Math.max(BASE_DIAMETER / 2, BASE_TOTAL_DEPTH / 2);
     this.back_edge_B = - base_B - 1;
@@ -256,6 +257,12 @@ class SubBaseGeometry {
         ])), txt);
     }
     g.appendChild(g1);
+    // Show sizes:
+    let bb = g.getBBox();
+    document.querySelector("#" + this.part_id + " .width").textContent =
+      "" + (Math.round(bb.width * 10) / 10);
+    document.querySelector("#" + this.part_id + " .height").textContent =
+      "" + (Math.round(bb.height * 10) / 10);
   }
 };
 
@@ -322,6 +329,7 @@ function draw_grid(group, spacing, x1, x2, y1, y2) {
 class FenceGeometry {
   constructor(subbaseGeometry) {
     // Dimensions are in inches.
+    this.part_id = "FENCE";
     this.sbg = subbaseGeometry
     this.cutter_clearance_radius = 0.5;
     this.fence_height_B = 1 + this.cutter_clearance_radius;
@@ -421,6 +429,12 @@ class FenceGeometry {
       [- MORTISE_CENTERING_PIVOT_DISTANCE,
        geo.fence_height_B / 2],
       MORTISE_CENTERING_PIVOT_HOLE_DIAMETER)));
+    // Show sizes:
+    let bb = g.getBBox();
+    document.querySelector("#" + this.part_id + " .width").textContent =
+      "" + (Math.round(bb.width * 10) / 10);
+    document.querySelector("#" + this.part_id + " .height").textContent =
+      "" + (Math.round(bb.height * 10) / 10);
   }
 };
 
