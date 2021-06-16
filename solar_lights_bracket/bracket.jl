@@ -39,7 +39,7 @@ md"""
 
 The solar panel sits on top of a plastic tube with an outside diameter of 1.175 inches.
 
-The awning frame has two horisontal bars which I can mount to.  The distance between the top of the top bar and the bottom of the bottom bar is 3 inches.  These two bars can be sandwiched between the (vertical) mounting tobe and the bracket I'm designing here -- all held together by a pair of U bolts -- one above, and the other below the horizontal bars.
+The awning frame has two horizontal bars which I can mount to.  The distance between the top of the top bar and the bottom of the bottom bar is 3 inches.  These two bars can be sandwiched between the (vertical) mounting tobe and the bracket I'm designing here -- all held together by a pair of U bolts -- one above, and the other below the horizontal bars.
 
 Two 5/16" by 1 3/8" by 2 1/2" U bolts will hold this all together.
 
@@ -181,6 +181,23 @@ function draw_bracket()
 					("h", - bracketWidth),
 					"z"
 					))
+			centerX = bracketWidth / 2
+			centerY = bracketHeight / 2
+			function hole(io, x, y, diameter)
+				circle(io;
+					cx = svgval(x),
+					cy = svgval(y),
+					r = svgval(diameter / 2),
+					shaper_cut_attributes[:inside_cut]...)
+			end
+			# Holes for U bolts
+			function uboltHoles(io, y)
+				hole(io, centerX - uBoltCenterSpacing/2, y, qDrill)
+				hole(io, centerX + uBoltCenterSpacing/2, y, qDrill)
+			end
+			dy = spacing_between_uBolts / 2
+			uboltHoles(io, centerY - dy)
+			uboltHoles(io, centerY + dy)
 		end
 	end
 	take!(io)
