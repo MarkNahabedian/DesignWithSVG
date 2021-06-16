@@ -58,13 +58,17 @@ begin
 
 	# Center to center distance:
 	spacing_between_uBolts = 3.5u"inch"
+	
+	# Extra width to add a 90 degree bend on an edge to provide
+	# vertical stiffness:
+	stiffening_fold = 0.5u"inch"
 end
 
 # ╔═╡ 19018211-c86b-4d23-a6fc-28d174df59bc
 begin
 	# Bracket measurements
 	bracketHeight = 5u"inch"
-	bracketWidth = 3u"inch"
+	bracketWidth = 4u"inch"
 end
 
 # ╔═╡ 811dc6cd-aa32-47fb-a0ce-2febfb6874ce
@@ -72,7 +76,9 @@ begin
 	# Bracket design constaraints:
 	@assert spacing_between_uBolts > crossbarsVerticalClearance + uBoltDiameter
 	@assert spacing_between_uBolts > crossbarsVerticalClearance + uBoltDiameter
-	@assert bracketWidth > uBoltCenterSpacing + uBoltDiameter + 0.5u"inch"
+	@assert bracketWidth > (uBoltCenterSpacing +
+		uBoltDiameter + 0.5u"inch" +
+		2 * stiffening_fold)
 end
 
 # ╔═╡ 97ceecef-83d7-4495-b495-14a4de0b2011
