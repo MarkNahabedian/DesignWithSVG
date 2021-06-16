@@ -4,12 +4,23 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
 # ╔═╡ c0ca1e52-02d8-44ce-af8b-0bdc20c9eebb
 begin
 	using Pkg
 	Pkg.activate(".")
 	Pkg.add.([
 			"DisplayAs",
+			"InteractiveUtils",
+			"PlutoUI",
 			"Printf",
 			"Unitful",
 			"UnitfulUS",
@@ -19,14 +30,16 @@ begin
 			])
 	using DisplayAs
 	using NativeSVG
+	using PlutoUI
 	using Printf
 	using Unitful
 	using UnitfulUS
+	using InteractiveUtils: clipboard
 end
 
 # ╔═╡ e9cd2dd0-cdfd-11eb-237c-7df35911ef8d
 md"""
-# Mountuing Bracket
+# Mounting Bracket
 
 A btacket for mounting some outdoor solar powered lights to an awning frame.
 
@@ -213,6 +226,15 @@ end
 # DisplayAs.SVG(Drawing(draw_bracket())
 HTML(String(draw_bracket()))
 
+# ╔═╡ 0997387a-38a1-4e14-ade5-aba4749390d8
+@bind foo PlutoUI.Button("Copy SVG to Clipboard")
+
+# ╔═╡ 7f43fd43-4bfe-4ae0-becd-5acd4756595c
+begin
+	foo
+	clipboard(String(draw_bracket()))
+end
+
 # ╔═╡ Cell order:
 # ╟─e9cd2dd0-cdfd-11eb-237c-7df35911ef8d
 # ╠═c0ca1e52-02d8-44ce-af8b-0bdc20c9eebb
@@ -227,3 +249,5 @@ HTML(String(draw_bracket()))
 # ╠═24064a37-98e3-42d4-b32e-d67f9e1caec6
 # ╠═59234967-4c44-4035-8315-dd8177e0f241
 # ╠═30ebbaa3-3be9-47d2-83df-0cec56e4c959
+# ╠═0997387a-38a1-4e14-ade5-aba4749390d8
+# ╠═7f43fd43-4bfe-4ae0-becd-5acd4756595c
