@@ -94,6 +94,14 @@ class SubBaseGeometry {
     var right_A = this.half_width_A;
     var front_B = this.front_edge_B;
     var back_B = this.back_edge_B;
+    // stop-tab-center-indicator
+    {
+      let stci = document.querySelector("#stop-tab-center-indicator")
+      on_line_cut(path(stci, [
+        ["M", 0, back_B + 0.25],
+        ["v", 0.25]
+      ]));
+    }
     // Perimeter:
     var perimeter = path(document.getElementById("perimeter"), [
       ['M', left_A + ROUNDED_CORNER_RADIUS, back_B],
@@ -119,7 +127,6 @@ class SubBaseGeometry {
        ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS
       ],
       // End stop tab
-
       ['H', right_A - ROUNDED_CORNER_RADIUS],
       // Corner
       ['A', ROUNDED_CORNER_RADIUS, ROUNDED_CORNER_RADIUS,
@@ -149,6 +156,26 @@ class SubBaseGeometry {
     // Center hole
     var center_hole = document.querySelector("#center_hole circle");
     inside_cut(hole([0, 0], BASE_PLATE_HOLE_DIAMETER, center_hole));
+    // Center indicating hair lines:
+    {
+      let crosshairs = document.querySelector("#center-hole-crosshairs");
+      on_line_cut(path(crosshairs, [
+        ["M", BASE_PLATE_HOLE_DIAMETER/2, 0],
+        ["h", 0.5]
+      ]));
+      on_line_cut(path(crosshairs, [
+        ["M", - BASE_PLATE_HOLE_DIAMETER/2, 0],
+        ["h", -0.5]
+      ]));
+      on_line_cut(path(crosshairs, [
+        ["M", 0, BASE_PLATE_HOLE_DIAMETER/2],
+        ["v", 0.5]
+      ]));
+      on_line_cut(path(crosshairs, [
+        ["M", 0, - BASE_PLATE_HOLE_DIAMETER/2],
+        ["v", -0.5]
+      ]));
+    }
     // dw6184 router base accomodations:
     var bg4 = document.getElementById("dw6184");
     dw6184_base_perimeter(bg4);
@@ -222,47 +249,54 @@ class SubBaseGeometry {
     // Add some more guide lines just to get a sense of measurement.
     var spacing = GUIDE_GRID_SPACING;
     var g1 = document.getElementById("guide_lines");
-    for (var y = 0; y > this.back_edge_B; y -= spacing) {
-      tooltip(
-        guide_line(path(g1, [
-          ['M', - this.half_width_A, y],
-          ['H', this.half_width_A]
-        ])),
-        "Horizontal lines spaced " + spacing + " inch apart.");
-    }
-    for (var y = spacing; y < this.front_edge_B; y += spacing) {
-      tooltip(
-        guide_line(path(g1, [
-          ['M', - this.half_width_A, y],
-          ['H', this.half_width_A]
-        ])),
-        "Horizontal lines spaced " + spacing + " inch apart.");
+    // Horizontal lines
+    if (true) {
+      for (var y = 0; y > this.back_edge_B; y -= spacing) {
+        tooltip(
+          guide_line(path(g1, [
+            ['M', - this.half_width_A, y],
+            ['H', this.half_width_A]
+          ])),
+          "Horizontal lines spaced " + spacing + " inch apart.");
+      }
+      for (var y = spacing; y < this.front_edge_B; y += spacing) {
+        tooltip(
+          guide_line(path(g1, [
+            ['M', - this.half_width_A, y],
+            ['H', this.half_width_A]
+          ])),
+          "Horizontal lines spaced " + spacing + " inch apart.");
+      }
     }
     // Vertical center line
-    tooltip(guide_line(path(g1, [
-      ['M', 0, back_B - STOP_TAB_DEPTH_B],
-      ['V', front_B]
-    ])), "center liine");
-    for (var x = spacing; x < this.half_width_A; x += spacing) {
-      var txt = "Vertical tick marks, spaced " + spacing + " apart.";
-      tooltip(
-        guide_line(path(g1, [
-          ['M', x, - spacing / 2],
-          ['v', spacing]
-        ])), txt);
-      tooltip(
-        guide_line(path(g1, [
-          ['M', - x, - spacing / 2],
-          ['v', spacing]
-        ])), txt);
+    if (true) {
+      tooltip(guide_line(path(g1, [
+        ['M', 0, back_B - STOP_TAB_DEPTH_B],
+        ['V', front_B]
+      ])), "center line");
     }
-    g.appendChild(g1);
-    // Show sizes:
-    let bb = g.getBBox();
-    document.querySelector("#" + this.part_id + " .width").textContent =
-      "" + (Math.round(bb.width * 10) / 10);
-    document.querySelector("#" + this.part_id + " .height").textContent =
-      "" + (Math.round(bb.height * 10) / 10);
+    // Horizontal axis tick marks:
+    if (true) {
+      for (var x = spacing; x < this.half_width_A; x += spacing) {
+        var txt = "Vertical tick marks, spaced " + spacing + " apart.";
+        tooltip(
+          guide_line(path(g1, [
+            ['M', x, - spacing / 2],
+            ['v', spacing]
+          ])), txt);
+        tooltip(
+          guide_line(path(g1, [
+            ['M', - x, - spacing / 2],
+            ['v', spacing]
+          ])), txt);
+      }
+      // Show sizes:
+      let bb = g.getBBox();
+      document.querySelector("#" + this.part_id + " .width").textContent =
+        "" + (Math.round(bb.width * 10) / 10);
+      document.querySelector("#" + this.part_id + " .height").textContent =
+        "" + (Math.round(bb.height * 10) / 10);
+    }
   }
 };
 

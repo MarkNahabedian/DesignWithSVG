@@ -11,6 +11,14 @@ function center(elt) {
 }
 
 
+function rects_intersect(rect1, rect2) {
+  return (rect1.left < rect2.right &&
+          rect1.right > rect2.left &&
+          rect1.top < rect2.bottom &&
+          rect1.bottom > rect2.top);
+}
+
+
 function as_fraction(x) {
   let denominator = 1;
   while (true) {
@@ -65,7 +73,7 @@ class Measurement {
   }
 };
 
-var CUTTER_SIZE = new Measurement(1/8, INCH);
+var CUTTER_SIZE = new Measurement(1/16, INCH);
 
 var HEX_KEY_SIZES = [
   new Measurement(1/16, INCH),
@@ -184,23 +192,48 @@ class Geometry {
                           "translate(0, " +
                           (this.top_text_space + this.gauge_height + this.bottom_text_space / 2) +
                           ")");
-    for (let hk of this.hex_keys) {
-      let txt;
-      if (hk.units === INCH) {
-        txt = renderText(imperial, FONT, hk.label_text(), KERNING);
-      } else {
-        txt = renderText(metric, FONT, hk.label_text(), KERNING);
-      }
-      on_line_cut(txt);
-      txt.setAttribute(
-        "transform",
-        "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
-          "scale(0.003)" +
-          "rotate(270)"
-      );
-    }
     inset_extra.appendChild(imperial);
     inset_extra.appendChild(metric);
+    let max_length = 0;
+    let all_txt = [];
+    for (let hk of this.hex_keys) {
+      let parent;
+      if (hk.units === INCH) {
+        parent = imperial;
+      } else {
+        parent = metric;
+      }
+      let txt = renderText(parent, FONT, hk.label_text(), KERNING);
+      all_txt.push(txt);
+      on_line_cut(txt);
+      txt.setAttribute("transform", "scale(0.003)" + "rotate(270)");
+      txt.setAttribute("transform", 
+                       "translate(" + ((hk.start_x  + hk.end_x) / 2) + ", " + 0 + ")" +
+                       txt.getAttribute("transform"));
+      let l = txt.getBoundingClientRect().width;
+      if (l > max_length) {
+        max_length = l;
+      }
+    }
+    // Adjust colliding text
+    for (let index = 1; index <= all_txt.length - 1; index++) {
+      let prev = all_txt[index - 1];
+      let current = all_txt[index];
+      let prev_bbox = prev.getBoundingClientRect();
+      let current_bbox = current.getBoundingClientRect();
+      if (rects_intersect(prev_bbox, current_bbox)) {
+        let xforms = current.transform.baseVal;
+        for (let i = 0; i < xforms.numberOfItems; i++) {
+          let xform = xforms[i];
+          if (xform.type == SVGTransform.SVG_TRANSFORM_TRANSLATE) {
+            let m = xform.matrix;
+            xform.setTranslate(m.e, m.f - max_length);
+            break
+          }
+        }
+      }
+    }
+    console.log("max_length", max_length);
     // Show size of the completed part:
     let bb = part.getBBox();
     document.getElementById("width").textContent =
