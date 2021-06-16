@@ -39,6 +39,7 @@ function on_line_cut(shape) {
   } else {
     shape.setAttribute('fill', 'none');
     shape.setAttribute('stroke', 'gray');
+    shape.setAttribute('stroke-width', '.01');
     shape.setAttribute('opacity', '1.0');
   }
   return shape;
