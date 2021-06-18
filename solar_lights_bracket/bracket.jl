@@ -16,7 +16,7 @@ end
 # ╔═╡ c0ca1e52-02d8-44ce-af8b-0bdc20c9eebb
 begin
 	using Pkg
-	Pkg.activate(".")
+	Pkg.activate(@__DIR__)
 	Pkg.add.([
 			"DisplayAs",
 			"InteractiveUtils",
