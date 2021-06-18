@@ -232,7 +232,12 @@ HTML(String(draw_bracket()))
 # ╔═╡ 7f43fd43-4bfe-4ae0-becd-5acd4756595c
 begin
 	foo
-	clipboard(String(draw_bracket()))
+	doc = String(draw_bracket())
+	try
+		clipboard(doc)
+	catch e
+		DisplayAs.Text(doc)
+	end
 end
 
 # ╔═╡ Cell order:
