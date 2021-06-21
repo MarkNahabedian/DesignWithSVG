@@ -182,6 +182,23 @@ function pathd(steps...)
 	String(take!(d))
 end
 
+# ╔═╡ 39e2405b-4eba-44ae-9248-3c45e02e4742
+md"""
+## Overall Flat Dimensions:
+
+width: $bracketWidth
+
+height: $bracketHeight
+
+## Hole center spacing:
+
+x: $uBoltCenterSpacing
+
+y: $spacing_between_uBolts
+
+##
+"""
+
 # ╔═╡ 59234967-4c44-4035-8315-dd8177e0f241
 function draw_bracket()
 	io = IOBuffer()
@@ -266,6 +283,7 @@ end
 # ╠═753be613-7b3f-41e8-a1c6-00aa94bbda4f
 # ╠═ace5c1e6-767c-4ce3-b771-a4baa855a5e6
 # ╠═24064a37-98e3-42d4-b32e-d67f9e1caec6
+# ╠═39e2405b-4eba-44ae-9248-3c45e02e4742
 # ╠═59234967-4c44-4035-8315-dd8177e0f241
 # ╠═30ebbaa3-3be9-47d2-83df-0cec56e4c959
 # ╠═0997387a-38a1-4e14-ade5-aba4749390d8
