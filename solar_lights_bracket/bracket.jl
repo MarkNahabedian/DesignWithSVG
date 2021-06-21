@@ -82,6 +82,9 @@ begin
 	# Bracket measurements
 	bracketHeight = 5u"inch"
 	bracketWidth = 4u"inch"
+	
+	flatWidth = bracketWidth + 2 * stiffening_fold
+	flatHeight = bracketHeight
 end
 
 # ╔═╡ 811dc6cd-aa32-47fb-a0ce-2febfb6874ce
@@ -184,11 +187,18 @@ end
 
 # ╔═╡ 39e2405b-4eba-44ae-9248-3c45e02e4742
 md"""
-## Overall Flat Dimensions:
+
+## Bracket Nominal Formed Dimensions:
 
 width: $bracketWidth
 
 height: $bracketHeight
+
+## Overall Flat Dimensions:
+
+width: $flatWidth
+
+height: $flatHeight
 
 ## Hole center spacing:
 
@@ -205,20 +215,21 @@ function draw_bracket()
 	svg(io; xmlns=SVG_NAMESPACE,
 		width="90%",
 		viewBox=pathd(0, 0,
-			bracketWidth + 2 * SVG_MARGIN,
-			bracketHeight + 2 * SVG_MARGIN),
+			flatWidth + 2 * SVG_MARGIN,
+			flatHeight + 2 * SVG_MARGIN),
 			style="background-color: pink") do
 		g(io; transform="translate($(svgval(SVG_MARGIN)), $(svgval(SVG_MARGIN)))") do
+			# Cut outsode perimeter:
 			path(io; shaper_cut_attributes[:outside_cut]...,
 				d=pathd(
 					("M", 0, 0),
-					("h", bracketWidth),
-					("v", bracketHeight),
-					("h", - bracketWidth),
+					("h", flatWidth),
+					("v", flatHeight),
+					("h", - flatWidth),
 					"z"
 					))
-			centerX = bracketWidth / 2
-			centerY = bracketHeight / 2
+			centerX = flatWidth / 2
+			centerY = flatHeight / 2
 			function hole(io, x, y, diameter)
 				circle(io;
 					cx = svgval(x),
@@ -238,10 +249,10 @@ function draw_bracket()
 			g(io) do
 				vertical_offset = 0.25u"inch"
 				vertical_length = (1/8)u"inch"
-				for x in (stiffening_fold /2,
-						bracketWidth - stiffening_fold / 2)
+				for x in (stiffening_fold / 2,
+						flatWidth - stiffening_fold / 2)
 					for y in (vertical_offset + vertical_length,
-							bracketHeight - vertical_offset)
+							flatHeight - vertical_offset)
 						path(io; shaper_cut_attributes[:on_line_cut]...,
 							d = pathd(("M", x, y),
 								("v", - vertical_length)))
