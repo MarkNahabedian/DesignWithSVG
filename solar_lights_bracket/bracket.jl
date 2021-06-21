@@ -217,6 +217,20 @@ function draw_bracket()
 			dy = spacing_between_uBolts / 2
 			uboltHoles(io, centerY - dy)
 			uboltHoles(io, centerY + dy)
+			# Mark where the folds go:
+			g(io) do
+				vertical_offset = 0.25u"inch"
+				vertical_length = (1/8)u"inch"
+				for x in (stiffening_fold /2,
+						bracketWidth - stiffening_fold / 2)
+					for y in (vertical_offset + vertical_length,
+							bracketHeight - vertical_offset)
+						path(io; shaper_cut_attributes[:on_line_cut]...,
+							d = pathd(("M", x, y),
+								("v", - vertical_length)))
+					end
+				end
+			end
 		end
 	end
 	take!(io)
@@ -249,7 +263,7 @@ end
 # ╠═811dc6cd-aa32-47fb-a0ce-2febfb6874ce
 # ╠═97ceecef-83d7-4495-b495-14a4de0b2011
 # ╠═10273f88-e7e0-4dd7-a62b-dd7f1c53b3dd
-# ╟─753be613-7b3f-41e8-a1c6-00aa94bbda4f
+# ╠═753be613-7b3f-41e8-a1c6-00aa94bbda4f
 # ╠═ace5c1e6-767c-4ce3-b771-a4baa855a5e6
 # ╠═24064a37-98e3-42d4-b32e-d67f9e1caec6
 # ╠═59234967-4c44-4035-8315-dd8177e0f241
