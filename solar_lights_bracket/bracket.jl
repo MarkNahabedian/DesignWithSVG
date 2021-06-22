@@ -77,6 +77,9 @@ begin
 	stiffening_fold = 0.5u"inch"
 end
 
+# ╔═╡ 97ceecef-83d7-4495-b495-14a4de0b2011
+const SVG_MARGIN = 0.5u"inch"
+
 # ╔═╡ 19018211-c86b-4d23-a6fc-28d174df59bc
 begin
 	# Bracket measurements
@@ -85,6 +88,9 @@ begin
 	
 	flatWidth = bracketWidth + 2 * stiffening_fold
 	flatHeight = bracketHeight
+	
+	svgWidth = flatWidth + 2 * SVG_MARGIN
+	svgHeight = flatHeight + 2 * SVG_MARGIN
 end
 
 # ╔═╡ 811dc6cd-aa32-47fb-a0ce-2febfb6874ce
@@ -96,9 +102,6 @@ begin
 		uBoltDiameter + 0.5u"inch" +
 		2 * stiffening_fold)
 end
-
-# ╔═╡ 97ceecef-83d7-4495-b495-14a4de0b2011
-const SVG_MARGIN = 0.5u"inch"
 
 # ╔═╡ 10273f88-e7e0-4dd7-a62b-dd7f1c53b3dd
 SVG_NAMESPACE = "http://www.w3.org/2000/svg"
@@ -213,10 +216,9 @@ y: $spacing_between_uBolts
 function draw_bracket()
 	io = IOBuffer()
 	svg(io; xmlns=SVG_NAMESPACE,
-		width="90%",
-		viewBox=pathd(0, 0,
-			flatWidth + 2 * SVG_MARGIN,
-			flatHeight + 2 * SVG_MARGIN),
+			width="$(svgval(svgWidth))in",
+			height="$(svgval(svgHeight))in",
+			viewBox=pathd(0, 0, svgWidth, svgHeight),
 			style="background-color: pink") do
 		g(io; transform="translate($(svgval(SVG_MARGIN)), $(svgval(SVG_MARGIN)))") do
 			# Cut outsode perimeter:
