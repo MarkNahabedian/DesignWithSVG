@@ -11,3 +11,6 @@ This is my second Shaper Origin design that is based on a Pluto
 Notebook and Julia insteead of my previous JavaScript designs.  I'm
 still experimenting with this approach.
 
+You can interact with the notebook on
+[Binder](https://binder.plutojl.org/v0.14.7/open?url=https://raw.githubusercontent.com/MarkNahabedian/DesignWithSVG/master/floor_drain/floor_drain.jl).
+

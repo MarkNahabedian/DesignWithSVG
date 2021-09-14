@@ -16,8 +16,7 @@ end
 # ╔═╡ 0b6a9f58-d52e-4226-85a3-89ed73a41481
 begin
 	using Pkg
-	# *** We need a way to refer to the activated workspace that works both locally and from GitHub
-	Pkg.activate("c:/Users/Mark Nahabedian/Documents/svg-design/floor_drain")
+	Pkg.activate(@__DIR__)
 	
 	using Markdown
 	using InteractiveUtils
