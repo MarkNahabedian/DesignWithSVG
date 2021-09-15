@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.675000 -1.675000 3.350000 3.350000" style="background-color: pink">
+  <g>
+    <path style="fill:red; stroke=none;" d="M -1.425000 1.425000 h 0.250000 L -1.425000 0.925000 z"/>
+    <circle cx="0" cy="0" r="1.425" style="fill: black; stroke: black; stroke-width: 0.01; opacity: 1.0;"/>
+    <circle cx="0" cy="0" r="0.9450000000000001" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+    <g>
+      <circle cx="0.0" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.26" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.26" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.52" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.52" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.52" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.52" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.52" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.52" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.52" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.52" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.52" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.52" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.78" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.78" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.78" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.78" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.78" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.78" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+    </g>
+    <path d="M 0 -1.675000 V 1.675000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+    <path d="M -1.675000 0 H 1.675000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+  </g>
+</svg>
