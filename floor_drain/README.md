@@ -12,5 +12,5 @@ Notebook and Julia insteead of my previous JavaScript designs.  I'm
 still experimenting with this approach.
 
 You can interact with the notebook on
-[Binder](https://binder.plutojl.org/v0.14.7/open?url=https%253A%252F%252Fraw.githubusercontent.com%252FMarkNahabedian%252FDesignWithSVG%252Fmaster%252Ffloor_drain%252Ffloor_drain.jl).
+[Binder](https://mybinder.org/v2/gh/MarkNahabedian/DesignWithSVG/HEAD?filepath=floor_drain%2Ffloor_drain.jl).
 
