@@ -166,7 +166,7 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [[ShaperOriginDesignLib]]
 deps = ["DataStructures", "NativeSVG", "Printf", "Unitful", "UnitfulUS"]
-git-tree-sha1 = "a3bf192adbe13408d6dd454d95d1f12c370e4e78"
+git-tree-sha1 = "54dffb49b93545cafc018d401c8be1ab37d0decd"
 repo-rev = "master"
 repo-url = "https://github.com/MarkNahabedian/ShaperOriginDesignLib"
 uuid = "919415d1-862b-4149-89fa-1b0f92b0b06b"

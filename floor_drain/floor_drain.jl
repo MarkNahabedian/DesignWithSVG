@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.14.9
+# v0.16.0
 
 using Markdown
 using InteractiveUtils
@@ -129,15 +129,16 @@ end
 function drain_plate()
 	io = IOBuffer()
 	svg_margin = 0.25u"inch"
+	minX = - svg_margin - OUTER_DIAMETER / 2
+	maxX = - minX
+	minY = minX
+	maxY = - minY
 	svg(io;
 		xmlns=ShaperOriginDesignLib.SVG_NAMESPACE,
-		viewBox=pathd(
-			- svg_margin - OUTER_DIAMETER,
-			- svg_margin - OUTER_DIAMETER,
-			2 * (svg_margin + OUTER_DIAMETER),
-			2 * (svg_margin + OUTER_DIAMETER)),
+		viewBox=pathd(minX, minY, maxX - minX, maxY - minY),
 		style="background-color: pink") do
 		g(io) do
+			custom_anchor(io, - OUTER_DIAMETER / 2, OUTER_DIAMETER / 2)
 			# The perimeter of the plate
 			circle(io; cx=0, cy=0,
 				r=svgval(OUTER_DIAMETER / 2),
@@ -153,22 +154,31 @@ function drain_plate()
 					style=shaper_style_string(:pocket_cut))
 			end
 			hole_range = 0u"inch" : DRAIN_HOLE_SPACING : (OUTER_DIAMETER / 2)
-			for x in hole_range
-				for y in hole_range
-					if x^2 + y^2 < MAX_DRAIN_HOLE_FROM_CENTER ^ 2
-						hole(x, y)
-						if x != -x
-							hole(-x, y)
-						end
-						if y != -y
-							hole(x, -y)
-						end
-						if x != -x && y != -y
-							hole(-x, -y)
+			g(io) do
+				for x in hole_range
+					for y in hole_range
+						if x^2 + y^2 < MAX_DRAIN_HOLE_FROM_CENTER ^ 2
+							hole(x, y)
+							if x != -x
+								hole(-x, y)
+							end
+							if y != -y
+								hole(x, -y)
+							end
+							if x != -x && y != -y
+								hole(-x, -y)
+							end
 						end
 					end
 				end
 			end
+			# Axes
+			path(io;
+				d=pathd(["M", 0, minY], ["V", maxY]),
+				style=shaper_style_string(:guide_line))
+			path(io;
+				d=pathd(["M", minX, 0], ["H", maxX]),
+				style=shaper_style_string(:guide_line))
 		end
 	end
 	String(take!(io))
@@ -192,8 +202,8 @@ begin
 end
 
 # ╔═╡ Cell order:
-# ╠═0b6a9f58-d52e-4226-85a3-89ed73a41481
-# ╠═4d4caff2-14aa-11ec-20fa-0d12a3b75e3b
+# ╟─0b6a9f58-d52e-4226-85a3-89ed73a41481
+# ╟─4d4caff2-14aa-11ec-20fa-0d12a3b75e3b
 # ╟─8ca9dfe1-5582-4cbf-b4ef-5ff4516459ed
 # ╠═221a5c19-14d2-4771-8f30-75e11e31b701
 # ╟─c328f0ac-95fa-40ef-a8fc-9cf2d37ab053
