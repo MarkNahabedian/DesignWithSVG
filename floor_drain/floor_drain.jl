@@ -16,14 +16,17 @@ end
 # ╔═╡ 0b6a9f58-d52e-4226-85a3-89ed73a41481
 begin
 	using Pkg
-	Pkg.activate(@__DIR__)
+	
+	Pkg.add(url="https://github.com/MarkNahabedian/NativeSVG.jl")
+	using NativeSVG
+	
+	Pkg.add(url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
+	using ShaperOriginDesignLib
 	
 	using Markdown
 	using InteractiveUtils
 	using Unitful
 	using UnitfulUS
-	using NativeSVG
-	using ShaperOriginDesignLib
 	using PlutoUI
 end
 
