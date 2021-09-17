@@ -17,16 +17,21 @@ end
 begin
 	using Pkg
 	
+	# We can't use Pluto's package manager if we require unregistered packages.
+	
 	Pkg.add(url="https://github.com/MarkNahabedian/NativeSVG.jl")
 	using NativeSVG
 	
 	Pkg.add(url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
 	using ShaperOriginDesignLib
 	
-	using Markdown
-	using InteractiveUtils
+	Pkg.add("Unitful")
 	using Unitful
+	
+	Pkg.add("UnitfulUS")
 	using UnitfulUS
+	
+	Pkg.add("PlutoUI")
 	using PlutoUI
 end
 
