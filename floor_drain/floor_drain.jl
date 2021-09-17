@@ -33,6 +33,9 @@ begin
 	
 	Pkg.add("PlutoUI")
 	using PlutoUI
+	
+	Pkg.add("DisplayAs")
+	using DisplayAs
 end
 
 # ╔═╡ 4d4caff2-14aa-11ec-20fa-0d12a3b75e3b
