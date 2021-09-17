@@ -1,48 +1,68 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.675000 -1.675000 3.350000 3.350000" style="background-color: pink">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.625000 -1.625000 3.250000 3.250000" style="background-color: pink">
   <g>
-    <path style="fill:red; stroke=none;" d="M -1.425000 1.425000 h 0.250000 L -1.425000 0.925000 z"/>
-    <circle cx="0" cy="0" r="1.425" style="fill: black; stroke: black; stroke-width: 0.01; opacity: 1.0;"/>
-    <circle cx="0" cy="0" r="0.9450000000000001" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+    <path style="fill:red; stroke=none;" d="M -1.375000 1.375000 h 0.250000 L -1.375000 0.875000 z"/>
+    <circle cx="0" cy="0" r="1.375" style="fill: black; stroke: black; stroke-width: 0.01; opacity: 1.0;"/>
+    <circle cx="0" cy="0" r="0.895" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
     <g>
       <circle cx="0.0" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.0" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.26" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.26" cy="-0.78" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.52" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.52" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.52" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.52" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.52" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.52" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.52" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.52" cy="0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.52" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.52" cy="-0.52" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.78" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.78" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.78" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.78" cy="0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="0.78" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
-      <circle cx="-0.78" cy="-0.26" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.0" cy="-0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="-0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="-0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.2" cy="-0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.2" cy="-0.8" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.4" cy="-0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.4" cy="-0.6" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.6" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.6" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.6" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.6" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.6" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.6" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.6" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.6" cy="0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.6" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.6" cy="-0.4" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.8" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.8" cy="0.0" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.8" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.8" cy="0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="0.8" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
+      <circle cx="-0.8" cy="-0.2" r="0.05" style="fill: gray; stroke: none; opacity: 1.0;"/>
     </g>
-    <path d="M 0 -1.675000 V 1.675000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
-    <path d="M -1.675000 0 H 1.675000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+    <path d="M 0 -1.625000 V 1.625000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
+    <path d="M -1.625000 0 H 1.625000" style="fill: none; stroke: blue; stroke-width: 0.01; opacity: 1.0;"/>
   </g>
 </svg>
