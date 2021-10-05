@@ -133,11 +133,12 @@ function drain_hole_profile(plate::FloorDrainPlate)
 	profile_style = "fill: none; stroke: black; stroke-width: 0.05"
 	svg(io;
 		xmlns=ShaperOriginDesignLib.SVG_NAMESPACE,
-		viewBox = pathd(
+		viewport_attributes(
 			- plate.outer_diameter - floor_margin,
 			- y_margin,
 			2 * (plate.outer_diameter + floor_margin),
-			plate.lip_depth + drain_descent + 2 * y_margin),
+			plate.lip_depth + drain_descent + 2 * y_margin,
+			u"inch")...,
 		style="background-color: pink") do
 		g(io) do
 			# center line
@@ -184,7 +185,7 @@ function drain_plate(plate::FloorDrainPlate)
 	maxY = - minY
 	svg(io;
 		xmlns=ShaperOriginDesignLib.SVG_NAMESPACE,
-		viewBox=pathd(minX, minY, maxX - minX, maxY - minY),
+		viewport_attributes(minX, minY, maxX - minX, maxY - minY, u"inch")...,
 		style="background-color: pink") do
 		g(io) do
 			custom_anchor(io, - outer_radius(plate), outer_radius(plate))
@@ -251,7 +252,7 @@ begin
 end
 
 # ╔═╡ Cell order:
-# ╟─0b6a9f58-d52e-4226-85a3-89ed73a41481
+# ╠═0b6a9f58-d52e-4226-85a3-89ed73a41481
 # ╟─4d4caff2-14aa-11ec-20fa-0d12a3b75e3b
 # ╟─d92a58b3-374e-44c4-9b43-d020b39632d7
 # ╠═6939c928-e375-4305-ba79-6724e5a3983f
