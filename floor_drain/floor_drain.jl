@@ -201,7 +201,7 @@ function drain_plate(plate::FloorDrainPlate)
 				circle(io; cx=svgval(x),
 					cy=svgval(y),
 					r=svgval(plate.drain_hole_diameter / 2),
-					style=shaper_style_string(:pocket_cut))
+					style=shaper_style_string(:inside_cut))
 			end
 			hole_range = 0u"inch" : plate.drain_hole_spacing : outer_radius(plate)
 			g(io) do
