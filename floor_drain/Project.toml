@@ -8,3 +8,8 @@ Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ShaperOriginDesignLib = "919415d1-862b-4149-89fa-1b0f92b0b06b"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulUS = "7dc9378f-8956-57ef-a780-aa31cc70ff3d"
+
+[compat]
+DisplayAs = "~0.1.2"
+Unitful = "~1.9.0"
+UnitfulUS = "~0.2.0"
