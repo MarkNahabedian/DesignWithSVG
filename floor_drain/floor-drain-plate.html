@@ -1,0 +1,114 @@
+<html>
+  <head>
+    <title>Floor Drain Cover for my Laundry Room</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+  </head>
+
+  <body>
+    <h1>Floor Drain Cover for my Laundry Room</h1>
+
+    <p>
+      The floor of my laundry room is a poured concrete slab.  There
+      is a drain hole in case the clothes washer leaks.  The drain
+      hole is meant to have a metal cover, but that cover doesn't stay
+      in place.  The absence of a cover allows large objects to fall
+      into the drain.
+    </p>
+
+    <img width="95%"
+         src="pictures/before.jpg"
+         alt="Picture of the drain hole and the dislodged cover
+              plate."/>
+
+    <p>
+      I want to design a new grate that will stay in place.
+    </p>
+
+    <p>
+      When I have a precise geometry in mind, I'd rather describe it
+      in code than using a graphical user interface.
+    </p>
+
+    <p>
+      Most of my previous designs for Shaper Origin were done using
+      JavaScript to dynamically generate SVG code to a web page that
+      renders the SVG and allows me to copy it to a file.  This
+      approach was cumbersome though since I would need to edit the
+      JavaScript code and reload the web page for each debug
+      iteration.
+    </p>
+
+    <p>
+      This is my second Shaper Origin design that is based on a Pluto
+      Notebook and Julia, insteead of JavaScript.  I'm still
+      experimenting with this approach, but, so far, I'm happy with it,
+    </p>
+
+    <p>
+      You can interact with the notebook on
+      <a href="https://binder.plutojl.org/v0.16.0/open?url=https%253A%252F%252Fraw.githubusercontent.com%252FMarkNahabedian%252FDesignWithSVG%252Fmaster%252Ffloor_drain%252Ffloor_drain.jl">
+        binder
+      </a>
+    </p>
+
+    <p>
+      Here's the finished design
+    </p>
+
+    <img src="drain_plate.svg" width="95%"
+         alt="SVG image of the Shaper Origin cut file."/>
+
+    <p>
+      My plan was to use Shaper Origin to drill all of the holes and
+      cut the outline.  I had a lot of trouble cutting though.  Maybe
+      this was due to the $2.00 per pound junk yard aluminum sheet
+      that seemed particularly gummy, or the 5 for $10.99 1/16 inch
+      end mill bits from Amazon that left more metal as burrs than as
+      chips.
+    </p>
+
+    <p>
+      The aluminup sheet was 0.06 inch thick, clamped to a plywood
+      spoilboard.  I cut the holes using "auto" mode, stepping the
+      depth by 0.02, 0.02 and 0.03 inch.  I had to frequently break to
+      sand off the burrs that were dragging against Shaper Origin's
+      base.
+    </p>
+
+    <p>
+      Cutting the perimeter was a lot harder.  Once again I used an
+      initial depth of 0.02 inch.  Once again I needed to take
+      frequent breaks (every half inch to an inch) to sand off burrs.
+      I managed to complete a second pass at a depth of 0.04 inch.  I
+      had a lot of trouble with the third pass though, with the Shaper
+      Origin frequently retracting the spindle and displaying an error
+      message that I was unable to read because the text was too
+      faint and disappeared too soon.
+    </p>
+
+    <p>
+      Several times during the whole process I changed the end mill
+      bit because the flutes were clogging.
+    </p>
+
+    <p>
+      I finished cutting the perimeter using a hack saw and file.
+    </p>
+
+    <img width="95%" src="pictures/finished1.jpg"
+         alt="Photo of one side of the finished drain cover plate."/>
+
+    <img width="95%" src="pictures/finished2.jpg"
+         alt="Photo of the other side of the finished drain cover plate."/>
+
+    <p>
+      Though this project took more work than I expected, I'm
+      satisfied with the result.
+    </p>
+
+    <img width="95%" src="pictures/after.jpg"
+         alt="Phioto of the new cover plate in place."/>
+
+  </body>
+</html>
