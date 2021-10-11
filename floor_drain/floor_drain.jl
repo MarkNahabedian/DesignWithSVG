@@ -15,26 +15,24 @@ end
 
 # ╔═╡ 0b6a9f58-d52e-4226-85a3-89ed73a41481
 begin
+	# Sorry - It takes several minutes to process the dependencies
+	
+	#  Workspace defined using PlutoTool set_workspace
 	using Pkg
 	
 	# We can't use Pluto's package manager if we require unregistered packages.
-	
 	Pkg.add(url="https://github.com/MarkNahabedian/NativeSVG.jl")
-	using NativeSVG
-	
 	Pkg.add(url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
-	using ShaperOriginDesignLib
-	
 	Pkg.add("Unitful")
-	using Unitful
-	
 	Pkg.add("UnitfulUS")
-	using UnitfulUS
-	
 	Pkg.add("PlutoUI")
-	using PlutoUI
-	
 	Pkg.add("DisplayAs")
+
+	using NativeSVG
+	using ShaperOriginDesignLib
+	using Unitful
+	using UnitfulUS
+	using PlutoUI
 	using DisplayAs
 end
 
@@ -132,7 +130,7 @@ function drain_hole_profile(plate::FloorDrainPlate)
 	centerline_style = "fill: none; stroke: green; stroke-width: 0.01; stroke-dash-array: '10,10'"
 	profile_style = "fill: none; stroke: black; stroke-width: 0.05"
 	svg(io;
-		xmlns=ShaperOriginDesignLib.SVG_NAMESPACE,
+		xmlns=SVG_NAMESPACE,
 		viewport_attributes(
 			- plate.outer_diameter - floor_margin,
 			- y_margin,
@@ -184,7 +182,7 @@ function drain_plate(plate::FloorDrainPlate)
 	minY = minX
 	maxY = - minY
 	svg(io;
-		xmlns=ShaperOriginDesignLib.SVG_NAMESPACE,
+		xmlns=SVG_NAMESPACE,
 		viewport_attributes(minX, minY, maxX - minX, maxY - minY, u"inch")...,
 		style="background-color: pink") do
 		g(io) do
