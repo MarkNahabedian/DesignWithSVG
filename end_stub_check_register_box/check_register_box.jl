@@ -347,6 +347,19 @@ let
 	end
 end
 
+# ╔═╡ bab01af9-99a7-4d81-9429-838bc712d965
+md"""
+### Ends and Dividers
+
+The ends and dividers are the same shape.
+
+For $(compartment_count(boxGeo)) compartments we need $(compartment_count(boxGeo) + 1) dividers.
+
+Each is $(box_height(boxGeo) - boxGeo.stock_thickness + rabbet_depth(boxGeo)) tall
+and $(box_width(boxGeo) - 2 * boxGeo.stock_thickness + 2 * rabbet_depth(boxGeo)) long.
+
+"""
+
 # ╔═╡ Cell order:
 # ╠═59c58a2c-3fd0-4e4f-b532-ee50990ccfc6
 # ╠═45308dc5-b4a5-4620-a19c-f6a309730234
@@ -387,3 +400,4 @@ end
 # ╟─69a30bc7-343f-4a16-a20e-509d507c6d98
 # ╠═1e656eaf-e437-4aa4-b9c4-41b7880101ef
 # ╠═2445f26e-8b52-4ae0-8cc9-dbe9dc04bbed
+# ╟─bab01af9-99a7-4d81-9429-838bc712d965
