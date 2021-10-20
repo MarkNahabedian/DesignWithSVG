@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.16.0
+# v0.16.3
 
 using Markdown
 using InteractiveUtils
@@ -64,6 +64,9 @@ md"""
 	width_excluding_binding::Unitful.Length = (1 + 3/4)u"inch"
 end
 
+# ╔═╡ 9946c623-e100-435d-bbfd-ab3ae150aba3
+
+
 # ╔═╡ ed7f20aa-0e34-4ad5-8e0d-097811b4a0e2
 md"""
 ## Compartment Orientation
@@ -72,22 +75,42 @@ md"""
 # ╔═╡ 76e2ffaf-95ab-4feb-9aaa-3f104964cff6
 abstract type CompartmentGeometry end
 
+# ╔═╡ 14422643-a262-4cf1-afad-4d0da3302b32
+md"""
+### Horizontal
+
+`HorizontalCompartmentsGeometry` arranges the compartments side by side such
+that the spines of the registers line up acrossall of the compartments.
+"""
+
 # ╔═╡ 3482232f-e597-4a9f-8be4-cadc390c6b70
-struct HorizontalCompartmentsGeometry <: CompartmentGeometry
+@Base.kwdef mutable struct HorizontalCompartmentsGeometry <: CompartmentGeometry
 	crg::CheckRegisterGeometry
+	extra_width::Unitful.Length = 0u"inch"
 end
 
 # ╔═╡ 3cad31c8-858d-4808-aab3-b77c8d8f59a5
 # The dimension that's in the same direction as
 # the long dimension of the whole box:
-lengthwise(g::HorizontalCompartmentsGeometry) = g.crg.length_of_spine
+function compartment_lengthwise(g::HorizontalCompartmentsGeometry)
+	g.crg.length_of_spine + g.extra_width
+end
 
 # ╔═╡ 2e95b2ac-913d-48b8-bb92-3dec8eb7fc2b
 # The dimension that's in the same direction as
 # the short dimension of the box:
 # The goal here is to not allow a register to
 # lie flat in the bottom of the compartment.
-widthwise(g::HorizontalCompartmentsGeometry) = g.crg.width_excluding_binding
+function compartment_widthwise(g::HorizontalCompartmentsGeometry)
+	g.crg.width_excluding_binding
+end
+
+# ╔═╡ 98895c37-324b-417b-b359-18d340f55e94
+md"""
+### Vertical
+
+I've not yet bothered to implement this.
+"""
 
 # ╔═╡ c36e5aab-1b6b-46da-8dbf-01b8c5ca6f43
 md"""
@@ -98,20 +121,30 @@ md"""
 @Base.kwdef struct BoxGeometry
 	cutter_diameter = (1/8)u"inch"
 	stock_thickness::Unitful.Length = (1/8)u"inch"
-	drawer_width::Unitful.Length = 12.75u"inch"
+	drawer_width::Unitful.Length = 12.5u"inch"   # actual measurement: 12.75u"inch"
 	compartment_geometry::CompartmentGeometry
 	rabbet_depth_factor = 0.5
 end
 
 # ╔═╡ 9c835149-77b5-443a-bc03-f41e4e54b471
-rabbet_dfepth(g::BoxGeometry) = g.rabbet_depth_factor * g.stock_thickness
+rabbet_depth(g::BoxGeometry) = g.rabbet_depth_factor * g.stock_thickness
+
+# ╔═╡ 184a19e5-cf44-463d-bb64-0392336d928b
+function compartment_lengthwise(bg::BoxGeometry)
+	compartment_lengthwise(bg.compartment_geometry)
+end
+
+# ╔═╡ ac86e669-8b80-444b-a003-920bc3e6d50b
+function compartment_widthwise(bg::BoxGeometry)
+	compartment_widthwise(bg.compartment_geometry)
+end
 
 # ╔═╡ c038d6d8-b2d1-42be-97db-7fa1f940ac26
 # Total length for a specified number of compartments:
 function total_length(g::BoxGeometry, compartment_count)
 	# SymPy doesn't play well with Unitful so we need to strip the units:
 	compartment_length, stock_thickness = svgval.((
-		lengthwise(g.compartment_geometry), g.stock_thickness))
+		compartment_lengthwise(g), g.stock_thickness))
 	# We can't add the units back yet because this function's result
 	# could be used in further SymPy expressiomns.
 	return (compartment_count * compartment_length +
@@ -134,12 +167,24 @@ end
 
 # ╔═╡ 762713fb-e9df-4478-95c1-e5e5edd52015
 function box_width(g::BoxGeometry)
-	2 * g.stock_thickness + widthwise(g.compartment_geometry)
+	2 * g.stock_thickness + compartment_widthwise(g)
 end
 
 # ╔═╡ ef63b1c0-65c9-46e3-8eb8-512949ccd0a6
 function box_height(g::BoxGeometry)
 	g.stock_thickness + g.compartment_geometry.crg.width_excluding_binding
+end
+
+# ╔═╡ 1ae09f82-5049-4977-9678-876c70eb0f75
+# If there's room in the drawer, expand the extra_width of the compartment_lengthwise
+# if the CompartmentGeometry allows it.
+function expand_to_fit_drawer(bg::BoxGeometry)
+	if !isa(bg.compartment_geometry, HorizontalCompartmentsGeometry)
+		return bg
+	end
+	bg.compartment_geometry.extra_width += 
+		(bg.drawer_width - box_length(bg)) / compartment_count(bg)
+	return bg
 end
 
 # ╔═╡ 56a1f727-0962-487c-bf13-4d6fd1548ded
@@ -238,11 +283,13 @@ md"""
 """
 
 # ╔═╡ 5b450389-412a-4be6-91b0-834ea406b74b
-boxGeo = BoxGeometry(compartment_geometry=HorizontalCompartmentsGeometry(CheckRegisterGeometry()))
+boxGeo = expand_to_fit_drawer(
+	BoxGeometry(compartment_geometry=HorizontalCompartmentsGeometry(
+		crg = CheckRegisterGeometry())))
 
 # ╔═╡ 76876d1c-9107-483c-bb6f-54c0feb11f02
 HTML("""<p>
-Box will have $(compartment_count(boxGeo)) compartments that are $(lengthwise(boxGeo.compartment_geometry)) long gives a total length of $(box_length(boxGeo)).
+Box will have $(compartment_count(boxGeo)) compartments that are $(compartment_lengthwise(boxGeo)) long gives a total length of $(box_length(boxGeo)).
 </p>""")
 
 # ╔═╡ ffb0ea1e-e049-40b6-a6a3-eb7afc85fcfb
@@ -250,8 +297,6 @@ md"""
 ### Bottom
 
 The base is cut to $(box_length(boxGeo)) by $(box_width(boxGeo)).
-
-** We have room to make each of the four compartments a bit wider for coearance fit of the check registers.  **
 """
 
 # ╔═╡ a0a9cbbe-7fd5-430d-9fa1-8b3d5cf6652f
@@ -309,19 +354,25 @@ end
 # ╟─512508e0-3019-11ec-0583-314c21a05445
 # ╟─3548e570-4b70-49f2-ae4e-8ab8d8a53413
 # ╠═dd8a7092-72a0-45b0-acb0-f4fbad4f2b69
-# ╟─ed7f20aa-0e34-4ad5-8e0d-097811b4a0e2
+# ╠═9946c623-e100-435d-bbfd-ab3ae150aba3
+# ╠═ed7f20aa-0e34-4ad5-8e0d-097811b4a0e2
 # ╠═76e2ffaf-95ab-4feb-9aaa-3f104964cff6
+# ╟─14422643-a262-4cf1-afad-4d0da3302b32
 # ╠═3482232f-e597-4a9f-8be4-cadc390c6b70
 # ╠═3cad31c8-858d-4808-aab3-b77c8d8f59a5
 # ╠═2e95b2ac-913d-48b8-bb92-3dec8eb7fc2b
+# ╟─98895c37-324b-417b-b359-18d340f55e94
 # ╟─c36e5aab-1b6b-46da-8dbf-01b8c5ca6f43
 # ╠═0ad848e6-45b8-492f-8fca-e5635167f366
 # ╠═9c835149-77b5-443a-bc03-f41e4e54b471
+# ╠═184a19e5-cf44-463d-bb64-0392336d928b
+# ╠═ac86e669-8b80-444b-a003-920bc3e6d50b
 # ╠═c038d6d8-b2d1-42be-97db-7fa1f940ac26
 # ╠═bb4aaed7-a5df-4a92-82f7-011c992124f4
 # ╠═7d4a8a48-11bc-4931-a6c3-998d6d1ad486
 # ╠═762713fb-e9df-4478-95c1-e5e5edd52015
 # ╠═ef63b1c0-65c9-46e3-8eb8-512949ccd0a6
+# ╠═1ae09f82-5049-4977-9678-876c70eb0f75
 # ╠═56a1f727-0962-487c-bf13-4d6fd1548ded
 # ╠═e892efcd-a828-498e-8031-b250c6ba08e3
 # ╠═36b622a0-60cd-425c-b5aa-dfad099937fc
