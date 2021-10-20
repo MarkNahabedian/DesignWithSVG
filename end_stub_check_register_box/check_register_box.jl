@@ -4,12 +4,22 @@
 using Markdown
 using InteractiveUtils
 
+# This Pluto notebook uses @bind for interactivity. When running this notebook outside of Pluto, the following 'mock version' of @bind gives bound variables a default value (instead of an error).
+macro bind(def, element)
+    quote
+        local el = $(esc(element))
+        global $(esc(def)) = Core.applicable(Base.get, el) ? Base.get(el) : missing
+        el
+    end
+end
+
 # ╔═╡ 59c58a2c-3fd0-4e4f-b532-ee50990ccfc6
 begin
 	using Pkg
 	using Unitful
 	using UnitfulUS
 	using LinearAlgebra
+	using PlutoUI
 	
 	Pkg.add(; url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
 	using ShaperOriginDesignLib
@@ -127,6 +137,11 @@ function box_width(g::BoxGeometry)
 	2 * g.stock_thickness + widthwise(g.compartment_geometry)
 end
 
+# ╔═╡ ef63b1c0-65c9-46e3-8eb8-512949ccd0a6
+function box_height(g::BoxGeometry)
+	g.stock_thickness + g.compartment_geometry.crg.width_excluding_binding
+end
+
 # ╔═╡ 56a1f727-0962-487c-bf13-4d6fd1548ded
 # index=0 for the leftmost end of the box
 function divider_position(g::BoxGeometry, index::Int) # ::(Unitful.Length, Unitful.Length)
@@ -137,6 +152,26 @@ end
 
 # ╔═╡ e892efcd-a828-498e-8031-b250c6ba08e3
 SVG_MARGIN = 0.25u"inch"
+
+# ╔═╡ 36b622a0-60cd-425c-b5aa-dfad099937fc
+function groove(io::IO, bg::BoxGeometry, x1, y1, x2, y2)
+	# x1, y1, x2, y2 are the centerline of the groove.
+	p1 = [x1, y1]
+	p2 = [x2, y2]
+	v = p2 - p1
+	v = v / norm(v)
+	sideways = (bg.cutter_diameter / 2) * [ - v[2], v[1] ]
+	end1 = p1 - v * bg.cutter_diameter
+	end2 = p2 + v * bg.cutter_diameter
+	path(io;
+		d = pathd(
+			["M", (end1 - sideways)...],
+			["L", (end2 - sideways)...],
+			["L", (end2 + sideways)...],
+			["L", (end1 + sideways)...],
+			["z"]),
+		style = shaper_style_string(:pocket_cut))
+end
 
 # ╔═╡ d63d7dbc-70c4-4d6d-900d-f88a7dbf3ff5
 function baseSVG(io::IO, bg::BoxGeometry)
@@ -154,35 +189,44 @@ function baseSVG(io::IO, bg::BoxGeometry)
 				width = svgval(box_length(bg)),
 				height = svgval(box_width(bg)),
 				style = shaper_style_string(:outside_cut))
-			function groove(x1, y1, x2, y2)
-				# x1, y1, x2, y2 are the centerline of the groove.
-				p1 = [x1, y1]
-				p2 = [x2, y2]
-				v = p2 - p1
-				v = v / norm(v)
-				sideways = (bg.cutter_diameter / 2) * [ - v[2], v[1] ]
-				end1 = p1 - v * bg.cutter_diameter
-				end2 = p2 + v * bg.cutter_diameter
-				path(io;
-					d = pathd(
-						["M", (end1 - sideways)...],
-						["L", (end2 - sideways)...],
-						["L", (end2 + sideways)...],
-						["L", (end1 + sideways)...],
-						["z"]),
-					style = shaper_style_string(:pocket_cut))
-			end
 			println(io, "<!-- Rabbets for the sides -->")
 			for y in (bg.stock_thickness/2,
 					box_width(bg) - bg.stock_thickness/2)
-				groove(0u"inch", y, box_length(bg), y)
+				groove(io, bg, 0u"inch", y, box_length(bg), y)
 			end
 			println(io, "<!-- Rabbets for the ends and dividers -->")
 			for i in 0:compartment_count(bg)
 				x1, x2 = divider_position(bg, i)
 				@assert x2 - x1 == bg.cutter_diameter
 				x = (x1 + x2) / 2
-				groove(x, 0u"inch", x, box_width(bg))
+				groove(io, bg, x, 0u"inch", x, box_width(bg))
+			end
+		end
+	end
+end
+
+# ╔═╡ 2df96c00-be88-405b-86f3-26fad869c9a2
+function sideSVG(io::IO, bg::BoxGeometry)
+	@assert bg.cutter_diameter <= bg.stock_thickness
+	svg(io;
+		xmlns=SVG_NAMESPACE,
+		viewport_attributes(- SVG_MARGIN, - SVG_MARGIN,
+			box_length(bg) + SVG_MARGIN,
+			box_height(bg) + SVG_MARGIN,
+			u"inch")...,
+		style="background-color: pink") do
+		g(io) do
+			rect(io;
+				x = 0, y = 0,
+				width = svgval(box_length(bg)),
+				height = svgval(box_height(bg)),
+				style = shaper_style_string(:outside_cut))
+			println(io, "<!-- Rabbets for the ends and dividers -->")
+			for i in 0:compartment_count(bg)
+				x1, x2 = divider_position(bg, i)
+				@assert x2 - x1 == bg.cutter_diameter
+				x = (x1 + x2) / 2
+				groove(io, bg, x, 0u"inch", x, box_width(bg))
 			end
 		end
 	end
@@ -201,12 +245,62 @@ HTML("""<p>
 Box will have $(compartment_count(boxGeo)) compartments that are $(lengthwise(boxGeo.compartment_geometry)) long gives a total length of $(box_length(boxGeo)).
 </p>""")
 
+# ╔═╡ ffb0ea1e-e049-40b6-a6a3-eb7afc85fcfb
+md"""
+### Bottom
+
+The base is cut to $(box_length(boxGeo)) by $(box_width(boxGeo)).
+
+** We have room to make each of the four compartments a bit wider for coearance fit of the check registers.  **
+"""
+
 # ╔═╡ a0a9cbbe-7fd5-430d-9fa1-8b3d5cf6652f
-(output_as_string() do io
+HTML(output_as_string() do io
 		make_fit(io) do io
 			baseSVG(io, boxGeo)
 		end
 	end)
+
+# ╔═╡ 126f195f-c427-4028-8bad-f319f37ea23e
+let
+	@bind button PlutoUI.Button("Copy SVG to Clipboard")
+	doc = output_as_string() do io
+		baseSVG(io, boxGeo)
+	end
+	try
+		clipboard(doc)
+	catch e
+		DisplayAs.Text(doc)
+	end
+end
+
+# ╔═╡ 69a30bc7-343f-4a16-a20e-509d507c6d98
+md"""
+### Sides
+
+
+The base is cut to $(box_length(boxGeo)) by $(box_height(boxGeo)).
+"""
+
+# ╔═╡ 1e656eaf-e437-4aa4-b9c4-41b7880101ef
+HTML(output_as_string() do io
+		make_fit(io) do io
+			sideSVG(io, boxGeo)
+		end
+	end)
+
+# ╔═╡ 2445f26e-8b52-4ae0-8cc9-dbe9dc04bbed
+let
+	button = PlutoUI.Button("Copy SVG to Clipboard")
+	doc = output_as_string() do io
+		sideSVG(io, boxGeo)
+	end
+	try
+		clipboard(doc)
+	catch e
+		DisplayAs.Text(doc)
+	end
+end
 
 # ╔═╡ Cell order:
 # ╠═59c58a2c-3fd0-4e4f-b532-ee50990ccfc6
@@ -227,10 +321,18 @@ Box will have $(compartment_count(boxGeo)) compartments that are $(lengthwise(bo
 # ╠═bb4aaed7-a5df-4a92-82f7-011c992124f4
 # ╠═7d4a8a48-11bc-4931-a6c3-998d6d1ad486
 # ╠═762713fb-e9df-4478-95c1-e5e5edd52015
+# ╠═ef63b1c0-65c9-46e3-8eb8-512949ccd0a6
 # ╠═56a1f727-0962-487c-bf13-4d6fd1548ded
 # ╠═e892efcd-a828-498e-8031-b250c6ba08e3
+# ╠═36b622a0-60cd-425c-b5aa-dfad099937fc
 # ╠═d63d7dbc-70c4-4d6d-900d-f88a7dbf3ff5
+# ╠═2df96c00-be88-405b-86f3-26fad869c9a2
 # ╟─caa9be76-2771-40a0-9f1f-2256fb77b2e2
 # ╠═5b450389-412a-4be6-91b0-834ea406b74b
 # ╟─76876d1c-9107-483c-bb6f-54c0feb11f02
+# ╟─ffb0ea1e-e049-40b6-a6a3-eb7afc85fcfb
 # ╠═a0a9cbbe-7fd5-430d-9fa1-8b3d5cf6652f
+# ╠═126f195f-c427-4028-8bad-f319f37ea23e
+# ╟─69a30bc7-343f-4a16-a20e-509d507c6d98
+# ╠═1e656eaf-e437-4aa4-b9c4-41b7880101ef
+# ╠═2445f26e-8b52-4ae0-8cc9-dbe9dc04bbed
