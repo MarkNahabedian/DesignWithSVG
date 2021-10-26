@@ -16,10 +16,20 @@ end
 # ╔═╡ 59c58a2c-3fd0-4e4f-b532-ee50990ccfc6
 begin
 	using Pkg
+	
+	Pkg.add([
+		"Unitful",
+		"UnitfulUS",
+		"LinearAlgebra",
+		"PlutoUI",
+		"SymPy"
+		])
+	
 	using Unitful
 	using UnitfulUS
 	using LinearAlgebra
 	using PlutoUI
+	using SymPy
 	
 	Pkg.add(; url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
 	using ShaperOriginDesignLib
@@ -28,7 +38,6 @@ begin
 	using NativeSVG
 
 	Pkg.add("SymPy")
-	using SymPy
 end
 
 # ╔═╡ 45308dc5-b4a5-4620-a19c-f6a309730234
