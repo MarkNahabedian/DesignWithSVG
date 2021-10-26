@@ -6,4 +6,6 @@ like a box that I can store them in that will keep them in sorted
 ordwer.
 
 View my design for a box for storing end stub check register books on
-[binder](https://marknahabedian.github.io/DesignWithSVG/floor_drain/end_stub_check_register_box/check_register_box.jl).
+[binder](https://binder.plutojl.org/v0.16.0/open?url=https%253A%252F%252Fraw.githubusercontent.com%252FMarkNahabedian%252FDesignWithSVG%252Fmaster%252Fend_stub_check_register_box%252Fcheck_register_box.jl).
+
+
