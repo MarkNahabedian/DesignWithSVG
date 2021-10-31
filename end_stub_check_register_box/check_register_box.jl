@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.16.3
+# v0.16.4
 
 using Markdown
 using InteractiveUtils
@@ -29,7 +29,6 @@ begin
 	using UnitfulUS
 	using LinearAlgebra
 	using PlutoUI
-	using SymPy
 	
 	Pkg.add(; url="https://github.com/MarkNahabedian/ShaperOriginDesignLib")
 	using ShaperOriginDesignLib
@@ -38,6 +37,7 @@ begin
 	using NativeSVG
 
 	Pkg.add("SymPy")
+	using SymPy
 end
 
 # ╔═╡ 45308dc5-b4a5-4620-a19c-f6a309730234
