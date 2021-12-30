@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.17.3
+# v0.17.4
 
 using Markdown
 using InteractiveUtils
@@ -248,14 +248,6 @@ PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 ShaperOriginDesignLib = "919415d1-862b-4149-89fa-1b0f92b0b06b"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulUS = "7dc9378f-8956-57ef-a780-aa31cc70ff3d"
-
-[compat]
-DisplayAs = "~0.1.2"
-NativeSVG = "~0.1.0"
-PlutoUI = "~0.7.27"
-ShaperOriginDesignLib = "~0.1.0"
-Unitful = "~1.10.0"
-UnitfulUS = "~0.2.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -398,6 +390,8 @@ uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 [[NativeSVG]]
 deps = ["NodeJS"]
 git-tree-sha1 = "25cfd8cdd020ea0f609d6016df9c479541f78f7e"
+repo-rev = "master"
+repo-url = "https://github.com/MarkNahabedian/NativeSVG.jl.git"
 uuid = "5f95e7b2-fe07-4078-b4a7-f744f426795c"
 version = "0.1.0-naha"
 
@@ -456,9 +450,11 @@ uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 
 [[ShaperOriginDesignLib]]
 deps = ["DataStructures", "NativeSVG", "Printf", "Unitful", "UnitfulUS"]
-git-tree-sha1 = "3c0520b1a78bc39097dae327eedb37be7a611c61"
+git-tree-sha1 = "37eeaba5711ebe1e3b39c713a1250c1fcf45fedc"
+repo-rev = "master"
+repo-url = "https://github.com/MarkNahabedian/ShaperOriginDesignLib.git"
 uuid = "919415d1-862b-4149-89fa-1b0f92b0b06b"
-version = "0.1.0"
+version = "0.2.0"
 
 [[SharedArrays]]
 deps = ["Distributed", "Mmap", "Random", "Serialization"]
