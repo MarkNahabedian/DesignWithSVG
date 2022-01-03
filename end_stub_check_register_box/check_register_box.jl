@@ -359,6 +359,28 @@ and $(box_width(boxGeo) - 2 * boxGeo.stock_thickness + 2 * rabbet_depth(boxGeo))
 
 """
 
+# ╔═╡ eefe073e-2c8c-4d86-9129-0729732e26d8
+md"""
+## Stock Preparation
+"""
+
+# ╔═╡ 266a1185-1dec-4a58-8429-e687acc7ac83
+wanted_panels = [
+    WantedPanel(
+	label="bottom",
+	length=box_length(boxGeo),
+	width=box_width(boxGeo)),
+    (2 * WantedPanel(
+	label="side",
+	length=box_length(boxGeo),
+	width=box_height(boxGeo) - boxGeo.stock_thickness + rabbet_depth(boxGeo)))...,
+    ((compartment_count(boxGeo) + 1) *
+	WantedPanel(label="divider",
+		    width=(box_height(boxGeo) - boxGeo.stock_thickness + rabbet_depth(boxGeo)),
+		    length=(box_width(boxGeo) - 2 * boxGeo.stock_thickness + 2 * rabbet_depth(boxGeo)))...
+     )
+]
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -937,7 +959,7 @@ version = "8.44.0+0"
 
 [[PanelCutting]]
 deps = ["DataStructures", "DisplayAs", "HTTP", "InteractiveUtils", "Logging", "Markdown", "Match", "NativeSVG", "Plots", "Printf", "Revise", "UUIDs", "Unitful", "UnitfulUS", "VectorLogging"]
-git-tree-sha1 = "bc225fff9e7cf5b0465f9cd747faf1630b1d40e7"
+git-tree-sha1 = "cb3e36c5fe2289243dec672c70228cef0e55e469"
 repo-rev = "master"
 repo-url = "https://github.com/MarkNahabedian/PanelCutting.jl"
 uuid = "c1372bff-64f3-4c29-a5fb-167619e966f3"
@@ -1092,9 +1114,9 @@ version = "2.0.0"
 
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "Statistics"]
-git-tree-sha1 = "3c76dde64d03699e074ac02eb2e8ba8254d428da"
+git-tree-sha1 = "de9e88179b584ba9cf3cc5edbb7a41f26ce42cda"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.2.13"
+version = "1.3.0"
 
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
@@ -1167,9 +1189,9 @@ version = "0.4.1"
 
 [[Unitful]]
 deps = ["ConstructionBase", "Dates", "LinearAlgebra", "Random"]
-git-tree-sha1 = "09b3c3eb6767521346b3716e461ddfb3ebe88293"
+git-tree-sha1 = "b95e0b8a8d1b6a6c3e0b3ca393a7a285af47c264"
 uuid = "1986cc42-f94f-5a68-af5c-568840ba703d"
-version = "1.10.0"
+version = "1.10.1"
 
 [[UnitfulUS]]
 deps = ["Unitful"]
@@ -1412,7 +1434,7 @@ version = "0.9.1+5"
 # ╠═3548e570-4b70-49f2-ae4e-8ab8d8a53413
 # ╟─dd8a7092-72a0-45b0-acb0-f4fbad4f2b69
 # ╠═9946c623-e100-435d-bbfd-ab3ae150aba3
-# ╠═ed7f20aa-0e34-4ad5-8e0d-097811b4a0e2
+# ╟─ed7f20aa-0e34-4ad5-8e0d-097811b4a0e2
 # ╠═76e2ffaf-95ab-4feb-9aaa-3f104964cff6
 # ╟─14422643-a262-4cf1-afad-4d0da3302b32
 # ╠═3482232f-e597-4a9f-8be4-cadc390c6b70
@@ -1445,5 +1467,7 @@ version = "0.9.1+5"
 # ╠═1e656eaf-e437-4aa4-b9c4-41b7880101ef
 # ╠═2445f26e-8b52-4ae0-8cc9-dbe9dc04bbed
 # ╟─bab01af9-99a7-4d81-9429-838bc712d965
+# ╟─eefe073e-2c8c-4d86-9129-0729732e26d8
+# ╠═266a1185-1dec-4a58-8429-e687acc7ac83
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
