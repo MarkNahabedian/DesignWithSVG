@@ -381,6 +381,26 @@ wanted_panels = [
      )
 ]
 
+# ╔═╡ 50bfc420-6b06-47e0-a701-80a3d60a7bcd
+supplier = Supplier(
+	name = "www.midwestproducts.com",
+	kerf = 0.036u"inch",    # the measured set of my Japanese pull saw
+	cost_per_cut=0.10,
+	available_stock = [
+		AvailablePanel(
+			label="basswood 24 × 4 × 1/8",
+			length=24u"inch",
+			width=4u"inch",
+			cost=4)
+	])
+
+# ╔═╡ df83d706-4087-4963-9975-073d93c16bad
+let
+	searcher = Searcher(supplier, wanted_panels)
+	search(searcher)
+	report(searcher)
+end
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
@@ -959,7 +979,7 @@ version = "8.44.0+0"
 
 [[PanelCutting]]
 deps = ["DataStructures", "DisplayAs", "HTTP", "InteractiveUtils", "Logging", "Markdown", "Match", "NativeSVG", "Plots", "Printf", "Revise", "UUIDs", "Unitful", "UnitfulUS", "VectorLogging"]
-git-tree-sha1 = "cb3e36c5fe2289243dec672c70228cef0e55e469"
+git-tree-sha1 = "59cc57dc5a5121d78025e754e2e82be9cbfeea30"
 repo-rev = "master"
 repo-url = "https://github.com/MarkNahabedian/PanelCutting.jl"
 uuid = "c1372bff-64f3-4c29-a5fb-167619e966f3"
@@ -1469,5 +1489,7 @@ version = "0.9.1+5"
 # ╟─bab01af9-99a7-4d81-9429-838bc712d965
 # ╟─eefe073e-2c8c-4d86-9129-0729732e26d8
 # ╠═266a1185-1dec-4a58-8429-e687acc7ac83
+# ╠═50bfc420-6b06-47e0-a701-80a3d60a7bcd
+# ╠═df83d706-4087-4963-9975-073d93c16bad
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
