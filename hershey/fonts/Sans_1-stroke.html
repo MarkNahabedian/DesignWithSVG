@@ -1,13 +1,17 @@
-<?xml version="1.0" ?>
 <html>
   <head>
     <title>Sans 1-stroke</title>
-    <script type="text/javascript">
-      /* 
-<![CDATA[
-*/
+    <style type="text/css">
+svg {
+  background: white;
+}
 
-var domrect_keys = ['x', 'y', 'width', 'height' /* , 'left', 'right', 'top', 'bottom' */ ];
+svg path {
+  stroke: black;
+  fill: black;
+}
+</style>
+    <script type="text/javascript"><![CDATA[var domrect_keys = ['x', 'y', 'width', 'height' /* , 'left', 'right', 'top', 'bottom' */ ];
 
 function contentLoaded() {
   var rows = document.querySelectorAll('table#glyphs tr');
@@ -30,34 +34,22 @@ function contentLoaded() {
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
-
-/* ]]>       */
-    </script>
+]]></script>
   </head>
   <body>
-    <table border="1" id="glyphs">
+    <h1>Sans 1-stroke</h1>
+    <table id="glyphs" border="1">
       <tr>
-        <td align="right" valign="top">
-          0.
-          <br/>
-          0x0
-          <br/>
-          ASCII 0x21
-          <br/>
-          &quot;!&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 5
-          <br/>
-        </td>
+        <td valign="top" align="right">0.<br />0x0<br />ASCII 0x21<br />"!"</td>
+        <td class="metrics" valign="top" align="left">o = 5<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,1 L5,15 M5,20 L4,21 5,22 6,21 5,20" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,1 L5,15 M5,20 L4,21 5,22 6,21 5,20" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,1 
 L5,15 
 M5,20 
@@ -65,27 +57,16 @@ L4,21 5,22 6,21 5,20</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          1.
-          <br/>
-          0x1
-          <br/>
-          ASCII 0x22
-          <br/>
-          &quot;&quot;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">1.<br />0x1<br />ASCII 0x22<br />"""</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,8 M12,1 L12,8" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,8 M12,1 L12,8" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,8 
 M12,1 
@@ -93,27 +74,16 @@ L12,8</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          2.
-          <br/>
-          0x2
-          <br/>
-          ASCII 0x23
-          <br/>
-          &quot;#&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">2.<br />0x2<br />ASCII 0x23<br />"#"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M11,-3 L4,29 M17,-3 L10,29 M4,10 L18,10 M3,16 L17,16" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M11,-3 L4,29 M17,-3 L10,29 M4,10 L18,10 M3,16 L17,16" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M11,-3 
 L4,29 
 M17,-3 
@@ -125,27 +95,16 @@ L17,16</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          3.
-          <br/>
-          0x3
-          <br/>
-          ASCII 0x24
-          <br/>
-          &quot;$&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">3.<br />0x3<br />ASCII 0x24<br />"$"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,-3 L8,26 M12,-3 L12,26 M17,4 L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,22 8,22 5,21 3,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,-3 L8,26 M12,-3 L12,26 M17,4 L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,22 8,22 5,21 3,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,-3 
 L8,26 
 M12,-3 
@@ -155,27 +114,16 @@ L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,2
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          4.
-          <br/>
-          0x4
-          <br/>
-          ASCII 0x25
-          <br/>
-          &quot;%&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">4.<br />0x4<br />ASCII 0x25<br />"%"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M21,1 L3,22 M8,1 L10,3 10,5 9,7 7,8 5,8 3,6 3,4 4,2 6,1 8,1 10,2 13,3 16,3 19,2 21,1 M17,15 L15,16 14,18 14,20 16,22 18,22 20,21 21,19 21,17 19,15 17,15" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M21,1 L3,22 M8,1 L10,3 10,5 9,7 7,8 5,8 3,6 3,4 4,2 6,1 8,1 10,2 13,3 16,3 19,2 21,1 M17,15 L15,16 14,18 14,20 16,22 18,22 20,21 21,19 21,17 19,15 17,15" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M21,1 
 L3,22 
 M8,1 
@@ -185,131 +133,76 @@ L15,16 14,18 14,20 16,22 18,22 20,21 21,19 21,17 19,15 17,15</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          5.
-          <br/>
-          0x5
-          <br/>
-          ASCII 0x26
-          <br/>
-          &quot;&amp;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 13
-          <br/>
-        </td>
+        <td valign="top" align="right">5.<br />0x5<br />ASCII 0x26<br />"&amp;"</td>
+        <td class="metrics" valign="top" align="left">o = 13<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M23,10 L23,9 22,8 21,8 20,9 19,11 17,16 15,19 13,21 11,22 7,22 5,21 4,20 3,18 3,16 4,14 5,13 12,9 13,8 14,6 14,4 13,2 11,1 9,2 8,4 8,6 9,9 11,12 16,19 18,21 20,22 22,22 23,21 23,20" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M23,10 L23,9 22,8 21,8 20,9 19,11 17,16 15,19 13,21 11,22 7,22 5,21 4,20 3,18 3,16 4,14 5,13 12,9 13,8 14,6 14,4 13,2 11,1 9,2 8,4 8,6 9,9 11,12 16,19 18,21 20,22 22,22 23,21 23,20" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M23,10 
 L23,9 22,8 21,8 20,9 19,11 17,16 15,19 13,21 11,22 7,22 5,21 4,20 3,18 3,16 4,14 5,13 12,9 13,8 14,6 14,4 13,2 11,1 9,2 8,4 8,6 9,9 11,12 16,19 18,21 20,22 22,22 23,21 23,20</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          6.
-          <br/>
-          0x6
-          <br/>
-          ASCII 0x27
-          <br/>
-          &quot;'&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 5
-          <br/>
-        </td>
+        <td valign="top" align="right">6.<br />0x6<br />ASCII 0x27<br />"'"</td>
+        <td class="metrics" valign="top" align="left">o = 5<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,3 L4,2 5,1 6,2 6,4 5,6 4,7" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,3 L4,2 5,1 6,2 6,4 5,6 4,7" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,3 
 L4,2 5,1 6,2 6,4 5,6 4,7</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          7.
-          <br/>
-          0x7
-          <br/>
-          ASCII 0x28
-          <br/>
-          &quot;(&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">7.<br />0x7<br />ASCII 0x28<br />"("</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M11,-3 L9,-1 7,2 5,6 4,11 4,15 5,20 7,24 9,27 11,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M11,-3 L9,-1 7,2 5,6 4,11 4,15 5,20 7,24 9,27 11,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M11,-3 
 L9,-1 7,2 5,6 4,11 4,15 5,20 7,24 9,27 11,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          8.
-          <br/>
-          0x8
-          <br/>
-          ASCII 0x29
-          <br/>
-          &quot;)&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">8.<br />0x8<br />ASCII 0x29<br />")"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,-3 L5,-1 7,2 9,6 10,11 10,15 9,20 7,24 5,27 3,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,-3 L5,-1 7,2 9,6 10,11 10,15 9,20 7,24 5,27 3,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,-3 
 L5,-1 7,2 9,6 10,11 10,15 9,20 7,24 5,27 3,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          9.
-          <br/>
-          0x9
-          <br/>
-          ASCII 0x2a
-          <br/>
-          &quot;*&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">9.<br />0x9<br />ASCII 0x2a<br />"*"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,7 L8,19 M3,10 L13,16 M13,10 L3,16" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,7 L8,19 M3,10 L13,16 M13,10 L3,16" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,7 
 L8,19 
 M3,10 
@@ -319,27 +212,16 @@ L3,16</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          10.
-          <br/>
-          0xa
-          <br/>
-          ASCII 0x2b
-          <br/>
-          &quot;+&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 13
-          <br/>
-        </td>
+        <td valign="top" align="right">10.<br />0xa<br />ASCII 0x2b<br />"+"</td>
+        <td class="metrics" valign="top" align="left">o = 13<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M13,4 L13,22 M4,13 L22,13" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M13,4 L13,22 M4,13 L22,13" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M13,4 
 L13,22 
 M4,13 
@@ -347,235 +229,136 @@ L22,13</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          11.
-          <br/>
-          0xb
-          <br/>
-          ASCII 0x2c
-          <br/>
-          &quot;,&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">11.<br />0xb<br />ASCII 0x2c<br />","</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,18 L4,19 3,18 4,17 5,18 5,20 3,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,18 L4,19 3,18 4,17 5,18 5,20 3,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,18 
 L4,19 3,18 4,17 5,18 5,20 3,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          12.
-          <br/>
-          0xc
-          <br/>
-          ASCII 0x2d
-          <br/>
-          &quot;-&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 13
-          <br/>
-        </td>
+        <td valign="top" align="right">12.<br />0xc<br />ASCII 0x2d<br />"-"</td>
+        <td class="metrics" valign="top" align="left">o = 13<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,13 L22,13" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,13 L22,13" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,13 
 L22,13</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          13.
-          <br/>
-          0xd
-          <br/>
-          ASCII 0x2e
-          <br/>
-          &quot;.&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">13.<br />0xd<br />ASCII 0x2e<br />"."</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,17 L3,18 4,19 5,18 4,17" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,17 L3,18 4,19 5,18 4,17" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,17 
 L3,18 4,19 5,18 4,17</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          14.
-          <br/>
-          0xe
-          <br/>
-          ASCII 0x2f
-          <br/>
-          &quot;/&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">14.<br />0xe<br />ASCII 0x2f<br />"/"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M20,-3 L2,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M20,-3 L2,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M20,-3 
 L2,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          15.
-          <br/>
-          0xf
-          <br/>
-          ASCII 0x30
-          <br/>
-          &quot;0&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">15.<br />0xf<br />ASCII 0x30<br />"0"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,1 L6,2 4,5 3,10 3,13 4,18 6,21 9,22 11,22 14,21 16,18 17,13 17,10 16,5 14,2 11,1 9,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,1 L6,2 4,5 3,10 3,13 4,18 6,21 9,22 11,22 14,21 16,18 17,13 17,10 16,5 14,2 11,1 9,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,1 
 L6,2 4,5 3,10 3,13 4,18 6,21 9,22 11,22 14,21 16,18 17,13 17,10 16,5 14,2 11,1 9,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          16.
-          <br/>
-          0x10
-          <br/>
-          ASCII 0x31
-          <br/>
-          &quot;1&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">16.<br />0x10<br />ASCII 0x31<br />"1"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M6,5 L8,4 11,1 11,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M6,5 L8,4 11,1 11,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M6,5 
 L8,4 11,1 11,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          17.
-          <br/>
-          0x11
-          <br/>
-          ASCII 0x32
-          <br/>
-          &quot;2&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">17.<br />0x11<br />ASCII 0x32<br />"2"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,6 L4,5 5,3 6,2 8,1 12,1 14,2 15,3 16,5 16,7 15,9 13,12 3,22 17,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,6 L4,5 5,3 6,2 8,1 12,1 14,2 15,3 16,5 16,7 15,9 13,12 3,22 17,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,6 
 L4,5 5,3 6,2 8,1 12,1 14,2 15,3 16,5 16,7 15,9 13,12 3,22 17,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          18.
-          <br/>
-          0x12
-          <br/>
-          ASCII 0x33
-          <br/>
-          &quot;3&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">18.<br />0x12<br />ASCII 0x33<br />"3"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,1 L16,1 10,9 13,9 15,10 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,1 L16,1 10,9 13,9 15,10 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,1 
 L16,1 10,9 13,9 15,10 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          19.
-          <br/>
-          0x13
-          <br/>
-          ASCII 0x34
-          <br/>
-          &quot;4&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">19.<br />0x13<br />ASCII 0x34<br />"4"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M13,1 L3,15 18,15 M13,1 L13,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M13,1 L3,15 18,15 M13,1 L13,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M13,1 
 L3,15 18,15 
 M13,1 
@@ -583,79 +366,46 @@ L13,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          20.
-          <br/>
-          0x14
-          <br/>
-          ASCII 0x35
-          <br/>
-          &quot;5&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">20.<br />0x14<br />ASCII 0x35<br />"5"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,1 L5,1 4,10 5,9 8,8 11,8 14,9 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,1 L5,1 4,10 5,9 8,8 11,8 14,9 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,1 
 L5,1 4,10 5,9 8,8 11,8 14,9 16,11 17,14 17,16 16,19 14,21 11,22 8,22 5,21 4,20 3,18</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          21.
-          <br/>
-          0x15
-          <br/>
-          ASCII 0x36
-          <br/>
-          &quot;6&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">21.<br />0x15<br />ASCII 0x36<br />"6"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M16,4 L15,2 12,1 10,1 7,2 5,5 4,10 4,15 5,19 7,21 10,22 11,22 14,21 16,19 17,16 17,15 16,12 14,10 11,9 10,9 7,10 5,12 4,15" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M16,4 L15,2 12,1 10,1 7,2 5,5 4,10 4,15 5,19 7,21 10,22 11,22 14,21 16,19 17,16 17,15 16,12 14,10 11,9 10,9 7,10 5,12 4,15" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M16,4 
 L15,2 12,1 10,1 7,2 5,5 4,10 4,15 5,19 7,21 10,22 11,22 14,21 16,19 17,16 17,15 16,12 14,10 11,9 10,9 7,10 5,12 4,15</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          22.
-          <br/>
-          0x16
-          <br/>
-          ASCII 0x37
-          <br/>
-          &quot;7&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">22.<br />0x16<br />ASCII 0x37<br />"7"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M17,1 L7,22 M3,1 L17,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M17,1 L7,22 M3,1 L17,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M17,1 
 L7,22 
 M3,1 
@@ -663,79 +413,46 @@ L17,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          23.
-          <br/>
-          0x17
-          <br/>
-          ASCII 0x38
-          <br/>
-          &quot;8&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">23.<br />0x17<br />ASCII 0x38<br />"8"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,1 L5,2 4,4 4,6 5,8 7,9 11,10 14,11 16,13 17,15 17,18 16,20 15,21 12,22 8,22 5,21 4,20 3,18 3,15 4,13 6,11 9,10 13,9 15,8 16,6 16,4 15,2 12,1 8,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,1 L5,2 4,4 4,6 5,8 7,9 11,10 14,11 16,13 17,15 17,18 16,20 15,21 12,22 8,22 5,21 4,20 3,18 3,15 4,13 6,11 9,10 13,9 15,8 16,6 16,4 15,2 12,1 8,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,1 
 L5,2 4,4 4,6 5,8 7,9 11,10 14,11 16,13 17,15 17,18 16,20 15,21 12,22 8,22 5,21 4,20 3,18 3,15 4,13 6,11 9,10 13,9 15,8 16,6 16,4 15,2 12,1 8,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          24.
-          <br/>
-          0x18
-          <br/>
-          ASCII 0x39
-          <br/>
-          &quot;9&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">24.<br />0x18<br />ASCII 0x39<br />"9"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M16,8 L15,11 13,13 10,14 9,14 6,13 4,11 3,8 3,7 4,4 6,2 9,1 10,1 13,2 15,4 16,8 16,13 15,18 13,21 10,22 8,22 5,21 4,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M16,8 L15,11 13,13 10,14 9,14 6,13 4,11 3,8 3,7 4,4 6,2 9,1 10,1 13,2 15,4 16,8 16,13 15,18 13,21 10,22 8,22 5,21 4,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M16,8 
 L15,11 13,13 10,14 9,14 6,13 4,11 3,8 3,7 4,4 6,2 9,1 10,1 13,2 15,4 16,8 16,13 15,18 13,21 10,22 8,22 5,21 4,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          25.
-          <br/>
-          0x19
-          <br/>
-          ASCII 0x3a
-          <br/>
-          &quot;:&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">25.<br />0x19<br />ASCII 0x3a<br />":"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,10 L3,11 4,12 5,11 4,10 M4,17 L3,18 4,19 5,18 4,17" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,10 L3,11 4,12 5,11 4,10 M4,17 L3,18 4,19 5,18 4,17" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,10 
 L3,11 4,12 5,11 4,10 
 M4,17 
@@ -743,27 +460,16 @@ L3,18 4,19 5,18 4,17</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          26.
-          <br/>
-          0x1a
-          <br/>
-          ASCII 0x3b
-          <br/>
-          &quot;;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">26.<br />0x1a<br />ASCII 0x3b<br />";"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,10 L3,11 4,12 5,11 4,10 M5,18 L4,19 3,18 4,17 5,18 5,20 3,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,10 L3,11 4,12 5,11 4,10 M5,18 L4,19 3,18 4,17 5,18 5,20 3,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,10 
 L3,11 4,12 5,11 4,10 
 M5,18 
@@ -771,53 +477,31 @@ L4,19 3,18 4,17 5,18 5,20 3,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          27.
-          <br/>
-          0x1b
-          <br/>
-          ASCII 0x3c
-          <br/>
-          &quot;&lt;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">27.<br />0x1b<br />ASCII 0x3c<br />"&lt;"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M20,4 L4,13 20,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M20,4 L4,13 20,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M20,4 
 L4,13 20,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          28.
-          <br/>
-          0x1c
-          <br/>
-          ASCII 0x3d
-          <br/>
-          &quot;=&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 13
-          <br/>
-        </td>
+        <td valign="top" align="right">28.<br />0x1c<br />ASCII 0x3d<br />"="</td>
+        <td class="metrics" valign="top" align="left">o = 13<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,10 L22,10 M4,16 L22,16" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,10 L22,10 M4,16 L22,16" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,10 
 L22,10 
 M4,16 
@@ -825,53 +509,31 @@ L22,16</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          29.
-          <br/>
-          0x1d
-          <br/>
-          ASCII 0x3e
-          <br/>
-          &quot;&gt;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">29.<br />0x1d<br />ASCII 0x3e<br />"&gt;"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,4 L20,13 4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,4 L20,13 4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,4 
 L20,13 4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          30.
-          <br/>
-          0x1e
-          <br/>
-          ASCII 0x3f
-          <br/>
-          &quot;?&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">30.<br />0x1e<br />ASCII 0x3f<br />"?"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,6 L3,5 4,3 5,2 7,1 11,1 13,2 14,3 15,5 15,7 14,9 13,10 9,12 9,15 M9,20 L8,21 9,22 10,21 9,20" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,6 L3,5 4,3 5,2 7,1 11,1 13,2 14,3 15,5 15,7 14,9 13,10 9,12 9,15 M9,20 L8,21 9,22 10,21 9,20" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,6 
 L3,5 4,3 5,2 7,1 11,1 13,2 14,3 15,5 15,7 14,9 13,10 9,12 9,15 
 M9,20 
@@ -879,27 +541,16 @@ L8,21 9,22 10,21 9,20</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          31.
-          <br/>
-          0x1f
-          <br/>
-          ASCII 0x40
-          <br/>
-          &quot;@&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 14
-          <br/>
-        </td>
+        <td valign="top" align="right">31.<br />0x1f<br />ASCII 0x40<br />"@"</td>
+        <td class="metrics" valign="top" align="left">o = 14<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M18,9 L17,7 15,6 12,6 10,7 9,8 8,11 8,14 9,16 11,17 14,17 16,16 17,14 M12,6 L10,8 9,11 9,14 10,16 11,17 M18,6 L17,14 17,16 19,17 21,17 23,15 24,12 24,10 23,7 22,5 20,3 18,2 15,1 12,1 9,2 7,3 5,5 4,7 3,10 3,13 4,16 5,18 7,20 9,21 12,22 15,22 18,21 20,20 21,19 M19,6 L18,14 18,16 19,17" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M18,9 L17,7 15,6 12,6 10,7 9,8 8,11 8,14 9,16 11,17 14,17 16,16 17,14 M12,6 L10,8 9,11 9,14 10,16 11,17 M18,6 L17,14 17,16 19,17 21,17 23,15 24,12 24,10 23,7 22,5 20,3 18,2 15,1 12,1 9,2 7,3 5,5 4,7 3,10 3,13 4,16 5,18 7,20 9,21 12,22 15,22 18,21 20,20 21,19 M19,6 L18,14 18,16 19,17" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M18,9 
 L17,7 15,6 12,6 10,7 9,8 8,11 8,14 9,16 11,17 14,17 16,16 17,14 
 M12,6 
@@ -911,27 +562,16 @@ L18,14 18,16 19,17</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          32.
-          <br/>
-          0x20
-          <br/>
-          ASCII 0x41
-          <br/>
-          &quot;A&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">32.<br />0x20<br />ASCII 0x41<br />"A"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,1 L1,22 M9,1 L17,22 M4,15 L14,15" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,1 L1,22 M9,1 L17,22 M4,15 L14,15" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,1 
 L1,22 
 M9,1 
@@ -941,27 +581,16 @@ L14,15</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          33.
-          <br/>
-          0x21
-          <br/>
-          ASCII 0x42
-          <br/>
-          &quot;B&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">33.<br />0x21<br />ASCII 0x42<br />"B"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,7 17,9 16,10 13,11 M4,11 L13,11 16,12 17,13 18,15 18,18 17,20 16,21 13,22 4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,7 17,9 16,10 13,11 M4,11 L13,11 16,12 17,13 18,15 18,18 17,20 16,21 13,22 4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -971,53 +600,31 @@ L13,11 16,12 17,13 18,15 18,18 17,20 16,21 13,22 4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          34.
-          <br/>
-          0x22
-          <br/>
-          ASCII 0x43
-          <br/>
-          &quot;C&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">34.<br />0x22<br />ASCII 0x43<br />"C"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M18,6 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M18,6 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M18,6 
 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          35.
-          <br/>
-          0x23
-          <br/>
-          ASCII 0x44
-          <br/>
-          &quot;D&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">35.<br />0x23<br />ASCII 0x44<br />"D"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L11,1 14,2 16,4 17,6 18,9 18,14 17,17 16,19 14,21 11,22 4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L11,1 14,2 16,4 17,6 18,9 18,14 17,17 16,19 14,21 11,22 4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1025,27 +632,16 @@ L11,1 14,2 16,4 17,6 18,9 18,14 17,17 16,19 14,21 11,22 4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          36.
-          <br/>
-          0x24
-          <br/>
-          ASCII 0x45
-          <br/>
-          &quot;E&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">36.<br />0x24<br />ASCII 0x45<br />"E"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L17,1 M4,11 L12,11 M4,22 L17,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L17,1 M4,11 L12,11 M4,22 L17,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1057,27 +653,16 @@ L17,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          37.
-          <br/>
-          0x25
-          <br/>
-          ASCII 0x46
-          <br/>
-          &quot;F&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">37.<br />0x25<br />ASCII 0x46<br />"F"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L17,1 M4,11 L12,11" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L17,1 M4,11 L12,11" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1087,27 +672,16 @@ L12,11</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          38.
-          <br/>
-          0x26
-          <br/>
-          ASCII 0x47
-          <br/>
-          &quot;G&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">38.<br />0x26<br />ASCII 0x47<br />"G"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M18,6 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 18,14 M13,14 L18,14" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M18,6 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 18,14 M13,14 L18,14" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M18,6 
 L17,4 15,2 13,1 9,1 7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 18,14 
 M13,14 
@@ -1115,27 +689,16 @@ L18,14</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          39.
-          <br/>
-          0x27
-          <br/>
-          ASCII 0x48
-          <br/>
-          &quot;H&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">39.<br />0x27<br />ASCII 0x48<br />"H"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M18,1 L18,22 M4,11 L18,11" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M18,1 L18,22 M4,11 L18,11" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M18,1 
@@ -1145,79 +708,46 @@ L18,11</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          40.
-          <br/>
-          0x28
-          <br/>
-          ASCII 0x49
-          <br/>
-          &quot;I&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">40.<br />0x28<br />ASCII 0x49<br />"I"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          41.
-          <br/>
-          0x29
-          <br/>
-          ASCII 0x4a
-          <br/>
-          &quot;J&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">41.<br />0x29<br />ASCII 0x4a<br />"J"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M12,1 L12,17 11,20 10,21 8,22 6,22 4,21 3,20 2,17 2,15" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M12,1 L12,17 11,20 10,21 8,22 6,22 4,21 3,20 2,17 2,15" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M12,1 
 L12,17 11,20 10,21 8,22 6,22 4,21 3,20 2,17 2,15</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          42.
-          <br/>
-          0x2a
-          <br/>
-          ASCII 0x4b
-          <br/>
-          &quot;K&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">42.<br />0x2a<br />ASCII 0x4b<br />"K"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M18,1 L4,15 M9,10 L18,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M18,1 L4,15 M9,10 L18,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M18,1 
@@ -1227,27 +757,16 @@ L18,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          43.
-          <br/>
-          0x2b
-          <br/>
-          ASCII 0x4c
-          <br/>
-          &quot;L&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">43.<br />0x2b<br />ASCII 0x4c<br />"L"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,22 L16,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,22 L16,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,22 
@@ -1255,27 +774,16 @@ L16,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          44.
-          <br/>
-          0x2c
-          <br/>
-          ASCII 0x4d
-          <br/>
-          &quot;M&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">44.<br />0x2c<br />ASCII 0x4d<br />"M"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L12,22 M20,1 L12,22 M20,1 L20,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L12,22 M20,1 L12,22 M20,1 L20,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1287,27 +795,16 @@ L20,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          45.
-          <br/>
-          0x2d
-          <br/>
-          ASCII 0x4e
-          <br/>
-          &quot;N&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">45.<br />0x2d<br />ASCII 0x4e<br />"N"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L18,22 M18,1 L18,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L18,22 M18,1 L18,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1317,53 +814,31 @@ L18,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          46.
-          <br/>
-          0x2e
-          <br/>
-          ASCII 0x4f
-          <br/>
-          &quot;O&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">46.<br />0x2e<br />ASCII 0x4f<br />"O"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,1 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,1 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,1 
 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          47.
-          <br/>
-          0x2f
-          <br/>
-          ASCII 0x50
-          <br/>
-          &quot;P&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">47.<br />0x2f<br />ASCII 0x50<br />"P"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,8 17,10 16,11 13,12 4,12" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,8 17,10 16,11 13,12 4,12" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1371,27 +846,16 @@ L13,1 16,2 17,3 18,5 18,8 17,10 16,11 13,12 4,12</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          48.
-          <br/>
-          0x30
-          <br/>
-          ASCII 0x51
-          <br/>
-          &quot;Q&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">48.<br />0x30<br />ASCII 0x51<br />"Q"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,1 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1 M12,18 L18,24" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,1 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1 M12,18 L18,24" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,1 
 L7,2 5,4 4,6 3,9 3,14 4,17 5,19 7,21 9,22 13,22 15,21 17,19 18,17 19,14 19,9 18,6 17,4 15,2 13,1 9,1 
 M12,18 
@@ -1399,27 +863,16 @@ L18,24</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          49.
-          <br/>
-          0x31
-          <br/>
-          ASCII 0x52
-          <br/>
-          &quot;R&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">49.<br />0x31<br />ASCII 0x52<br />"R"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,7 17,9 16,10 13,11 4,11 M11,11 L18,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,1 L13,1 16,2 17,3 18,5 18,7 17,9 16,10 13,11 4,11 M11,11 L18,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,1 
@@ -1429,53 +882,31 @@ L18,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          50.
-          <br/>
-          0x32
-          <br/>
-          ASCII 0x53
-          <br/>
-          &quot;S&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">50.<br />0x32<br />ASCII 0x53<br />"S"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M17,4 L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,22 8,22 5,21 3,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M17,4 L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,22 8,22 5,21 3,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M17,4 
 L15,2 12,1 8,1 5,2 3,4 3,6 4,8 5,9 7,10 13,12 15,13 16,14 17,16 17,19 15,21 12,22 8,22 5,21 3,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          51.
-          <br/>
-          0x33
-          <br/>
-          ASCII 0x54
-          <br/>
-          &quot;T&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">51.<br />0x33<br />ASCII 0x54<br />"T"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,1 L8,22 M1,1 L15,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,1 L8,22 M1,1 L15,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,1 
 L8,22 
 M1,1 
@@ -1483,53 +914,31 @@ L15,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          52.
-          <br/>
-          0x34
-          <br/>
-          ASCII 0x55
-          <br/>
-          &quot;U&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">52.<br />0x34<br />ASCII 0x55<br />"U"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,16 5,19 7,21 10,22 12,22 15,21 17,19 18,16 18,1" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,16 5,19 7,21 10,22 12,22 15,21 17,19 18,16 18,1" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,16 5,19 7,21 10,22 12,22 15,21 17,19 18,16 18,1</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          53.
-          <br/>
-          0x35
-          <br/>
-          ASCII 0x56
-          <br/>
-          &quot;V&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">53.<br />0x35<br />ASCII 0x56<br />"V"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M1,1 L9,22 M17,1 L9,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M1,1 L9,22 M17,1 L9,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M1,1 
 L9,22 
 M17,1 
@@ -1537,27 +946,16 @@ L9,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          54.
-          <br/>
-          0x36
-          <br/>
-          ASCII 0x57
-          <br/>
-          &quot;W&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">54.<br />0x36<br />ASCII 0x57<br />"W"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M2,1 L7,22 M12,1 L7,22 M12,1 L17,22 M22,1 L17,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M2,1 L7,22 M12,1 L7,22 M12,1 L17,22 M22,1 L17,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M2,1 
 L7,22 
 M12,1 
@@ -1569,27 +967,16 @@ L17,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          55.
-          <br/>
-          0x37
-          <br/>
-          ASCII 0x58
-          <br/>
-          &quot;X&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">55.<br />0x37<br />ASCII 0x58<br />"X"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,1 L17,22 M17,1 L3,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,1 L17,22 M17,1 L3,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,1 
 L17,22 
 M17,1 
@@ -1597,27 +984,16 @@ L3,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          56.
-          <br/>
-          0x38
-          <br/>
-          ASCII 0x59
-          <br/>
-          &quot;Y&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">56.<br />0x38<br />ASCII 0x59<br />"Y"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M1,1 L9,11 9,22 M17,1 L9,11" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M1,1 L9,11 9,22 M17,1 L9,11" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M1,1 
 L9,11 9,22 
 M17,1 
@@ -1625,27 +1001,16 @@ L9,11</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          57.
-          <br/>
-          0x39
-          <br/>
-          ASCII 0x5a
-          <br/>
-          &quot;Z&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">57.<br />0x39<br />ASCII 0x5a<br />"Z"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M17,1 L3,22 M3,1 L17,1 M3,22 L17,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M17,1 L3,22 M3,1 L17,1 M3,22 L17,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M17,1 
 L3,22 
 M3,1 
@@ -1655,27 +1020,16 @@ L17,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          58.
-          <br/>
-          0x3a
-          <br/>
-          ASCII 0x5b
-          <br/>
-          &quot;[&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">58.<br />0x3a<br />ASCII 0x5b<br />"["</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,-3 L4,29 M5,-3 L5,29 M4,-3 L11,-3 M4,29 L11,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,-3 L4,29 M5,-3 L5,29 M4,-3 L11,-3 M4,29 L11,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,-3 
 L4,29 
 M5,-3 
@@ -1687,53 +1041,31 @@ L11,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          59.
-          <br/>
-          0x3b
-          <br/>
-          ASCII 0x5c
-          <br/>
-          &quot;\&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">59.<br />0x3b<br />ASCII 0x5c<br />"\"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M0,1 L14,25" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M0,1 L14,25" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M0,1 
 L14,25</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          60.
-          <br/>
-          0x3c
-          <br/>
-          ASCII 0x5d
-          <br/>
-          &quot;]&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">60.<br />0x3c<br />ASCII 0x5d<br />"]"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,-3 L9,29 M10,-3 L10,29 M3,-3 L10,-3 M3,29 L10,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,-3 L9,29 M10,-3 L10,29 M3,-3 L10,-3 M3,29 L10,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,-3 
 L9,29 
 M10,-3 
@@ -1745,27 +1077,16 @@ L10,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          61.
-          <br/>
-          0x3d
-          <br/>
-          ASCII 0x5e
-          <br/>
-          &quot;^&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">61.<br />0x3d<br />ASCII 0x5e<br />"^"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,-1 L0,13 M8,-1 L16,13" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,-1 L0,13 M8,-1 L16,13" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,-1 
 L0,13 
 M8,-1 
@@ -1773,79 +1094,46 @@ L16,13</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          62.
-          <br/>
-          0x3e
-          <br/>
-          ASCII 0x5f
-          <br/>
-          &quot;_&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">62.<br />0x3e<br />ASCII 0x5f<br />"_"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M0,29 L18,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M0,29 L18,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M0,29 
 L18,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          63.
-          <br/>
-          0x3f
-          <br/>
-          ASCII 0x60
-          <br/>
-          &quot;`&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">63.<br />0x3f<br />ASCII 0x60<br />"`"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,6 L3,8 3,10 4,11 5,10 4,9 3,10" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,6 L3,8 3,10 4,11 5,10 4,9 3,10" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,6 
 L3,8 3,10 4,11 5,10 4,9 3,10</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          64.
-          <br/>
-          0x40
-          <br/>
-          ASCII 0x61
-          <br/>
-          &quot;a&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">64.<br />0x40<br />ASCII 0x61<br />"a"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,8 L15,22 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,8 L15,22 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,8 
 L15,22 
 M15,11 
@@ -1853,27 +1141,16 @@ L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          65.
-          <br/>
-          0x41
-          <br/>
-          ASCII 0x62
-          <br/>
-          &quot;b&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">65.<br />0x41<br />ASCII 0x62<br />"b"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,11 L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,11 L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,11 
@@ -1881,53 +1158,31 @@ L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          66.
-          <br/>
-          0x42
-          <br/>
-          ASCII 0x63
-          <br/>
-          &quot;c&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">66.<br />0x42<br />ASCII 0x63<br />"c"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,11 
 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          67.
-          <br/>
-          0x43
-          <br/>
-          ASCII 0x64
-          <br/>
-          &quot;d&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">67.<br />0x43<br />ASCII 0x64<br />"d"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,1 L15,22 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,1 L15,22 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,1 
 L15,22 
 M15,11 
@@ -1935,53 +1190,31 @@ L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          68.
-          <br/>
-          0x44
-          <br/>
-          ASCII 0x65
-          <br/>
-          &quot;e&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">68.<br />0x44<br />ASCII 0x65<br />"e"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,14 L15,14 15,12 14,10 13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,14 L15,14 15,12 14,10 13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,14 
 L15,14 15,12 14,10 13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          69.
-          <br/>
-          0x45
-          <br/>
-          ASCII 0x66
-          <br/>
-          &quot;f&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">69.<br />0x45<br />ASCII 0x66<br />"f"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M10,1 L8,1 6,2 5,5 5,22 M2,8 L9,8" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M10,1 L8,1 6,2 5,5 5,22 M2,8 L9,8" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M10,1 
 L8,1 6,2 5,5 5,22 
 M2,8 
@@ -1989,27 +1222,16 @@ L9,8</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          70.
-          <br/>
-          0x46
-          <br/>
-          ASCII 0x67
-          <br/>
-          &quot;g&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">70.<br />0x46<br />ASCII 0x67<br />"g"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,8 L15,24 14,27 13,28 11,29 8,29 6,28 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,8 L15,24 14,27 13,28 11,29 8,29 6,28 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,8 
 L15,24 14,27 13,28 11,29 8,29 6,28 
 M15,11 
@@ -2017,27 +1239,16 @@ L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          71.
-          <br/>
-          0x47
-          <br/>
-          ASCII 0x68
-          <br/>
-          &quot;h&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">71.<br />0x47<br />ASCII 0x68<br />"h"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M4,12 
@@ -2045,27 +1256,16 @@ L7,9 9,8 12,8 14,9 15,12 15,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          72.
-          <br/>
-          0x48
-          <br/>
-          ASCII 0x69
-          <br/>
-          &quot;i&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">72.<br />0x48<br />ASCII 0x69<br />"i"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,1 L4,2 5,1 4,0 3,1 M4,8 L4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,1 L4,2 5,1 4,0 3,1 M4,8 L4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,1 
 L4,2 5,1 4,0 3,1 
 M4,8 
@@ -2073,27 +1273,16 @@ L4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          73.
-          <br/>
-          0x49
-          <br/>
-          ASCII 0x6a
-          <br/>
-          &quot;j&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 5
-          <br/>
-        </td>
+        <td valign="top" align="right">73.<br />0x49<br />ASCII 0x6a<br />"j"</td>
+        <td class="metrics" valign="top" align="left">o = 5<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,1 L6,2 7,1 6,0 5,1 M6,8 L6,25 5,28 3,29 1,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,1 L6,2 7,1 6,0 5,1 M6,8 L6,25 5,28 3,29 1,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,1 
 L6,2 7,1 6,0 5,1 
 M6,8 
@@ -2101,27 +1290,16 @@ L6,25 5,28 3,29 1,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          74.
-          <br/>
-          0x4a
-          <br/>
-          ASCII 0x6b
-          <br/>
-          &quot;k&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">74.<br />0x4a<br />ASCII 0x6b<br />"k"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22 M14,8 L4,18 M8,14 L15,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22 M14,8 L4,18 M8,14 L15,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22 
 M14,8 
@@ -2131,53 +1309,31 @@ L15,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          75.
-          <br/>
-          0x4b
-          <br/>
-          ASCII 0x6c
-          <br/>
-          &quot;l&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">75.<br />0x4b<br />ASCII 0x6c<br />"l"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,1 L4,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,1 L4,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,1 
 L4,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          76.
-          <br/>
-          0x4c
-          <br/>
-          ASCII 0x6d
-          <br/>
-          &quot;m&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 15
-          <br/>
-        </td>
+        <td valign="top" align="right">76.<br />0x4c<br />ASCII 0x6d<br />"m"</td>
+        <td class="metrics" valign="top" align="left">o = 15<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,8 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22 M15,12 L18,9 20,8 23,8 25,9 26,12 26,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,8 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22 M15,12 L18,9 20,8 23,8 25,9 26,12 26,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,8 
 L4,22 
 M4,12 
@@ -2187,27 +1343,16 @@ L18,9 20,8 23,8 25,9 26,12 26,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          77.
-          <br/>
-          0x4d
-          <br/>
-          ASCII 0x6e
-          <br/>
-          &quot;n&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">77.<br />0x4d<br />ASCII 0x6e<br />"n"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,8 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,8 L4,22 M4,12 L7,9 9,8 12,8 14,9 15,12 15,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,8 
 L4,22 
 M4,12 
@@ -2215,53 +1360,31 @@ L7,9 9,8 12,8 14,9 15,12 15,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          78.
-          <br/>
-          0x4e
-          <br/>
-          ASCII 0x6f
-          <br/>
-          &quot;o&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">78.<br />0x4e<br />ASCII 0x6f<br />"o"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M8,8 L6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19 16,16 16,14 15,11 13,9 11,8 8,8" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M8,8 L6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19 16,16 16,14 15,11 13,9 11,8 8,8" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M8,8 
 L6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19 16,16 16,14 15,11 13,9 11,8 8,8</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          79.
-          <br/>
-          0x4f
-          <br/>
-          ASCII 0x70
-          <br/>
-          &quot;p&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">79.<br />0x4f<br />ASCII 0x70<br />"p"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,8 L4,29 M4,11 L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,8 L4,29 M4,11 L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,8 
 L4,29 
 M4,11 
@@ -2269,27 +1392,16 @@ L6,9 8,8 11,8 13,9 15,11 16,14 16,16 15,19 13,21 11,22 8,22 6,21 4,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          80.
-          <br/>
-          0x50
-          <br/>
-          ASCII 0x71
-          <br/>
-          &quot;q&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">80.<br />0x50<br />ASCII 0x71<br />"q"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M15,8 L15,29 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M15,8 L15,29 M15,11 L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M15,8 
 L15,29 
 M15,11 
@@ -2297,27 +1409,16 @@ L13,9 11,8 8,8 6,9 4,11 3,14 3,16 4,19 6,21 8,22 11,22 13,21 15,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          81.
-          <br/>
-          0x51
-          <br/>
-          ASCII 0x72
-          <br/>
-          &quot;r&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 6
-          <br/>
-        </td>
+        <td valign="top" align="right">81.<br />0x51<br />ASCII 0x72<br />"r"</td>
+        <td class="metrics" valign="top" align="left">o = 6<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,8 L4,22 M4,14 L5,11 7,9 9,8 12,8" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,8 L4,22 M4,14 L5,11 7,9 9,8 12,8" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,8 
 L4,22 
 M4,14 
@@ -2325,53 +1426,31 @@ L5,11 7,9 9,8 12,8</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          82.
-          <br/>
-          0x52
-          <br/>
-          ASCII 0x73
-          <br/>
-          &quot;s&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">82.<br />0x52<br />ASCII 0x73<br />"s"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M14,11 L13,9 10,8 7,8 4,9 3,11 4,13 6,14 11,15 13,16 14,18 14,19 13,21 10,22 7,22 4,21 3,19" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M14,11 L13,9 10,8 7,8 4,9 3,11 4,13 6,14 11,15 13,16 14,18 14,19 13,21 10,22 7,22 4,21 3,19" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M14,11 
 L13,9 10,8 7,8 4,9 3,11 4,13 6,14 11,15 13,16 14,18 14,19 13,21 10,22 7,22 4,21 3,19</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          83.
-          <br/>
-          0x53
-          <br/>
-          ASCII 0x74
-          <br/>
-          &quot;t&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">83.<br />0x53<br />ASCII 0x74<br />"t"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,1 L5,18 6,21 8,22 10,22 M2,8 L9,8" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,1 L5,18 6,21 8,22 10,22 M2,8 L9,8" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,1 
 L5,18 6,21 8,22 10,22 
 M2,8 
@@ -2379,27 +1458,16 @@ L9,8</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          84.
-          <br/>
-          0x54
-          <br/>
-          ASCII 0x75
-          <br/>
-          &quot;u&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 10
-          <br/>
-        </td>
+        <td valign="top" align="right">84.<br />0x54<br />ASCII 0x75<br />"u"</td>
+        <td class="metrics" valign="top" align="left">o = 10<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,8 L4,18 5,21 7,22 10,22 12,21 15,18 M15,8 L15,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,8 L4,18 5,21 7,22 10,22 12,21 15,18 M15,8 L15,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,8 
 L4,18 5,21 7,22 10,22 12,21 15,18 
 M15,8 
@@ -2407,27 +1475,16 @@ L15,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          85.
-          <br/>
-          0x55
-          <br/>
-          ASCII 0x76
-          <br/>
-          &quot;v&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">85.<br />0x55<br />ASCII 0x76<br />"v"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M2,8 L8,22 M14,8 L8,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M2,8 L8,22 M14,8 L8,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M2,8 
 L8,22 
 M14,8 
@@ -2435,27 +1492,16 @@ L8,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          86.
-          <br/>
-          0x56
-          <br/>
-          ASCII 0x77
-          <br/>
-          &quot;w&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 11
-          <br/>
-        </td>
+        <td valign="top" align="right">86.<br />0x56<br />ASCII 0x77<br />"w"</td>
+        <td class="metrics" valign="top" align="left">o = 11<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,8 L7,22 M11,8 L7,22 M11,8 L15,22 M19,8 L15,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,8 L7,22 M11,8 L7,22 M11,8 L15,22 M19,8 L15,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,8 
 L7,22 
 M11,8 
@@ -2467,27 +1513,16 @@ L15,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          87.
-          <br/>
-          0x57
-          <br/>
-          ASCII 0x78
-          <br/>
-          &quot;x&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">87.<br />0x57<br />ASCII 0x78<br />"x"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,8 L14,22 M14,8 L3,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,8 L14,22 M14,8 L3,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,8 
 L14,22 
 M14,8 
@@ -2495,27 +1530,16 @@ L3,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          88.
-          <br/>
-          0x58
-          <br/>
-          ASCII 0x79
-          <br/>
-          &quot;y&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">88.<br />0x58<br />ASCII 0x79<br />"y"</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M2,8 L8,22 M14,8 L8,22 6,26 4,28 2,29 1,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M2,8 L8,22 M14,8 L8,22 6,26 4,28 2,29 1,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M2,8 
 L8,22 
 M14,8 
@@ -2523,27 +1547,16 @@ L8,22 6,26 4,28 2,29 1,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          89.
-          <br/>
-          0x59
-          <br/>
-          ASCII 0x7a
-          <br/>
-          &quot;z&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 9
-          <br/>
-        </td>
+        <td valign="top" align="right">89.<br />0x59<br />ASCII 0x7a<br />"z"</td>
+        <td class="metrics" valign="top" align="left">o = 9<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M14,8 L3,22 M3,8 L14,8 M3,22 L14,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M14,8 L3,22 M3,8 L14,8 M3,22 L14,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M14,8 
 L3,22 
 M3,8 
@@ -2553,27 +1566,16 @@ L14,22</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          90.
-          <br/>
-          0x5a
-          <br/>
-          ASCII 0x7b
-          <br/>
-          &quot;{&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">90.<br />0x5a<br />ASCII 0x7b<br />"{"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M9,-3 L7,-2 6,-1 5,1 5,3 6,5 7,6 8,8 8,10 6,12 M7,-2 L6,0 6,2 7,4 8,5 9,7 9,9 8,11 4,13 8,15 9,17 9,19 8,21 7,22 6,24 6,26 7,28 M6,14 L8,16 8,18 7,20 6,21 5,23 5,25 6,27 7,28 9,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M9,-3 L7,-2 6,-1 5,1 5,3 6,5 7,6 8,8 8,10 6,12 M7,-2 L6,0 6,2 7,4 8,5 9,7 9,9 8,11 4,13 8,15 9,17 9,19 8,21 7,22 6,24 6,26 7,28 M6,14 L8,16 8,18 7,20 6,21 5,23 5,25 6,27 7,28 9,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M9,-3 
 L7,-2 6,-1 5,1 5,3 6,5 7,6 8,8 8,10 6,12 
 M7,-2 
@@ -2583,53 +1585,31 @@ L8,16 8,18 7,20 6,21 5,23 5,25 6,27 7,28 9,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          91.
-          <br/>
-          0x5b
-          <br/>
-          ASCII 0x7c
-          <br/>
-          &quot;|&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 4
-          <br/>
-        </td>
+        <td valign="top" align="right">91.<br />0x5b<br />ASCII 0x7c<br />"|"</td>
+        <td class="metrics" valign="top" align="left">o = 4<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M4,-3 L4,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M4,-3 L4,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M4,-3 
 L4,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          92.
-          <br/>
-          0x5c
-          <br/>
-          ASCII 0x7d
-          <br/>
-          &quot;}&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 7
-          <br/>
-        </td>
+        <td valign="top" align="right">92.<br />0x5c<br />ASCII 0x7d<br />"}"</td>
+        <td class="metrics" valign="top" align="left">o = 7<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M5,-3 L7,-2 8,-1 9,1 9,3 8,5 7,6 6,8 6,10 8,12 M7,-2 L8,0 8,2 7,4 6,5 5,7 5,9 6,11 10,13 6,15 5,17 5,19 6,21 7,22 8,24 8,26 7,28 M8,14 L6,16 6,18 7,20 8,21 9,23 9,25 8,27 7,28 5,29" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M5,-3 L7,-2 8,-1 9,1 9,3 8,5 7,6 6,8 6,10 8,12 M7,-2 L8,0 8,2 7,4 6,5 5,7 5,9 6,11 10,13 6,15 5,17 5,19 6,21 7,22 8,24 8,26 7,28 M8,14 L6,16 6,18 7,20 8,21 9,23 9,25 8,27 7,28 5,29" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M5,-3 
 L7,-2 8,-1 9,1 9,3 8,5 7,6 6,8 6,10 8,12 
 M7,-2 
@@ -2639,27 +1619,16 @@ L6,16 6,18 7,20 8,21 9,23 9,25 8,27 7,28 5,29</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          93.
-          <br/>
-          0x5d
-          <br/>
-          ASCII 0x7e
-          <br/>
-          &quot;~&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 12
-          <br/>
-        </td>
+        <td valign="top" align="right">93.<br />0x5d<br />ASCII 0x7e<br />"~"</td>
+        <td class="metrics" valign="top" align="left">o = 12<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M3,16 L3,14 4,11 6,10 8,10 10,11 14,14 16,15 18,15 20,14 21,12 M3,14 L4,12 6,11 8,11 10,12 14,15 16,16 18,16 20,15 21,12 21,10" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M3,16 L3,14 4,11 6,10 8,10 10,11 14,14 16,15 18,15 20,14 21,12 M3,14 L4,12 6,11 8,11 10,12 14,15 16,16 18,16 20,15 21,12 21,10" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M3,16 
 L3,14 4,11 6,10 8,10 10,11 14,14 16,15 18,15 20,14 21,12 
 M3,14 
@@ -2667,27 +1636,16 @@ L4,12 6,11 8,11 10,12 14,15 16,16 18,16 20,15 21,12 21,10</pre>
         </td>
       </tr>
       <tr>
-        <td align="right" valign="top">
-          94.
-          <br/>
-          0x5e
-          <br/>
-          ASCII 0x7f
-          <br/>
-          &quot;&quot;
-        </td>
-        <td align="left" class="metrics" valign="top">
-          o = 8
-          <br/>
-        </td>
+        <td valign="top" align="right">94.<br />0x5e<br />ASCII 0x7f<br />""</td>
+        <td class="metrics" valign="top" align="left">o = 8<br /></td>
         <td>
-          <svg>
+          <svg xmlns="http://www.w3.org/2000/svg">
             <g>
-              <path d="M0,1 L0,22 1,22 1,1 2,1 2,22 3,22 3,1 4,1 4,22 5,22 5,1 6,1 6,22 7,22 7,1 8,1 8,22 9,22 9,1 10,1 10,22 11,22 11,1 12,1 12,22 13,22 13,1 14,1 14,22 15,22 15,1 16,1 16,22" fill="none" stroke="black" stroke-width="1px"/>
+              <path d="M0,1 L0,22 1,22 1,1 2,1 2,22 3,22 3,1 4,1 4,22 5,22 5,1 6,1 6,22 7,22 7,1 8,1 8,22 9,22 9,1 10,1 10,22 11,22 11,1 12,1 12,22 13,22 13,1 14,1 14,22 15,22 15,1 16,1 16,22" fill="none" stroke="black" stroke-width="1px" />
             </g>
           </svg>
         </td>
-        <td align="left" valign="top">
+        <td valign="top" align="left">
           <pre>M0,1 
 L0,22 1,22 1,1 2,1 2,22 3,22 3,1 4,1 4,22 5,22 5,1 6,1 6,22 7,22 7,1 8,1 8,22 9,22 9,1 10,1 10,22 11,22 11,1 12,1 12,22 13,22 13,1 14,1 14,22 15,22 15,1 16,1 16,22</pre>
         </td>
