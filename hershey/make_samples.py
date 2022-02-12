@@ -70,14 +70,16 @@ def write_sample(font, output_file):
               doc.stag('br')
               text('0x%x' % index)
               doc.stag('br')
-              text('ASCII 0x%02x' % (index + 33))
+              doc.asis('ASCII&nbsp;')
+              text('0x%02x' % (index + 33))
               doc.stag('br')
               text('"%c"' % chr(index + 33))
             with tag('td',
                      ('class', 'metrics'),
                      valign='top', align='left'):
               # Column 2: metrics.  Most are added by javascript code above.n
-              text('o = %d' % char['o'])
+              doc.asis("o&nbsp;=&nbsp;")
+              text('%d' % char['o'])
               doc.stag('br')
             with tag('td'):
               # Column 3: SVG rendering of the glyph
