@@ -7,7 +7,6 @@ function contentLoaded() {
     var path = row.querySelector('svg path');
     var metrics = row.querySelector('.metrics');
     var bbox = path.getBBox();
-    console.log(metrics, bbox);
     domrect_keys.map(function(key) {
       metrics.appendChild(document.createTextNode(key + ':'));
       metrics.innerHTML += '&nbsp';
