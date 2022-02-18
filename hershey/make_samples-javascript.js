@@ -7,14 +7,12 @@ function contentLoaded() {
     var path = row.querySelector('svg path');
     var metrics = row.querySelector('.metrics');
     var bbox = path.getBBox();
-    var any = false;
+    console.log(metrics, bbox);
     domrect_keys.map(function(key) {
-      if (any) {
-        metrics.appendChild(document.createElement('br'));
-      }
-      metrics.appendChild(document.createTextNode(
-          key + ':  ' + bbox[key]))
-      any = true;
+      metrics.appendChild(document.createTextNode(key + ':'));
+      metrics.innerHTML += '&nbsp';
+      metrics.appendChild(document.createTextNode(bbox[key]))
+      metrics.appendChild(document.createElement('br'));
     });
 
   }

@@ -11,7 +11,9 @@ svg path {
   fill: black;
 }
 </style>
-    <script type="text/javascript"><![CDATA[var domrect_keys = ['x', 'y', 'width', 'height' /* , 'left', 'right', 'top', 'bottom' */ ];
+    <script type="text/javascript">
+// <![CDATA[
+var domrect_keys = ['x', 'y', 'width', 'height' /* , 'left', 'right', 'top', 'bottom' */ ];
 
 function contentLoaded() {
   var rows = document.querySelectorAll('table#glyphs tr');
@@ -20,28 +22,28 @@ function contentLoaded() {
     var path = row.querySelector('svg path');
     var metrics = row.querySelector('.metrics');
     var bbox = path.getBBox();
-    var any = false;
+    console.log(metrics, bbox);
     domrect_keys.map(function(key) {
-      if (any) {
-        metrics.appendChild(document.createElement('br'));
-      }
-      metrics.appendChild(document.createTextNode(
-          key + ':  ' + bbox[key]))
-      any = true;
+      metrics.appendChild(document.createTextNode(key + ':'));
+      metrics.innerHTML += '&nbsp';
+      metrics.appendChild(document.createTextNode(bbox[key]))
+      metrics.appendChild(document.createElement('br'));
     });
 
   }
 }
 
 document.addEventListener("DOMContentLoaded", contentLoaded, false);
-]]></script>
+
+// ]]>
+</script>
   </head>
   <body>
     <h1>Script 1-stroke</h1>
     <table id="glyphs" border="1">
       <tr>
         <td valign="top" align="right">0.<br />0x0<br />ASCII&nbsp;0x21<br />"!"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -62,7 +64,7 @@ L2,21 3,22 4,21 3,20</pre>
       </tr>
       <tr>
         <td valign="top" align="right">1.<br />0x1<br />ASCII&nbsp;0x22<br />"""</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -83,7 +85,7 @@ L14,8</pre>
       </tr>
       <tr>
         <td valign="top" align="right">2.<br />0x2<br />ASCII&nbsp;0x23<br />"#"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -104,7 +106,7 @@ L17,16</pre>
       </tr>
       <tr>
         <td valign="top" align="right">3.<br />0x3<br />ASCII&nbsp;0x24<br />"$"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -125,7 +127,7 @@ L7,8 14,12 15,13 16,15 16,18 15,20 14,21 11,22 7,22 4,21 3,20 2,18 2,17 3,16 4,1
       </tr>
       <tr>
         <td valign="top" align="right">4.<br />0x4<br />ASCII&nbsp;0x25<br />"%"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -144,7 +146,7 @@ L15,16 14,18 14,20 16,22 18,22 20,21 21,19 21,17 19,15 17,15</pre>
       </tr>
       <tr>
         <td valign="top" align="right">5.<br />0x5<br />ASCII&nbsp;0x26<br />"&amp;"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -163,7 +165,7 @@ L11,12 12,15 14,18 16,20 18,21 20,21 21,20</pre>
       </tr>
       <tr>
         <td valign="top" align="right">6.<br />0x6<br />ASCII&nbsp;0x27<br />"'"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -178,7 +180,7 @@ L7,2 8,1 9,2 9,3 8,5 6,7</pre>
       </tr>
       <tr>
         <td valign="top" align="right">7.<br />0x7<br />ASCII&nbsp;0x28<br />"("</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -195,7 +197,7 @@ L8,4 6,8 5,11 4,16 4,21 5,26 6,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">8.<br />0x8<br />ASCII&nbsp;0x29<br />")"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -212,7 +214,7 @@ L10,0 11,5 11,10 10,15 9,18 7,22 4,26</pre>
       </tr>
       <tr>
         <td valign="top" align="right">9.<br />0x9<br />ASCII&nbsp;0x2a<br />"*"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -231,7 +233,7 @@ L5,10</pre>
       </tr>
       <tr>
         <td valign="top" align="right">10.<br />0xa<br />ASCII&nbsp;0x2b<br />"+"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -248,7 +250,7 @@ L22,13</pre>
       </tr>
       <tr>
         <td valign="top" align="right">11.<br />0xb<br />ASCII&nbsp;0x2c<br />","</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -263,7 +265,7 @@ L2,21 3,20 4,21 4,22 3,24 1,26</pre>
       </tr>
       <tr>
         <td valign="top" align="right">12.<br />0xc<br />ASCII&nbsp;0x2d<br />"-"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -278,7 +280,7 @@ L22,13</pre>
       </tr>
       <tr>
         <td valign="top" align="right">13.<br />0xd<br />ASCII&nbsp;0x2e<br />"."</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;5<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;5<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -293,7 +295,7 @@ L4,21 5,22 6,21 5,20</pre>
       </tr>
       <tr>
         <td valign="top" align="right">14.<br />0xe<br />ASCII&nbsp;0x2f<br />"/"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -308,7 +310,7 @@ L-2,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">15.<br />0xf<br />ASCII&nbsp;0x30<br />"0"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -327,7 +329,7 @@ L11,21 13,19 15,16 16,13 17,9 17,6 16,3 14,1</pre>
       </tr>
       <tr>
         <td valign="top" align="right">16.<br />0x10<br />ASCII&nbsp;0x31<br />"1"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -348,7 +350,7 @@ L9,6 6,7</pre>
       </tr>
       <tr>
         <td valign="top" align="right">17.<br />0x11<br />ASCII&nbsp;0x32<br />"2"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -369,7 +371,7 @@ L10,22 13,22 15,21 16,18</pre>
       </tr>
       <tr>
         <td valign="top" align="right">18.<br />0x12<br />ASCII&nbsp;0x33<br />"3"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -390,7 +392,7 @@ L13,12 14,13 15,15 15,18 14,20 13,21 11,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">19.<br />0x13<br />ASCII&nbsp;0x34<br />"4"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -409,7 +411,7 @@ L2,16 18,16</pre>
       </tr>
       <tr>
         <td valign="top" align="right">20.<br />0x14<br />ASCII&nbsp;0x35<br />"5"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -432,7 +434,7 @@ L13,10 14,11 15,13 15,16 14,19 12,21 10,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">21.<br />0x15<br />ASCII&nbsp;0x36<br />"6"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -451,7 +453,7 @@ L12,21 14,19 15,17 15,13 14,11</pre>
       </tr>
       <tr>
         <td valign="top" align="right">22.<br />0x16<br />ASCII&nbsp;0x37<br />"7"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -474,7 +476,7 @@ L8,2 10,2 15,4 17,4 18,3 19,1</pre>
       </tr>
       <tr>
         <td valign="top" align="right">23.<br />0x17<br />ASCII&nbsp;0x38<br />"8"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -499,7 +501,7 @@ L13,21 14,20 15,18 15,14 14,12</pre>
       </tr>
       <tr>
         <td valign="top" align="right">24.<br />0x18<br />ASCII&nbsp;0x39<br />"9"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -518,7 +520,7 @@ L17,4 17,9 16,13 15,16 13,19 11,21 9,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">25.<br />0x19<br />ASCII&nbsp;0x3a<br />":"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -535,7 +537,7 @@ L2,21 3,22 4,21</pre>
       </tr>
       <tr>
         <td valign="top" align="right">26.<br />0x1a<br />ASCII&nbsp;0x3b<br />";"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -552,7 +554,7 @@ L2,21 3,20 4,21 4,22 3,24 1,26</pre>
       </tr>
       <tr>
         <td valign="top" align="right">27.<br />0x1b<br />ASCII&nbsp;0x3c<br />"&lt;"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -567,7 +569,7 @@ L4,13 20,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">28.<br />0x1c<br />ASCII&nbsp;0x3d<br />"="</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -584,7 +586,7 @@ L22,16</pre>
       </tr>
       <tr>
         <td valign="top" align="right">29.<br />0x1d<br />ASCII&nbsp;0x3e<br />"&gt;"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -599,7 +601,7 @@ L20,13 4,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">30.<br />0x1e<br />ASCII&nbsp;0x3f<br />"?"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -618,7 +620,7 @@ L7,21 8,22 9,21 8,20</pre>
       </tr>
       <tr>
         <td valign="top" align="right">31.<br />0x1f<br />ASCII&nbsp;0x40<br />"@"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;14<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;14<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -639,7 +641,7 @@ L18,14 18,16 19,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">32.<br />0x20<br />ASCII&nbsp;0x41<br />"A"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -654,7 +656,7 @@ L2,21 5,18 8,14 12,7 15,1 15,22 14,19 12,16 10,14 7,12 5,12 4,13 4,15 5,17 7,19 
       </tr>
       <tr>
         <td valign="top" align="right">33.<br />0x21<br />ASCII&nbsp;0x42<br />"B"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -671,7 +673,7 @@ L14,11 17,12 18,13 19,15 19,18 18,20 17,21 15,22 12,22 10,21 9,19</pre>
       </tr>
       <tr>
         <td valign="top" align="right">34.<br />0x22<br />ASCII&nbsp;0x43<br />"C"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -686,7 +688,7 @@ L12,8 13,9 15,9 17,8 18,6 18,4 17,2 15,1 12,1 9,2 7,4 5,7 4,9 3,13 3,17 4,20 5,2
       </tr>
       <tr>
         <td valign="top" align="right">35.<br />0x23<br />ASCII&nbsp;0x44<br />"D"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -701,7 +703,7 @@ L11,2 10,4 9,8 8,14 7,17 6,19 4,21 2,22 0,22 -1,21 -1,19 0,18 2,18 4,19 6,21 9,2
       </tr>
       <tr>
         <td valign="top" align="right">36.<br />0x24<br />ASCII&nbsp;0x45<br />"E"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -716,7 +718,7 @@ L14,6 15,7 17,7 18,6 18,4 17,2 14,1 10,1 7,2 6,4 6,7 7,9 8,10 11,11 8,11 5,12 4,
       </tr>
       <tr>
         <td valign="top" align="right">37.<br />0x25<br />ASCII&nbsp;0x46<br />"F"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -735,7 +737,7 @@ L18,11</pre>
       </tr>
       <tr>
         <td valign="top" align="right">38.<br />0x26<br />ASCII&nbsp;0x47<br />"G"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -750,7 +752,7 @@ L2,21 6,17 9,12 10,9 11,5 11,2 10,1 9,1 8,2 7,4 7,7 8,9 10,10 14,10 17,9 18,8 19
       </tr>
       <tr>
         <td valign="top" align="right">39.<br />0x27<br />ASCII&nbsp;0x48<br />"H"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -767,7 +769,7 @@ L16,10 18,9 21,7 23,5 24,3 24,2 23,1 22,1 20,3 18,7 16,13 15,18 15,21 16,22 17,2
       </tr>
       <tr>
         <td valign="top" align="right">40.<br />0x28<br />ASCII&nbsp;0x49<br />"I"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -782,7 +784,7 @@ L12,15 10,12 9,10 8,7 8,4 9,2 10,1 12,1 13,2 14,4 14,7 13,12 11,17 10,19 8,21 6,
       </tr>
       <tr>
         <td valign="top" align="right">41.<br />0x29<br />ASCII&nbsp;0x4a<br />"J"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -797,7 +799,7 @@ L8,22 6,17 5,11 5,5 6,2 8,1 10,1 11,2 12,5 12,8 11,13 8,22 6,28 5,31 4,33 2,34 1
       </tr>
       <tr>
         <td valign="top" align="right">42.<br />0x2a<br />ASCII&nbsp;0x4b<br />"K"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -816,7 +818,7 @@ L13,12 13,19 14,21 15,22 16,22 18,21 19,20 21,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">43.<br />0x2b<br />ASCII&nbsp;0x4c<br />"L"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -831,7 +833,7 @@ L6,13 10,12 13,10 15,8 16,6 16,3 15,1 13,1 12,2 11,4 10,9 9,14 8,17 7,19 5,21 3,
       </tr>
       <tr>
         <td valign="top" align="right">44.<br />0x2c<br />ASCII&nbsp;0x4d<br />"M"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;15<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;15<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -850,7 +852,7 @@ L20,7 22,3 23,2 25,1 26,1 28,2 29,4 29,6 28,11 26,18 26,21 27,22 28,22 30,21 31,
       </tr>
       <tr>
         <td valign="top" align="right">45.<br />0x2d<br />ASCII&nbsp;0x4e<br />"N"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -867,7 +869,7 @@ L10,7 12,3 13,2 15,1 17,1 19,2 20,4 20,6 19,11 17,18 17,21 18,22 19,22 21,21 22,
       </tr>
       <tr>
         <td valign="top" align="right">46.<br />0x2e<br />ASCII&nbsp;0x4f<br />"O"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -882,7 +884,7 @@ L9,2 7,4 5,7 4,9 3,13 3,17 4,20 5,21 7,22 9,22 12,21 14,19 16,16 17,14 18,10 18,
       </tr>
       <tr>
         <td valign="top" align="right">47.<br />0x2f<br />ASCII&nbsp;0x50<br />"P"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -897,7 +899,7 @@ L14,4 14,7 13,11 12,14 11,16 9,19 7,21 5,22 4,22 3,21 3,18 4,13 5,10 6,8 8,5 10,
       </tr>
       <tr>
         <td valign="top" align="right">48.<br />0x30<br />ASCII&nbsp;0x51<br />"Q"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -912,7 +914,7 @@ L12,9 11,10 9,11 7,11 6,9 6,7 7,4 9,2 12,1 15,1 17,2 18,4 18,8 17,11 15,14 11,18
       </tr>
       <tr>
         <td valign="top" align="right">49.<br />0x31<br />ASCII&nbsp;0x52<br />"R"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -927,7 +929,7 @@ L14,4 14,7 13,11 12,14 11,16 9,19 7,21 5,22 4,22 3,21 3,18 4,13 5,10 6,8 8,5 10,
       </tr>
       <tr>
         <td valign="top" align="right">50.<br />0x32<br />ASCII&nbsp;0x53<br />"S"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -942,7 +944,7 @@ L2,21 4,19 7,15 9,12 11,8 12,5 12,2 11,1 10,1 9,2 8,4 8,6 9,8 11,10 14,12 16,14 
       </tr>
       <tr>
         <td valign="top" align="right">51.<br />0x33<br />ASCII&nbsp;0x54<br />"T"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -959,7 +961,7 @@ L14,9 12,15 10,19 8,21 6,22 4,22 2,21 1,19 1,17 2,16 4,16 6,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">52.<br />0x34<br />ASCII&nbsp;0x55<br />"U"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -976,7 +978,7 @@ L18,12 17,18 17,21 18,22 19,22 21,21 22,20 24,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">53.<br />0x35<br />ASCII&nbsp;0x56<br />"V"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -991,7 +993,7 @@ L3,7 2,5 2,4 3,2 5,1 6,1 8,2 9,4 9,6 8,10 7,13 6,17 6,20 7,22 9,22 11,21 14,18 1
       </tr>
       <tr>
         <td valign="top" align="right">54.<br />0x36<br />ASCII&nbsp;0x57<br />"W"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;13<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;13<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1012,7 +1014,7 @@ L28,2 25,5 22,9 19,15 16,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">55.<br />0x37<br />ASCII&nbsp;0x58<br />"X"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1029,7 +1031,7 @@ L23,2 22,1 20,1 18,2 16,4 14,7 10,16 8,19 6,21 4,22 2,22 1,21 1,19</pre>
       </tr>
       <tr>
         <td valign="top" align="right">56.<br />0x38<br />ASCII&nbsp;0x59<br />"Y"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1046,7 +1048,7 @@ L19,8 16,18 14,24 12,29 10,33 8,34 7,33 7,31 8,28 10,25 13,22 16,20 21,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">57.<br />0x39<br />ASCII&nbsp;0x5a<br />"Z"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;11<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;11<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1061,7 +1063,7 @@ L12,9 11,10 9,11 7,11 6,9 6,7 7,4 9,2 12,1 15,1 17,2 18,4 18,8 17,11 15,15 12,18
       </tr>
       <tr>
         <td valign="top" align="right">58.<br />0x3a<br />ASCII&nbsp;0x5b<br />"["</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1082,7 +1084,7 @@ L11,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">59.<br />0x3b<br />ASCII&nbsp;0x5c<br />"\"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1097,7 +1099,7 @@ L14,25</pre>
       </tr>
       <tr>
         <td valign="top" align="right">60.<br />0x3c<br />ASCII&nbsp;0x5d<br />"]"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1118,7 +1120,7 @@ L10,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">61.<br />0x3d<br />ASCII&nbsp;0x5e<br />"^"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1137,7 +1139,7 @@ L8,22</pre>
       </tr>
       <tr>
         <td valign="top" align="right">62.<br />0x3e<br />ASCII&nbsp;0x5f<br />"_"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1152,7 +1154,7 @@ L16,24</pre>
       </tr>
       <tr>
         <td valign="top" align="right">63.<br />0x3f<br />ASCII&nbsp;0x60<br />"`"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1167,7 +1169,7 @@ L7,3 6,5 6,6 7,7 8,6 7,5</pre>
       </tr>
       <tr>
         <td valign="top" align="right">64.<br />0x40<br />ASCII&nbsp;0x61<br />"a"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1182,7 +1184,7 @@ L8,14 6,13 4,13 2,14 1,15 0,17 0,19 1,21 3,22 5,22 7,21 8,19 10,13 9,18 9,21 10,
       </tr>
       <tr>
         <td valign="top" align="right">65.<br />0x41<br />ASCII&nbsp;0x62<br />"b"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1197,7 +1199,7 @@ L2,14 5,9 6,7 7,4 7,2 6,1 4,2 3,4 2,8 1,15 1,21 2,22 3,22 5,21 7,19 8,16 8,13 9,
       </tr>
       <tr>
         <td valign="top" align="right">66.<br />0x42<br />ASCII&nbsp;0x63<br />"c"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1212,7 +1214,7 @@ L7,14 6,13 4,13 2,14 1,15 0,17 0,19 1,21 3,22 6,22 9,20 11,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">67.<br />0x43<br />ASCII&nbsp;0x64<br />"d"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1229,7 +1231,7 @@ L9,18 9,21 10,22 11,22 13,21 14,20 16,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">68.<br />0x44<br />ASCII&nbsp;0x65<br />"e"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1244,7 +1246,7 @@ L3,19 4,18 5,16 5,14 4,13 3,13 1,14 0,16 0,19 1,21 3,22 5,22 7,21 8,20 10,17</pr
       </tr>
       <tr>
         <td valign="top" align="right">69.<br />0x45<br />ASCII&nbsp;0x66<br />"f"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;5<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;5<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1259,7 +1261,7 @@ L4,12 6,9 7,7 8,4 8,2 7,1 5,2 4,4 2,12 -1,21 -4,28 -5,31 -5,33 -4,34 -2,33 -1,30
       </tr>
       <tr>
         <td valign="top" align="right">70.<br />0x46<br />ASCII&nbsp;0x67<br />"g"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1276,7 +1278,7 @@ L8,20 4,31 3,33 1,34 0,33 0,31 1,28 4,25 7,23 9,22 12,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">71.<br />0x47<br />ASCII&nbsp;0x68<br />"h"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1293,7 +1295,7 @@ L1,19 2,17 4,14 6,13 8,13 9,14 9,16 8,19 8,21 9,22 10,22 12,21 13,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">72.<br />0x48<br />ASCII&nbsp;0x69<br />"i"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;5<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;5<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1310,7 +1312,7 @@ L2,13 0,19 0,21 1,22 2,22 4,21 5,20 7,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">73.<br />0x49<br />ASCII&nbsp;0x6a<br />"j"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;5<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;5<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1327,7 +1329,7 @@ L2,13 -4,31 -5,33 -7,34 -8,33 -8,31 -7,28 -4,25 -1,23 1,22 4,20 7,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">74.<br />0x4a<br />ASCII&nbsp;0x6b<br />"k"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1346,7 +1348,7 @@ L6,18 7,21 8,22 9,22 11,21 12,20 14,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">75.<br />0x4b<br />ASCII&nbsp;0x6c<br />"l"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;5<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;5<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1361,7 +1363,7 @@ L2,14 5,9 6,7 7,4 7,2 6,1 4,2 3,4 2,8 1,15 1,21 2,22 3,22 5,21 6,20 8,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">76.<br />0x4c<br />ASCII&nbsp;0x6d<br />"m"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1380,7 +1382,7 @@ L12,17 14,14 16,13 18,13 19,14 19,16 18,19 18,21 19,22 20,22 22,21 23,20 25,17</
       </tr>
       <tr>
         <td valign="top" align="right">77.<br />0x4d<br />ASCII&nbsp;0x6e<br />"n"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;10<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;10<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1397,7 +1399,7 @@ L5,17 7,14 9,13 11,13 12,14 12,16 11,19 11,21 12,22 13,22 15,21 16,20 18,17</pre
       </tr>
       <tr>
         <td valign="top" align="right">78.<br />0x4e<br />ASCII&nbsp;0x6f<br />"o"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1412,7 +1414,7 @@ L4,13 2,14 1,15 0,17 0,19 1,21 3,22 5,22 7,21 8,20 9,18 9,16 8,14 6,13 5,14 5,16
       </tr>
       <tr>
         <td valign="top" align="right">79.<br />0x4f<br />ASCII&nbsp;0x70<br />"p"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1431,7 +1433,7 @@ L4,22 7,22 10,21 12,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">80.<br />0x50<br />ASCII&nbsp;0x71<br />"q"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1448,7 +1450,7 @@ L9,16 7,21 4,28 3,31 3,33 4,34 6,33 7,30 7,23 9,22 12,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">81.<br />0x51<br />ASCII&nbsp;0x72<br />"r"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1463,7 +1465,7 @@ L2,14 3,12 3,14 6,14 7,15 7,17 6,20 6,21 7,22 8,22 10,21 11,20 13,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">82.<br />0x52<br />ASCII&nbsp;0x73<br />"s"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1480,7 +1482,7 @@ L2,22 6,22 8,21 9,20 11,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">83.<br />0x53<br />ASCII&nbsp;0x74<br />"t"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;6<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;6<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1499,7 +1501,7 @@ L8,9</pre>
       </tr>
       <tr>
         <td valign="top" align="right">84.<br />0x54<br />ASCII&nbsp;0x75<br />"u"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1516,7 +1518,7 @@ L8,19 8,21 9,22 10,22 12,21 13,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">85.<br />0x55<br />ASCII&nbsp;0x76<br />"v"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1533,7 +1535,7 @@ L10,17 11,18 13,18 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">86.<br />0x56<br />ASCII&nbsp;0x77<br />"w"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1552,7 +1554,7 @@ L16,17 17,18 19,18 21,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">87.<br />0x57<br />ASCII&nbsp;0x78<br />"x"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1569,7 +1571,7 @@ L12,13 10,13 9,14 5,21 4,22 2,22 1,21</pre>
       </tr>
       <tr>
         <td valign="top" align="right">88.<br />0x58<br />ASCII&nbsp;0x79<br />"y"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;9<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;9<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1586,7 +1588,7 @@ L4,31 3,33 1,34 0,33 0,31 1,28 4,25 7,23 9,22 12,20 15,17</pre>
       </tr>
       <tr>
         <td valign="top" align="right">89.<br />0x59<br />ASCII&nbsp;0x7a<br />"z"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;8<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;8<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1601,7 +1603,7 @@ L2,14 4,13 6,13 8,15 8,17 7,19 5,21 2,22 4,23 5,25 5,28 4,31 3,33 1,34 0,33 0,31
       </tr>
       <tr>
         <td valign="top" align="right">90.<br />0x5a<br />ASCII&nbsp;0x7b<br />"{"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1620,7 +1622,7 @@ L8,16 8,18 7,20 6,21 5,23 5,25 6,27 7,28 9,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">91.<br />0x5b<br />ASCII&nbsp;0x7c<br />"|"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;4<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;4<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1635,7 +1637,7 @@ L4,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">92.<br />0x5c<br />ASCII&nbsp;0x7d<br />"}"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1654,7 +1656,7 @@ L6,16 6,18 7,20 8,21 9,23 9,25 8,27 7,28 5,29</pre>
       </tr>
       <tr>
         <td valign="top" align="right">93.<br />0x5d<br />ASCII&nbsp;0x7e<br />"~"</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;12<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;12<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>
@@ -1671,7 +1673,7 @@ L4,12 6,11 8,11 10,12 14,15 16,16 18,16 20,15 21,12 21,10</pre>
       </tr>
       <tr>
         <td valign="top" align="right">94.<br />0x5e<br />ASCII&nbsp;0x7f<br />""</td>
-        <td class="metrics" valign="top" align="left">o&nbsp;=&nbsp;7<br /></td>
+        <td class="metrics" valign="top" align="left">o:&nbsp;7<br /></td>
         <td>
           <svg xmlns="http://www.w3.org/2000/svg">
             <g>

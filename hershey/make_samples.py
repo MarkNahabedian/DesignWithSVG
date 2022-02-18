@@ -56,7 +56,9 @@ def write_sample(font, output_file):
       with tag('script', type='text/javascript'):
         # We could do this with a link, but I want the HTML file to be
         # self-contained.
-        doc.cdata(javascript)
+        doc.asis("\n// ")
+        doc.cdata('\n' + javascript + '\n// ')
+        doc.asis("\n")
     with tag('body'):
       with tag('h1'):
         text(font['name'])
@@ -78,7 +80,7 @@ def write_sample(font, output_file):
                      ('class', 'metrics'),
                      valign='top', align='left'):
               # Column 2: metrics.  Most are added by javascript code above.n
-              doc.asis("o&nbsp;=&nbsp;")
+              doc.asis("o:&nbsp;")
               text('%d' % char['o'])
               doc.stag('br')
             with tag('td'):
