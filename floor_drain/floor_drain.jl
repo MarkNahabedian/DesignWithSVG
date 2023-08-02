@@ -37,8 +37,8 @@ The actual drain hole has a top diameter of 2.85 inch.
 About 0.5 inch below the surface of the floor is a lip that extends in
 about 0.48 inch from the circumference of the outer diameter.
 
-I have a sheet of aluminum that is crudely measured (because ut was
-taped doen to a spoil board) to a bit over 0.05 inch.
+I have a sheet of aluminum that is crudely measured (because it was
+taped down to a spoil board) to a bit over 0.05 inch.
 
 "
 
